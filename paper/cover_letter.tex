@@ -1,0 +1,29 @@
+\documentclass[11pt]{letter}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\input{numbers}
+\signature{Dewan Nafay Chowdhury and Md.\ Rejaul Korim Sadi\\(joint first authors)\\Department of Computer Science and Engineering\\Metropolitan University, Sylhet, Bangladesh\\\href{mailto:dewan.nafay.chow@gmail.com}{dewan.nafay.chow@gmail.com}}
+\address{Department of Computer Science and Engineering\\Metropolitan University\\Sylhet, Bangladesh}
+\begin{document}
+\begin{letter}{The Editors-in-Chief\\Information Processing \& Management}
+\opening{Dear Editors,}
+
+We submit the manuscript ``Mostly ranking, partly threshold: decomposing and repairing the cross-corpus generalisation gap of misinformation detectors'' for consideration as a research article in \emph{Information Processing \& Management}.
+
+Fake-news and rumour detectors report near-perfect accuracy on the corpus they were trained on and much lower accuracy on others. Recent benchmarks and audits have established \emph{that} the gap exists. Our paper explains \emph{what kind} of gap it is and what can be done about each part, which we believe fits the journal's interest in the evaluation and reliability of information-processing systems. Specifically:
+
+\begin{itemize}
+\item We audit ten public corpora in English and Bengali (articles, headlines, claims, tweets) for label direction and within- and cross-corpus near-duplicates. The audit shows, among other things, that the two most used article corpora code their labels in opposite directions, an easy error that turns moderate transfer into an apparent below-chance collapse.
+\item We introduce an exact decomposition of the transfer gap into a ranking deficit and operating-point losses. Across 42 corpus pairs, six detectors and five seeds, \RankShareAll{} of the lost macro-F1 is ranking and \OpShareAll{} operating point.
+\item We show that the standard label-shift correction (EM prior adaptation) makes the operating point worse, because calibration does not survive the change of corpus, and that a simple label-free rule, rank transfer, recovers \RecRank{} of the operating-point loss.
+\item We test representation repairs in a leave-one-corpus-out design: training on several corpora helps, while making the representation invariant to corpus identity hurts, because corpus and label are entangled in current benchmarks.
+\item We extend the analysis to Bengali, a low-resource language, where clickbait detection transfers across publishers and languages.
+\end{itemize}
+
+All results are reported with five seeds, bootstrap intervals, permutation controls and paired tests, and every number in the manuscript is generated from released result files; code, seeds and per-item scores are publicly available. The manuscript is original, has not been published elsewhere and is not under consideration by another journal. Both authors contributed equally, approved the submission and declare no competing interests. A generative-AI declaration is included in the manuscript as required by the journal.
+
+\closing{Yours sincerely,}
+\end{letter}
+\end{document}

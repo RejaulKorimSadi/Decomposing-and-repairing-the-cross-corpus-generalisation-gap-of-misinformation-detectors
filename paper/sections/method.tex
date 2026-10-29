@@ -1,0 +1,47 @@
+\section{Methodology}\label{sec:method}
+
+\subsection{Evaluation protocol}\label{sec:protocol}
+For every corpus and every seed $s\in\{0,\dots,4\}$ we draw a stratified 70/10/20 train/validation/test split; the seed also fixes model initialisation and any subsampling. Training splits are capped at 8{,}000 items, validation at 1{,}500 and test at 3{,}000 (stratified), so that the largest corpora do not dominate run time; every cap is applied identically to every model. Featurisers (vocabularies, IDF weights, SVD bases) are fitted on the source training split only. Hyperparameters (the inverse regularisation strength $C\in\{0.25,1,4\}$, or the number of boosting rounds) are selected on the source validation split by ROC-AUC, and the selected model's scores are then Platt-calibrated \citep{platt1999probabilistic} on the same validation split, so the default operating point $t=0.5$ is the Bayes decision under the source prior. No hyperparameter, threshold or calibration step ever sees a target label. When a model trained on corpus $A$ is tested on corpus $B$, test items of $B$ that are near-duplicates of any item of $A$ (Section~\ref{sec:audit}) are removed.
+
+Three training regimes are run for every model. \emph{Full} uses the capped training split. \emph{Matched} subsamples every source to $n=250$ training items, removing the size difference between Twitter16 (250 training items) and the article corpora (8{,}000). \emph{Permuted} shuffles the source training and validation labels; it is a sanity control whose transfer and in-domain AUC must be close to 0.5.
+
+\subsection{Models}\label{sec:models}
+We use six detectors that span sparse, dense and pretrained representations, all with a linear or tree-based decision layer so that their behaviour is interpretable and their training is reproducible on a CPU:
+(i)~TF-IDF word 1--2-grams with logistic regression (\textsc{tfidf-lr}), the primary instrument;
+(ii)~the same features with a linear SVM (\textsc{tfidf-svm});
+(iii)~NB-SVM, logistic regression on naive-Bayes-weighted binary n-grams \citep{wang2012nbsvm};
+(iv)~averaged GloVe 100-d embeddings \citep{pennington2014glove} with logistic regression (\textsc{glove-lr});
+(v)~a style model, gradient boosting on 22 surface statistics (length, punctuation and casing rates, digit and stop-word ratios, pronoun rates, weekday mentions, ``said'' rate, dateline, URL, handle and hashtag rates; \textsc{style-gb}), which sees no vocabulary beyond counts of stop words, pronouns, weekday names and ``said'', and therefore measures how far a corpus is separable by surface form;
+(vi)~RoBERTa-base \citep{liu2019roberta} mean-pooled last-layer representations with logistic regression (\textsc{roberta-lr}), computed on a stratified subset of at most 1{,}500 items per corpus (first 600 characters), where \textsc{tfidf-lr} is refitted on the identical splits for a paired comparison.
+All models use scikit-learn \citep{pedregosa2011sklearn}; RoBERTa weights are those packaged in spaCy's \texttt{en\_core\_web\_trf} 3.8.0 \citep{honnibal2020spacy}.
+
+\subsection{Metrics}\label{sec:metrics}
+For every (model, regime, source, target, seed) cell we report threshold-free ranking metrics (ROC-AUC, average precision), threshold-dependent metrics at the default operating point (macro-F1, per-class F1, balanced accuracy, Matthews correlation, predicted-positive rate), calibration (expected calibration error, 15 bins), and macro-F1 at four further operating points described next. Because test sets are balanced to different degrees, two reference levels are useful when reading macro-F1: random guessing gives about 0.5, and predicting a single class gives about 0.33. Uncertainty is reported as mean $\pm$ standard deviation over the five seeds and as a pooled seed-bootstrap 95\% confidence interval (200 resamples of the target test set per seed, pooled over seeds), which captures both split and test-sampling variability. Paired model comparisons use McNemar's test \citep{mcnemar1947note} per cell and seed; repair comparisons use Wilcoxon signed-rank tests over (target, seed) pairs; families of tests are Holm-corrected \citep{holm1979simple}.
+
+\subsection{Transfer gap decomposition}\label{sec:decomp}
+Let $F_{AB}(\tau)$ be the macro-F1 on target $B$ of a model trained on source $A$, at operating point $\tau$. We consider four operating points on the target scores: the default threshold $\tau_0=0.5$; the prior-matched threshold $\tau_\pi$, which makes the predicted-positive rate equal to the true target prior; and the oracle threshold $\tau^\star=\arg\max_\tau F_{AB}(\tau)$, an upper bound that any thresholding rule could at best reach given the model's ranking of target items. The loss a user experiences when deploying the source model on $B$, relative to what an in-domain model of $B$ achieves, then decomposes exactly:
+\begin{equation}\label{eq:decomp}
+\underbrace{F_{BB}(\tau_0) - F_{AB}(\tau_0)}_{\text{transfer gap}}
+= \underbrace{\big[F_{BB}(\tau_0) - F_{AB}(\tau^\star)\big]}_{\text{ranking deficit}}
++ \underbrace{\big[F_{AB}(\tau^\star) - F_{AB}(\tau_\pi)\big]}_{\text{threshold residual}}
++ \underbrace{\big[F_{AB}(\tau_\pi) - F_{AB}(\tau_0)\big]}_{\text{prior / calibration loss}} .
+\end{equation}
+The first term cannot be recovered by any choice of threshold: it measures how much worse the source model \emph{orders} target items than the target's own model does. The last two terms are \emph{operating-point} losses: they would vanish with the right threshold. Adding $F_{AA}(\tau_0)-F_{BB}(\tau_0)$ gives the gap relative to the source's own in-domain score, which is what a benchmark user is promised; this difficulty term averages to zero over a full matrix and is reported per cell only. The same decomposition is applied with ROC-AUC, where only the ranking term exists.
+
+\subsection{Label-free operating points}\label{sec:oprepair}
+Three operating points need no target labels. (a)~\emph{EM prior adaptation} \citep{saerens2002adjusting} re-estimates the target prior from the source-calibrated posteriors by expectation--maximisation, adjusts the posteriors and thresholds them at 0.5; with Platt-calibrated scores this is the bias-corrected recipe recommended by \citet{alexandari2020labelshift}. It is optimal under pure label shift. (b)~\emph{Rank transfer} sets the threshold so that the predicted-positive rate on the target equals the source prior $\pi_A$, i.e.\ it transfers the model's ranking-based decision rule rather than its score scale. (c)~A \emph{2-component Gaussian mixture} on the target logits places the threshold where the two components' posteriors cross. For reference we also report $\tau_\pi$, which needs one number about the target (its base rate) but no item labels.
+
+\subsection{Mechanism probes}\label{sec:probes}
+To identify what signal carries in-domain performance, we use eight probes, each run with \textsc{tfidf-lr} unless stated:
+\emph{surface statistics only} (\textsc{style-gb} above);
+\emph{group-only}, out-of-fold smoothed target encoding of group identity (publisher domain for PolitiFact, GossipCop and BanglaBait; speaker for LIAR; event for PHEME), i.e.\ how well the label is predicted by \emph{who} published an item;
+\emph{learning curves} from 32 training items to the full split;
+\emph{top-$K$ deletion}, removing the $K\in\{10,\dots,3000\}$ highest-$|w|$ features and retraining \citep[cf.][]{verma2026audit};
+\emph{masking} of source tags and datelines, of time expressions and numbers, of named entities (spaCy \texttt{en\_core\_web\_sm}), or of all three;
+\emph{topic-balanced training}, where classes are subsampled to equal size inside each of 50 $k$-means topic clusters, removing topic--label correlation from the training set;
+\emph{corpus separability}, the proxy $\mathcal{A}$-distance $2(1-2\epsilon)$ between two corpora, with $\epsilon$ the cross-validated error of a classifier that tells them apart from text alone \citep{bendavid2010theory};
+and \emph{feature attribution}, the largest-weight n-grams per class and their linear-SHAP magnitudes $|w_j|\,\mathbb{E}|x_j-\bar x_j|$.
+For the more expensive probes (top-$K$, masking, vocabulary ablation) training is capped at 4{,}000 and test at 1{,}500 items; masking and vocabulary ablation use three seeds.
+
+\subsection{Representation repairs}\label{sec:repair}
+The ranking deficit can only be reduced by a better representation. We test repairs in a leave-one-corpus-out (LOCO) setting: for each held-out veracity corpus, the model is trained on the union of the other six (each capped at 1{,}500 training and 300 validation items) and evaluated on the held-out test split, with near-duplicates of any training corpus removed. Methods are: \emph{pooled} training; pooled training with sample weights that equalise every (corpus, class) cell (\emph{balanced}); balanced training on texts with source tags, datelines, URLs, handles and time expressions \emph{masked}; balanced training after deleting the 2{,}000 features most predictive of \emph{corpus identity} (from a one-vs-rest corpus classifier); and three dense variants on a 300-d SVD of the TF-IDF space: the SVD baseline, \emph{INLP} \citep{ravfogel2020inlp}, which projects out 15 iterations of linear corpus-identity directions, and \emph{CORAL} \citep{sun2016coral}, which aligns source feature covariance to the (unlabelled) target. None uses target labels; CORAL alone uses unlabelled target text.

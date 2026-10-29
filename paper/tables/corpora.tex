@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering
+\caption{Corpora after harmonisation and deduplication. ``Exact'' and ``near'' count removed duplicates; ``conflict'' counts items removed because duplicates disagreed on the label; ``pos.'' is the share labelled fake, false, rumour or clickbait. For LIAR and Twitter15/16, ``raw'' counts the items in the binary view (LIAR: pants-fire/false vs.\ mostly-true/true; Twitter: false vs.\ true).}\label{tab:corpora}
+\small
+\begin{tabular}{@{}llllrrrrrr@{}}
+\toprule
+Corpus & Unit & Construct & Lang. & Raw & Exact & Near & Conflict & Final & Pos. \\
+\midrule
+ISOT & article & veracity & en & 38{,}833 & 0 & 79 & 0 & 38{,}749 & 0.46 \\
+WELFake & article & veracity & en & 24{,}530 & 0 & 815 & 6 & 23{,}708 & 0.43 \\
+PolitiFact & headline & veracity & en & 1{,}056 & 71 & 3 & 6 & 976 & 0.43 \\
+GossipCop & headline & veracity & en & 22{,}140 & 1{,}174 & 26 & 380 & 20{,}560 & 0.23 \\
+LIAR & claim & veracity & en & 8{,}090 & 21 & 11 & 3 & 8{,}055 & 0.44 \\
+Twitter15 & tweet & veracity & en & 742 & 55 & 14 & 0 & 673 & 0.51 \\
+Twitter16 & tweet & veracity & en & 412 & 51 & 3 & 0 & 358 & 0.46 \\
+\midrule
+PHEME & tweet & rumour & en & 5{,}802 & 124 & 98 & 25 & 5{,}555 & 0.34 \\
+ClickbaitEN & headline & clickbait & en & 32{,}000 & 2 & 123 & 0 & 31{,}875 & 0.50 \\
+BanglaBait & headline & clickbait & bn & 15{,}056 & 850 & 124 & 41 & 14{,}041 & 0.34 \\
+\bottomrule
+\end{tabular}
+\end{table}

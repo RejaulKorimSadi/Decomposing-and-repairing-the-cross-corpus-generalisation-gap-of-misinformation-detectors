@@ -1,0 +1,17 @@
+\section{Implementation details and compute}\label{app:impl}
+\paragraph{Hyperparameters}
+Logistic regression and linear SVM: $C\in\{0.25,1,4\}$ (SVM: $C/4$), liblinear, selected by validation ROC-AUC; TF-IDF word 1--2-grams, \texttt{min\_df}=2, 100{,}000 features, sublinear term frequency, texts truncated to 20{,}000 characters. NB-SVM: binary 1--2-grams, add-one smoothed log-count ratios. GloVe: 100-d \texttt{glove-wiki-gigaword}, mean of in-vocabulary tokens. Style model: histogram gradient boosting with 100 or 300 iterations, learning rate 0.1. RoBERTa: mean of last-layer piece states, standardised, logistic regression with $C\in\{0.025,0.1,0.4\}$. Platt scaling on the validation split for every model. Bengali: character 3--5-grams (\texttt{char\_wb}), 200{,}000 features.
+\paragraph{Deduplication}
+MinHash with 128 permutations (seed 1) and LSH at Jaccard 0.8; word 3-gram shingles over the first 400 words for articles, character 5-grams otherwise; text normalised with NFKC, lower-casing, URL and punctuation removal.
+\paragraph{Compute}
+All experiments ran on a 2-core CPU with 8\,GB RAM and no GPU; the full pipeline (\texttt{run\_all.sh}) takes about ten to twelve hours. Software: Python 3.13, scikit-learn 1.9.1, spaCy 3.8, PyTorch 2 (CPU), datasketch, statsmodels.
+
+\section{Reproducibility checklist}\label{app:checklist}
+\begin{itemize}
+\item Data: public sources, licences and expected layout in \texttt{DATA.md}; label harmonisation and its verification in \texttt{src/label\_probe.py}; deduplication counts in \texttt{results/dedup\_report.json}.
+\item Splits and seeds: five seeds (0--4) fix splits, subsampling and model initialisation; vectorisers and calibrators are fitted on source training and validation data only.
+\item Every number in this paper is written by \texttt{src/paper\_numbers.py} from the files in \texttt{results/}; no number is typed by hand.
+\item Saved per-item scores for every (model, source, target, seed) cell allow any metric or threshold rule to be recomputed without retraining.
+\item Sanity controls: permutation regime (AUC $\approx$ 0.5) and size-matched regime are part of the main grid.
+\item The Supplementary Material contains the full matrices for every model, per-cell decompositions and operating points, learning curves, the vocabulary ablation, per-publisher Bengali results and the deduplication report.
+\end{itemize}

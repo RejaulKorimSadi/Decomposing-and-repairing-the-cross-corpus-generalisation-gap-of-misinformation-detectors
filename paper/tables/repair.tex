@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\caption{Leave-one-corpus-out repairs (\textsc{tfidf-lr} features; mean over the seven held-out veracity corpora and five seeds; s.d.\ across seeds). $\Delta$AUC versus pooled training with Holm-corrected Wilcoxon $p$ over the 35 (target, seed) pairs. For reference, the mean single-source transfer AUC to the same targets is 0.567, the best single source (chosen with target labels) 0.671, and the targets' own in-domain AUC 0.914.}\label{tab:repair}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Training & AUC & AP & F1$_{0.5}$ & F1$^\star$ & $\Delta$AUC ($p$) \\
+\midrule
+pooled (6 corpora) & 0.660\,{\scriptsize$\pm$0.013} & 0.582 & 0.581 & 0.634 & -- \\
++ (corpus, class) balancing & 0.659\,{\scriptsize$\pm$0.013} & 0.583 & 0.582 & 0.632 & -0.001 (1.000) \\
++ balancing + masking & 0.661\,{\scriptsize$\pm$0.012} & 0.584 & 0.576 & 0.633 & +0.001 (1.000) \\
++ balancing + corpus-feature deletion & 0.636\,{\scriptsize$\pm$0.011} & 0.556 & 0.560 & 0.611 & -0.023 (0.006) \\
+SVD-300 + balancing & 0.647\,{\scriptsize$\pm$0.009} & 0.566 & 0.583 & 0.624 & -0.013 (0.043) \\
+SVD-300 + INLP & 0.605\,{\scriptsize$\pm$0.011} & 0.520 & 0.525 & 0.591 & -0.054 (0.001) \\
+SVD-300 + CORAL & 0.621\,{\scriptsize$\pm$0.008} & 0.539 & 0.563 & 0.604 & -0.038 ($<$0.001) \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,512 @@
+{
+ "op_recovery_tfidf_lr": {
+  "em": -0.6438783789045498,
+  "src_rate": 0.810145482697995,
+  "half_rate": 0.7977988367136444,
+  "gmm": 0.5669402856474552,
+  "true_rate": 0.856360101128077,
+  "oracle": 1.0
+ },
+ "op_wilcoxon_holm_tfidf_lr": {
+  "em": 1.6393992992168024e-32,
+  "src_rate": 6.646445767246868e-31,
+  "half_rate": 1.445171694567618e-29,
+  "gmm": 1.6548217151993461e-18
+ },
+ "em_gain_vs_prior_gap_spearman": 0.19214270757211577,
+ "em_prior_abs_err": 0.4582772789630889,
+ "src_prior_abs_err": 0.08854443041570693,
+ "default_ppr_abs_err": 0.3398492960500482,
+ "target_ece_mean": 0.32806304432191746,
+ "target_ece_em_mean": 0.4757216259640055,
+ "indomain_ece_mean": 0.0462696788504557,
+ "pad_vs_auc": {
+  "spearman": -0.011678362776006704,
+  "ci": [
+   -0.6085282234744985,
+   0.6926184228854152
+  ],
+  "n_cells": 42
+ },
+ "lc_auc_at_64": {
+  "ClickbaitEN": 0.864,
+  "GossipCop": 0.61,
+  "ISOT": 0.983,
+  "LIAR": 0.567,
+  "PHEME": 0.734,
+  "PolitiFact": 0.742,
+  "Twitter15": 0.793,
+  "Twitter16": 0.89,
+  "WELFake": 0.894
+ },
+ "lc_auc_at_256": {
+  "ClickbaitEN": 0.945,
+  "GossipCop": 0.723,
+  "ISOT": 0.991,
+  "LIAR": 0.607,
+  "PHEME": 0.838,
+  "PolitiFact": 0.85,
+  "Twitter15": 0.962,
+  "WELFake": 0.941
+ },
+ "topk": {
+  "GossipCop|0": 0.846,
+  "GossipCop|10": 0.839,
+  "GossipCop|30": 0.826,
+  "GossipCop|100": 0.801,
+  "GossipCop|300": 0.776,
+  "GossipCop|1000": 0.747,
+  "GossipCop|3000": 0.694,
+  "ISOT|0": 0.999,
+  "ISOT|10": 0.997,
+  "ISOT|30": 0.996,
+  "ISOT|100": 0.995,
+  "ISOT|300": 0.993,
+  "ISOT|1000": 0.991,
+  "ISOT|3000": 0.985,
+  "PolitiFact|0": 0.893,
+  "PolitiFact|10": 0.872,
+  "PolitiFact|30": 0.864,
+  "PolitiFact|100": 0.847,
+  "PolitiFact|300": 0.778,
+  "WELFake|0": 0.984,
+  "WELFake|10": 0.981,
+  "WELFake|30": 0.977,
+  "WELFake|100": 0.974,
+  "WELFake|300": 0.969,
+  "WELFake|1000": 0.962,
+  "WELFake|3000": 0.949
+ },
+ "topk_out": {
+  "GossipCop|0": 0.549,
+  "GossipCop|10": 0.54,
+  "GossipCop|30": 0.533,
+  "GossipCop|100": 0.534,
+  "GossipCop|300": 0.532,
+  "GossipCop|1000": 0.525,
+  "GossipCop|3000": 0.54,
+  "ISOT|0": 0.607,
+  "ISOT|10": 0.605,
+  "ISOT|30": 0.604,
+  "ISOT|100": 0.599,
+  "ISOT|300": 0.593,
+  "ISOT|1000": 0.587,
+  "ISOT|3000": 0.578,
+  "PolitiFact|0": 0.532,
+  "PolitiFact|10": 0.524,
+  "PolitiFact|30": 0.54,
+  "PolitiFact|100": 0.556,
+  "PolitiFact|300": 0.54,
+  "WELFake|0": 0.624,
+  "WELFake|10": 0.622,
+  "WELFake|30": 0.624,
+  "WELFake|100": 0.614,
+  "WELFake|300": 0.62,
+  "WELFake|1000": 0.607,
+  "WELFake|3000": 0.587
+ },
+ "mask": {
+  "ISOT|all": {
+   "in": 0.996,
+   "out": 0.606
+  },
+  "ISOT|ents": {
+   "in": 0.996,
+   "out": 0.609
+  },
+  "ISOT|none": {
+   "in": 0.998,
+   "out": 0.614
+  },
+  "ISOT|source": {
+   "in": 0.997,
+   "out": 0.614
+  },
+  "ISOT|time": {
+   "in": 0.998,
+   "out": 0.614
+  },
+  "WELFake|all": {
+   "in": 0.964,
+   "out": 0.611
+  },
+  "WELFake|ents": {
+   "in": 0.965,
+   "out": 0.62
+  },
+  "WELFake|none": {
+   "in": 0.98,
+   "out": 0.626
+  },
+  "WELFake|source": {
+   "in": 0.979,
+   "out": 0.629
+  },
+  "WELFake|time": {
+   "in": 0.977,
+   "out": 0.619
+  }
+ },
+ "mask_pair": {
+  "ISOT|all": 0.65,
+  "ISOT|ents": 0.657,
+  "ISOT|none": 0.679,
+  "ISOT|source": 0.681,
+  "ISOT|time": 0.692,
+  "WELFake|all": 0.81,
+  "WELFake|ents": 0.833,
+  "WELFake|none": 0.808,
+  "WELFake|source": 0.815,
+  "WELFake|time": 0.831
+ },
+ "topic": {
+  "GossipCop|random": {
+   "in": 0.846,
+   "out": 0.542
+  },
+  "GossipCop|topic_balanced": {
+   "in": 0.799,
+   "out": 0.519
+  },
+  "ISOT|random": {
+   "in": 0.998,
+   "out": 0.604
+  },
+  "ISOT|topic_balanced": {
+   "in": 0.999,
+   "out": 0.606
+  },
+  "LIAR|random": {
+   "in": 0.692,
+   "out": 0.53
+  },
+  "LIAR|topic_balanced": {
+   "in": 0.687,
+   "out": 0.532
+  },
+  "WELFake|random": {
+   "in": 0.984,
+   "out": 0.622
+  },
+  "WELFake|topic_balanced": {
+   "in": 0.986,
+   "out": 0.622
+  }
+ },
+ "vocab": {
+  "ISOT|char_wb(3, 5)-100000": {
+   "in": 1.0,
+   "out": 0.62
+  },
+  "ISOT|word(1, 1)-1000": {
+   "in": 0.999,
+   "out": 0.604
+  },
+  "ISOT|word(1, 1)-20000": {
+   "in": 0.998,
+   "out": 0.614
+  },
+  "ISOT|word(1, 1)-5000": {
+   "in": 0.999,
+   "out": 0.613
+  },
+  "ISOT|word(1, 2)-100000": {
+   "in": 0.998,
+   "out": 0.614
+  },
+  "ISOT|word(1, 3)-200000": {
+   "in": 0.998,
+   "out": 0.609
+  },
+  "WELFake|char_wb(3, 5)-100000": {
+   "in": 0.988,
+   "out": 0.608
+  },
+  "WELFake|word(1, 1)-1000": {
+   "in": 0.975,
+   "out": 0.608
+  },
+  "WELFake|word(1, 1)-20000": {
+   "in": 0.982,
+   "out": 0.624
+  },
+  "WELFake|word(1, 1)-5000": {
+   "in": 0.98,
+   "out": 0.615
+  },
+  "WELFake|word(1, 2)-100000": {
+   "in": 0.981,
+   "out": 0.627
+  },
+  "WELFake|word(1, 3)-200000": {
+   "in": 0.981,
+   "out": 0.624
+  }
+ },
+ "group_only_auc": {
+  "BanglaBait": 0.687,
+  "GossipCop": 0.807,
+  "LIAR": 0.664,
+  "PHEME": 0.644,
+  "PolitiFact": 0.84
+ },
+ "repairs_vs_pooled_auc": {
+  "pooled_bal": {
+   "delta": -0.0009490065431656345,
+   "p": 0.9034651150577702,
+   "p_holm": 1.0
+  },
+  "corpus_feat_drop": {
+   "delta": -0.023302641541825937,
+   "p": 0.0016234985087066889,
+   "p_holm": 0.0064939940348267555
+  },
+  "pooled_mask": {
+   "delta": 0.001003553966199292,
+   "p": 0.5436307483469136,
+   "p_holm": 1.0
+  },
+  "svd": {
+   "delta": -0.012808889291207754,
+   "p": 0.014366292743943632,
+   "p_holm": 0.043098878231830895
+  },
+  "inlp": {
+   "delta": -0.05444123144506071,
+   "p": 0.00020785926608368754,
+   "p_holm": 0.0010392963304184377
+  },
+  "coral": {
+   "delta": -0.038297632486384826,
+   "p": 1.603621058166027e-06,
+   "p_holm": 9.621726348996162e-06
+  }
+ },
+ "bangla_official": [
+  {
+   "f1_clickbait": 0.6437,
+   "precision": 0.7363,
+   "recall": 0.5717,
+   "accuracy": 0.7772,
+   "macro_f1": 0.7408,
+   "auc": 0.8335,
+   "version": "as_released",
+   "field": "title",
+   "model": "char_lr",
+   "n_train": 10839,
+   "n_test": 3012
+  },
+  {
+   "f1_clickbait": 0.6379,
+   "precision": 0.7337,
+   "recall": 0.5642,
+   "accuracy": 0.7746,
+   "macro_f1": 0.7371,
+   "auc": 0.8355,
+   "version": "as_released",
+   "field": "title",
+   "model": "char_svm",
+   "n_train": 10839,
+   "n_test": 3012
+  },
+  {
+   "f1_clickbait": 0.4851,
+   "precision": 0.6559,
+   "recall": 0.3849,
+   "accuracy": 0.7125,
+   "macro_f1": 0.6428,
+   "auc": 0.737,
+   "version": "as_released",
+   "field": "title",
+   "model": "word_lr",
+   "n_train": 10839,
+   "n_test": 3012
+  },
+  {
+   "f1_clickbait": 0.6129,
+   "precision": 0.7192,
+   "recall": 0.534,
+   "accuracy": 0.7626,
+   "macro_f1": 0.7209,
+   "auc": 0.7922,
+   "version": "as_released",
+   "field": "title+content",
+   "model": "char_lr",
+   "n_train": 10839,
+   "n_test": 3012
+  },
+  {
+   "f1_clickbait": 0.6068,
+   "precision": 0.7178,
+   "recall": 0.5255,
+   "accuracy": 0.7603,
+   "macro_f1": 0.7172,
+   "auc": 0.7911,
+   "version": "as_released",
+   "field": "title+content",
+   "model": "char_svm",
+   "n_train": 10839,
+   "n_test": 3012
+  },
+  {
+   "f1_clickbait": 0.5748,
+   "precision": 0.7036,
+   "recall": 0.4858,
+   "accuracy": 0.747,
+   "macro_f1": 0.6974,
+   "auc": 0.7754,
+   "version": "as_released",
+   "field": "title+content",
+   "model": "word_lr",
+   "n_train": 10839,
+   "n_test": 3012
+  },
+  {
+   "f1_clickbait": 0.5915,
+   "precision": 0.7072,
+   "recall": 0.5084,
+   "accuracy": 0.7657,
+   "macro_f1": 0.7136,
+   "auc": 0.8225,
+   "version": "deduplicated",
+   "field": "title",
+   "model": "char_lr",
+   "n_train": 10283,
+   "n_test": 2676
+  },
+  {
+   "f1_clickbait": 0.6001,
+   "precision": 0.7123,
+   "recall": 0.5185,
+   "accuracy": 0.7694,
+   "macro_f1": 0.7191,
+   "auc": 0.8236,
+   "version": "deduplicated",
+   "field": "title",
+   "model": "char_svm",
+   "n_train": 10283,
+   "n_test": 2676
+  },
+  {
+   "f1_clickbait": 0.4077,
+   "precision": 0.6456,
+   "recall": 0.2979,
+   "accuracy": 0.7111,
+   "macro_f1": 0.6083,
+   "auc": 0.7221,
+   "version": "deduplicated",
+   "field": "title",
+   "model": "word_lr",
+   "n_train": 10283,
+   "n_test": 2676
+  },
+  {
+   "f1_clickbait": 0.5234,
+   "precision": 0.6798,
+   "recall": 0.4255,
+   "accuracy": 0.7414,
+   "macro_f1": 0.673,
+   "auc": 0.7725,
+   "version": "deduplicated",
+   "field": "title+content",
+   "model": "char_lr",
+   "n_train": 10283,
+   "n_test": 2676
+  },
+  {
+   "f1_clickbait": 0.5328,
+   "precision": 0.6942,
+   "recall": 0.4323,
+   "accuracy": 0.747,
+   "macro_f1": 0.6797,
+   "auc": 0.7717,
+   "version": "deduplicated",
+   "field": "title+content",
+   "model": "char_svm",
+   "n_train": 10283,
+   "n_test": 2676
+  },
+  {
+   "f1_clickbait": 0.4861,
+   "precision": 0.6686,
+   "recall": 0.3819,
+   "accuracy": 0.7306,
+   "macro_f1": 0.6518,
+   "auc": 0.752,
+   "version": "deduplicated",
+   "field": "title+content",
+   "model": "word_lr",
+   "n_train": 10283,
+   "n_test": 2676
+  }
+ ],
+ "bangla_seeds": {
+  "char_lr": {
+   "f1_clickbait_mean": 0.6197,
+   "f1_clickbait_std": 0.02,
+   "macro_f1_mean": 0.7309,
+   "macro_f1_std": 0.0129,
+   "auc_mean": 0.8212,
+   "auc_std": 0.011
+  },
+  "char_svm": {
+   "f1_clickbait_mean": 0.6268,
+   "f1_clickbait_std": 0.022,
+   "macro_f1_mean": 0.7356,
+   "macro_f1_std": 0.0143,
+   "auc_mean": 0.8222,
+   "auc_std": 0.0107
+  },
+  "word_lr": {
+   "f1_clickbait_mean": 0.4595,
+   "f1_clickbait_std": 0.0292,
+   "macro_f1_mean": 0.6358,
+   "macro_f1_std": 0.0174,
+   "auc_mean": 0.731,
+   "auc_std": 0.0142
+  }
+ },
+ "bangla_loso": {
+  "weighted_accuracy": 0.7620539847589203,
+  "mean_auc": 0.791252779709441,
+  "n_domains": 20,
+  "domains_single_class": 0
+ },
+ "bangla_xling": [
+  {
+   "source": "BanglaBait-BN",
+   "target": "BanglaBait-BN",
+   "auc": 0.813,
+   "def_macro_f1": 0.721,
+   "pm_macro_f1": 0.733
+  },
+  {
+   "source": "BanglaBait-EN",
+   "target": "BanglaBait-EN",
+   "auc": 0.777,
+   "def_macro_f1": 0.688,
+   "pm_macro_f1": 0.7
+  },
+  {
+   "source": "BanglaBait-EN",
+   "target": "ClickbaitEN",
+   "auc": 0.931,
+   "def_macro_f1": 0.77,
+   "pm_macro_f1": 0.863
+  },
+  {
+   "source": "ClickbaitEN",
+   "target": "BanglaBait-EN",
+   "auc": 0.707,
+   "def_macro_f1": 0.617,
+   "pm_macro_f1": 0.642
+  },
+  {
+   "source": "ClickbaitEN",
+   "target": "ClickbaitEN",
+   "auc": 0.994,
+   "def_macro_f1": 0.964,
+   "pm_macro_f1": 0.965
+  }
+ ]
+}

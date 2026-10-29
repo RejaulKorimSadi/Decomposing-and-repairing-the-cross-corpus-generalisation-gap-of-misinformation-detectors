@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\caption{Label-direction probes on the raw files: number of items matching each source signature under raw label 0 / raw label 1. A reliable-outlet signature must sit under ``real'', a fake-site signature under ``fake''. ISOT codes $1=$ fake; the WELFake file codes $1=$ real.}\label{tab:probe}
+\small
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Signature & Expected class & ISOT (0 / 1) & WELFake (0 / 1) \\
+\midrule
+title ends '- The New York Times' & real & 0 / 0 & 0 / 6{,}223 \\
+title ends '- Breitbart' & real & 0 / 0 & 1 / 2{,}338 \\
+text contains '(Reuters)' & real & 20{,}761 / 7 & 8 / 23 \\
+text contains 'Featured image via' & fake & 0 / 6{,}098 & 125 / 0 \\
+title contains 'BREAKING' & fake & 8 / 614 & 199 / 19 \\
+text contains '21st Century Wire' & fake & 0 / 629 & 5 / 0 \\
+text contains 'Activist Post' & fake & 0 / 5 & 21 / 0 \\
+\bottomrule
+\end{tabular}
+\end{table}

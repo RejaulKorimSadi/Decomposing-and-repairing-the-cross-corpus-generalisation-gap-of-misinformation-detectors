@@ -1,0 +1,27 @@
+another fix.py is running; exiting
+seed=1 T=PolitiFact pooled=0.662 pooled_bal=0.661 corpus_feat_drop=0.608 pooled_mask=0.637 svd=0.650 inlp=0.692 coral=0.648
+seed=1 T=GossipCop  pooled=0.536 pooled_bal=0.541 corpus_feat_drop=0.564 pooled_mask=0.551 svd=0.523 inlp=0.541 coral=0.519
+seed=1 T=LIAR       pooled=0.533 pooled_bal=0.532 corpus_feat_drop=0.522 pooled_mask=0.534 svd=0.526 inlp=0.547 coral=0.514
+seed=1 T=Twitter15  pooled=0.686 pooled_bal=0.702 corpus_feat_drop=0.628 pooled_mask=0.679 svd=0.658 inlp=0.590 coral=0.591
+seed=1 T=Twitter16  pooled=0.761 pooled_bal=0.746 corpus_feat_drop=0.730 pooled_mask=0.742 svd=0.685 inlp=0.533 coral=0.643
+seed=2 T=ISOT       pooled=0.866 pooled_bal=0.872 corpus_feat_drop=0.832 pooled_mask=0.893 svd=0.879 inlp=0.789 coral=0.783
+seed=2 T=WELFake    pooled=0.630 pooled_bal=0.644 corpus_feat_drop=0.583 pooled_mask=0.642 svd=0.620 inlp=0.601 coral=0.612
+seed=2 T=PolitiFact pooled=0.670 pooled_bal=0.665 corpus_feat_drop=0.647 pooled_mask=0.640 svd=0.656 inlp=0.614 coral=0.640
+seed=2 T=GossipCop  pooled=0.536 pooled_bal=0.538 corpus_feat_drop=0.550 pooled_mask=0.548 svd=0.529 inlp=0.555 coral=0.525
+seed=2 T=LIAR       pooled=0.516 pooled_bal=0.513 corpus_feat_drop=0.527 pooled_mask=0.516 svd=0.509 inlp=0.476 coral=0.513
+seed=2 T=Twitter15  pooled=0.616 pooled_bal=0.613 corpus_feat_drop=0.702 pooled_mask=0.612 svd=0.654 inlp=0.633 coral=0.628
+seed=2 T=Twitter16  pooled=0.707 pooled_bal=0.681 corpus_feat_drop=0.592 pooled_mask=0.692 svd=0.644 inlp=0.588 coral=0.594
+seed=3 T=ISOT       pooled=0.869 pooled_bal=0.873 corpus_feat_drop=0.828 pooled_mask=0.900 svd=0.905 inlp=0.848 coral=0.808
+seed=3 T=WELFake    pooled=0.647 pooled_bal=0.659 corpus_feat_drop=0.608 pooled_mask=0.663 svd=0.661 inlp=0.597 coral=0.651
+seed=3 T=PolitiFact pooled=0.730 pooled_bal=0.715 corpus_feat_drop=0.640 pooled_mask=0.695 svd=0.716 inlp=0.612 coral=0.696
+seed=3 T=GossipCop  pooled=0.532 pooled_bal=0.521 corpus_feat_drop=0.515 pooled_mask=0.530 svd=0.513 inlp=0.566 coral=0.511
+seed=3 T=LIAR       pooled=0.527 pooled_bal=0.527 corpus_feat_drop=0.535 pooled_mask=0.525 svd=0.531 inlp=0.504 coral=0.532
+seed=3 T=Twitter15  pooled=0.693 pooled_bal=0.701 corpus_feat_drop=0.697 pooled_mask=0.703 svd=0.650 inlp=0.502 coral=0.632
+seed=3 T=Twitter16  pooled=0.723 pooled_bal=0.702 corpus_feat_drop=0.732 pooled_mask=0.692 svd=0.633 inlp=0.479 coral=0.605
+seed=4 T=ISOT       pooled=0.858 pooled_bal=0.864 corpus_feat_drop=0.810 pooled_mask=0.882 svd=0.870 inlp=0.826 coral=0.782
+seed=4 T=WELFake    pooled=0.656 pooled_bal=0.665 corpus_feat_drop=0.593 pooled_mask=0.667 svd=0.646 inlp=0.707 coral=0.636
+seed=4 T=PolitiFact pooled=0.655 pooled_bal=0.650 corpus_feat_drop=0.647 pooled_mask=0.660 svd=0.613 inlp=0.524 coral=0.605
+seed=4 T=GossipCop  pooled=0.545 pooled_bal=0.543 corpus_feat_drop=0.577 pooled_mask=0.549 svd=0.516 inlp=0.560 coral=0.514
+seed=4 T=LIAR       pooled=0.530 pooled_bal=0.526 corpus_feat_drop=0.538 pooled_mask=0.532 svd=0.494 inlp=0.484 coral=0.497
+seed=4 T=Twitter15  pooled=0.686 pooled_bal=0.663 corpus_feat_drop=0.591 pooled_mask=0.657 svd=0.692 inlp=0.633 coral=0.654
+seed=4 T=Twitter16  pooled=0.713 pooled_bal=0.714 corpus_feat_drop=0.726 pooled_mask=0.730 svd=0.615 inlp=0.519 coral=0.625

@@ -1,0 +1,15 @@
+corpus,probe,expected_class,n,raw_label_0,raw_label_1
+ISOT,title ends '- The New York Times' (reliable),real,0,0,0
+ISOT,title ends '- Breitbart' (Kaggle-reliable split),real,0,0,0
+ISOT,text contains '(Reuters)' (reliable),real,20768,20761,7
+ISOT,text contains 'Featured image via' (fake-site template),fake,6098,0,6098
+ISOT,title contains 'BREAKING' (fake-site style),fake,622,8,614
+ISOT,text contains '21st Century Wire' (fake site),fake,629,0,629
+ISOT,text contains 'Activist Post' (fake site),fake,5,0,5
+WELFake,title ends '- The New York Times' (reliable),real,6223,0,6223
+WELFake,title ends '- Breitbart' (Kaggle-reliable split),real,2339,1,2338
+WELFake,text contains '(Reuters)' (reliable),real,31,8,23
+WELFake,text contains 'Featured image via' (fake-site template),fake,125,125,0
+WELFake,title contains 'BREAKING' (fake-site style),fake,218,199,19
+WELFake,text contains '21st Century Wire' (fake site),fake,5,5,0
+WELFake,text contains 'Activist Post' (fake site),fake,21,21,0

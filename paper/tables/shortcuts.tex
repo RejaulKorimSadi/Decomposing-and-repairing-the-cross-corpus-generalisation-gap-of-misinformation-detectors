@@ -1,0 +1,20 @@
+\begin{table}[t]
+\centering
+\caption{Shortcut indicators (ROC-AUC, mean of five seeds). In-domain AUC of \textsc{tfidf-lr} with the full training split, of the surface-statistics \textsc{style-gb}, and of \textsc{tfidf-lr} trained on only 64 or 256 items; AUC of a group-identity baseline (publisher domain for PolitiFact and GossipCop, speaker for LIAR); and the mean off-diagonal AUC with the corpus as source and as target.}\label{tab:shortcuts}
+\small
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+ & \multicolumn{5}{c}{in-domain} & \multicolumn{2}{c}{transfer} \\
+\cmidrule(lr){2-6}\cmidrule(lr){7-8}
+Corpus & full & style only & $n=64$ & $n=256$ & group only & as source & as target \\
+\midrule
+ISOT & 0.999 & 0.999 & 0.983 & 0.991 & -- & 0.611 & 0.670 \\
+WELFake & 0.989 & 0.951 & 0.894 & 0.941 & -- & 0.626 & 0.540 \\
+PolitiFact & 0.893 & 0.787 & 0.742 & 0.850 & 0.840 & 0.533 & 0.592 \\
+GossipCop & 0.869 & 0.659 & 0.610 & 0.723 & 0.807 & 0.538 & 0.522 \\
+LIAR & 0.698 & 0.590 & 0.567 & 0.607 & 0.664 & 0.537 & 0.530 \\
+Twitter15 & 0.981 & 0.603 & 0.793 & 0.962 & -- & 0.572 & 0.563 \\
+Twitter16 & 0.967 & 0.625 & 0.890 & -- & -- & 0.556 & 0.552 \\
+\bottomrule
+\end{tabular}
+\end{table}

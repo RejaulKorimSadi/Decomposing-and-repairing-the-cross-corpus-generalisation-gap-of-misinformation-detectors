@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\caption{Same-task pairs (\textsc{tfidf-lr}, five seeds). AUC with pooled seed-bootstrap 95\% CI; ``In'' is the source's in-domain AUC; prior is the target fake rate and PPR the predicted-positive rate at $t=0.5$; macro-F1 at the default, prior-matched and oracle thresholds; ECE of the source-calibrated scores on the target.}\label{tab:pairs}
+\small
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+Pair & In & AUC [95\% CI] & Prior & PPR & F1$_{0.5}$ & F1$_{\pi}$ & F1$^\star$ & ECE \\
+\midrule
+ISOT$\to$WELFake & 0.999 & 0.690 [0.66, 0.71] & 0.43 & 0.78 & 0.539 & 0.635 & 0.638 & 0.38 \\
+WELFake$\to$ISOT & 0.989 & 0.847 [0.82, 0.87] & 0.46 & 0.36 & 0.753 & 0.763 & 0.765 & 0.11 \\
+PolitiFact$\to$GossipCop & 0.893 & 0.526 [0.48, 0.56] & 0.23 & 0.54 & 0.464 & 0.514 & 0.517 & 0.32 \\
+GossipCop$\to$PolitiFact & 0.869 & 0.589 [0.50, 0.68] & 0.43 & 0.07 & 0.425 & 0.576 & 0.595 & 0.28 \\
+Twitter15$\to$Twitter16 & 0.981 & 0.672 [0.52, 0.82] & 0.46 & 0.62 & 0.572 & 0.597 & 0.646 & 0.25 \\
+Twitter16$\to$Twitter15 & 0.967 & 0.657 [0.55, 0.75] & 0.51 & 0.63 & 0.580 & 0.591 & 0.631 & 0.28 \\
+LIAR$\to$PolitiFact & 0.698 & 0.508 [0.42, 0.60] & 0.44 & 0.54 & 0.495 & 0.517 & 0.536 & 0.12 \\
+PolitiFact$\to$LIAR & 0.893 & 0.505 [0.47, 0.54] & 0.44 & 0.40 & 0.497 & 0.502 & 0.509 & 0.22 \\
+\bottomrule
+\end{tabular}
+\end{table}

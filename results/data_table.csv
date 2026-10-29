@@ -1,0 +1,11 @@
+corpus,unit,construct,lang,n,positive,negative,positive_rate
+BanglaBait,headline+article,clickbait,bn,14041,4720,9321,0.336
+ClickbaitEN,headline,clickbait,en,31875,15896,15979,0.499
+GossipCop,headline,veracity,en,20560,4755,15805,0.231
+ISOT,article,veracity,en,38749,17861,20888,0.461
+LIAR,claim,veracity,en,8055,3534,4521,0.439
+PHEME,tweet,rumour,en,5555,1893,3662,0.341
+PolitiFact,headline,veracity,en,976,425,551,0.435
+Twitter15,tweet,veracity,en,673,344,329,0.511
+Twitter16,tweet,veracity,en,358,164,194,0.458
+WELFake,article,veracity,en,23708,10139,13569,0.428

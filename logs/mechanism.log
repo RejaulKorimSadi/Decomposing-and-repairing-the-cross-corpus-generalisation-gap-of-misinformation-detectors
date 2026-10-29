@@ -1,0 +1,71 @@
+lc seed 0
+lc seed 1
+lc seed 2
+lc seed 3
+lc seed 4
+wrote lc 340
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 304, in <module>
+    df = TESTS[t](D)
+  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 76, in t_topk
+    m = base if K == 0 else TfidfLinear("lr", vocab_drop=names[order[:K]]).fit(
+                            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/models.py", line 40, in __init__
+    self.vocab_drop = set(vocab_drop or [])
+                          ^^^^^^^^^^^^^^^^
+ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+Traceback (most recent call last):
+  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 304, in <module>
+    df = TESTS[t](D)
+  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 76, in t_topk
+    m = base if K == 0 else TfidfLinear("lr", vocab_drop=names[order[:K]]).fit(
+                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        tr.text.tolist(), tr.label.values, va.text.tolist(), va.label.values)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/models.py", line 66, in fit
+    fits.append(m.fit(X, y, sample_weight=sample_weight))
+                ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/base.py", line 1403, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+  File "/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py", line 1437, in fit
+    X, y = validate_data(
+           ~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<5 lines>...
+        accept_large_sparse=solver not in ["liblinear", "sag", "saga"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/utils/validation.py", line 3058, in validate_data
+    X, y = check_X_y(X, y, **check_params)
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/sklearn/utils/validation.py", line 1330, in check_X_y
+    X = check_array(
+        X,
+    ...<12 lines>...
+        input_name="X",
+    )
+  File "/usr/local/lib/python3.13/site-packages/sklearn/utils/validation.py", line 1122, in check_array
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: Found array with 0 feature(s) (shape=(682, 0)) while a minimum of 1 is required by LogisticRegression.
+topk seed 0
+topk seed 1
+topk seed 2
+topk seed 3
+topk seed 4
+wrote topk 910
+masked none 53900
+masked source 53900
+masked time 53900
+/usr/local/lib/python3.13/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+masked ents 53900
+masked all 53900
+mask seed 0
+mask seed 1
+mask seed 2
+wrote mask 150
+exists, skipping vocab

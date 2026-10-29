@@ -1,0 +1,28 @@
+/usr/local/lib/python3.13/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+0/11007 9s
+/usr/local/lib/python3.13/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+0/11006 4s
+500/11006 210s
+1000/11006 516s
+1500/11006 781s
+2000/11006 1049s
+2500/11006 1268s
+3000/11006 1575s
+3500/11006 1617s
+4000/11006 1653s
+4500/11006 1691s
+5000/11006 1727s
+5500/11006 1766s
+6000/11006 1815s
+6500/11006 1865s
+7000/11006 1916s
+7500/11006 1961s
+8000/11006 2005s
+8500/11006 2029s
+9000/11006 2047s
+9500/11006 2065s
+10000/11006 2085s
+10500/11006 2105s
+11000/11006 2124s

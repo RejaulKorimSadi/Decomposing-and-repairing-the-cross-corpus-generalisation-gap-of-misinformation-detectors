@@ -1,0 +1,13 @@
+numpy>=2.0
+pandas>=2.2
+pyarrow>=16
+scipy>=1.13
+scikit-learn==1.9.1
+statsmodels>=0.14
+datasketch>=1.6
+matplotlib>=3.9
+spacy==3.8.*
+torch>=2.4
+# spaCy models (install from the GitHub release wheels):
+#   en_core_web_sm-3.8.0  (NER for masking)
+#   en_core_web_trf-3.8.0 (RoBERTa-base weights)

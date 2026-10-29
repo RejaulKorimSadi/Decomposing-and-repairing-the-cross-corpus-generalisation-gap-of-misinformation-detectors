@@ -1,0 +1,22 @@
+\begin{table}[t]
+\centering
+\caption{Masking ablation (\textsc{tfidf-lr}, ROC-AUC, three seeds, first 3{,}000 characters). Rows: training corpus and what is masked in every corpus; columns: test corpus (the training corpus's own column is in-domain).}\label{tab:mask}
+\small
+\begin{tabular}{@{}llccccc@{}}
+\toprule
+Train & Masked & ISOT & WELFake & PolitiFact & GossipCop & LIAR \\
+\midrule
+ISOT & none & 0.998 & 0.679 & 0.739 & 0.481 & 0.559 \\
+ISOT & source tags, datelines, URLs, handles & 0.997 & 0.681 & 0.733 & 0.483 & 0.559 \\
+ISOT & dates, weekdays, numbers & 0.998 & 0.692 & 0.723 & 0.479 & 0.563 \\
+ISOT & named entities & 0.996 & 0.657 & 0.678 & 0.543 & 0.557 \\
+ISOT & all of the above & 0.996 & 0.650 & 0.678 & 0.540 & 0.556 \\
+\addlinespace
+WELFake & none & 0.808 & 0.980 & 0.636 & 0.529 & 0.532 \\
+WELFake & source tags, datelines, URLs, handles & 0.815 & 0.979 & 0.634 & 0.533 & 0.536 \\
+WELFake & dates, weekdays, numbers & 0.831 & 0.977 & 0.608 & 0.509 & 0.526 \\
+WELFake & named entities & 0.833 & 0.965 & 0.614 & 0.511 & 0.522 \\
+WELFake & all of the above & 0.810 & 0.964 & 0.611 & 0.500 & 0.522 \\
+\bottomrule
+\end{tabular}
+\end{table}

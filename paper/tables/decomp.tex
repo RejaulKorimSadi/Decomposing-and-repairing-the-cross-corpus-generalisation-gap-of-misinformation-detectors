@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\caption{Transfer gap decomposition (Eq.~\ref{eq:decomp}), macro-F1 points, mean over cells and seeds. The gap is relative to the target's own in-domain score.}\label{tab:decomp}
+\small
+\begin{tabular}{@{}llrrrrr@{}}
+\toprule
+Model & Cells & Gap & Ranking & Threshold & Prior/cal. & Ranking share \\
+\midrule
+\textsc{tfidf-lr} & pairs & 0.308 & 0.244 & 0.018 & 0.046 & 79\% \\
+\textsc{tfidf-lr} & other cells & 0.441 & 0.300 & 0.018 & 0.122 & 68\% \\
+\textsc{tfidf-svm} & pairs & 0.308 & 0.243 & 0.016 & 0.049 & 79\% \\
+\textsc{tfidf-svm} & other cells & 0.444 & 0.303 & 0.018 & 0.123 & 68\% \\
+\textsc{nb-svm} & pairs & 0.319 & 0.261 & 0.023 & 0.036 & 82\% \\
+\textsc{nb-svm} & other cells & 0.472 & 0.306 & 0.021 & 0.145 & 65\% \\
+\textsc{glove-lr} & pairs & 0.281 & 0.193 & 0.016 & 0.071 & 69\% \\
+\textsc{glove-lr} & other cells & 0.327 & 0.224 & 0.017 & 0.085 & 69\% \\
+\textsc{style-gb} & pairs & 0.141 & 0.091 & 0.013 & 0.036 & 65\% \\
+\textsc{style-gb} & other cells & 0.278 & 0.141 & 0.020 & 0.117 & 51\% \\
+\textsc{roberta-lr} & pairs & 0.243 & 0.162 & 0.022 & 0.059 & 66\% \\
+\textsc{roberta-lr} & other cells & 0.344 & 0.244 & 0.024 & 0.076 & 71\% \\
+\bottomrule
+\end{tabular}
+\end{table}

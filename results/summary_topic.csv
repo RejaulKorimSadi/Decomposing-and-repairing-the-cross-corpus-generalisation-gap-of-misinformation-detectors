@@ -1,0 +1,9 @@
+source,variant,in,out
+GossipCop,random,0.846,0.542
+GossipCop,topic_balanced,0.799,0.519
+ISOT,random,0.998,0.604
+ISOT,topic_balanced,0.999,0.606
+LIAR,random,0.692,0.53
+LIAR,topic_balanced,0.687,0.532
+WELFake,random,0.984,0.622
+WELFake,topic_balanced,0.986,0.622

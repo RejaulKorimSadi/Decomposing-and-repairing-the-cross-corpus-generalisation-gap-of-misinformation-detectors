@@ -1,0 +1,92 @@
+{
+ "ISOT": {
+  "raw": 38833,
+  "empty_removed": 5,
+  "exact_conflict_rows": 0,
+  "exact_dups_removed": 0,
+  "near_conflict_rows": 0,
+  "near_dups_removed": 79,
+  "final": 38749
+ },
+ "WELFake": {
+  "raw": 24530,
+  "empty_removed": 1,
+  "exact_conflict_rows": 0,
+  "exact_dups_removed": 0,
+  "near_conflict_rows": 6,
+  "near_dups_removed": 815,
+  "final": 23708
+ },
+ "PolitiFact": {
+  "raw": 1056,
+  "empty_removed": 0,
+  "exact_conflict_rows": 4,
+  "exact_dups_removed": 71,
+  "near_conflict_rows": 2,
+  "near_dups_removed": 3,
+  "final": 976
+ },
+ "GossipCop": {
+  "raw": 22140,
+  "empty_removed": 0,
+  "exact_conflict_rows": 356,
+  "exact_dups_removed": 1174,
+  "near_conflict_rows": 24,
+  "near_dups_removed": 26,
+  "final": 20560
+ },
+ "LIAR": {
+  "raw": 8090,
+  "empty_removed": 0,
+  "exact_conflict_rows": 3,
+  "exact_dups_removed": 21,
+  "near_conflict_rows": 0,
+  "near_dups_removed": 11,
+  "final": 8055
+ },
+ "Twitter15": {
+  "raw": 742,
+  "empty_removed": 0,
+  "exact_conflict_rows": 0,
+  "exact_dups_removed": 55,
+  "near_conflict_rows": 0,
+  "near_dups_removed": 14,
+  "final": 673
+ },
+ "Twitter16": {
+  "raw": 412,
+  "empty_removed": 0,
+  "exact_conflict_rows": 0,
+  "exact_dups_removed": 51,
+  "near_conflict_rows": 0,
+  "near_dups_removed": 3,
+  "final": 358
+ },
+ "PHEME": {
+  "raw": 5802,
+  "empty_removed": 0,
+  "exact_conflict_rows": 21,
+  "exact_dups_removed": 124,
+  "near_conflict_rows": 4,
+  "near_dups_removed": 98,
+  "final": 5555
+ },
+ "ClickbaitEN": {
+  "raw": 32000,
+  "empty_removed": 0,
+  "exact_conflict_rows": 0,
+  "exact_dups_removed": 2,
+  "near_conflict_rows": 0,
+  "near_dups_removed": 123,
+  "final": 31875
+ },
+ "BanglaBait": {
+  "raw": 15056,
+  "empty_removed": 0,
+  "exact_conflict_rows": 23,
+  "exact_dups_removed": 850,
+  "near_conflict_rows": 18,
+  "near_dups_removed": 124,
+  "final": 14041
+ }
+}

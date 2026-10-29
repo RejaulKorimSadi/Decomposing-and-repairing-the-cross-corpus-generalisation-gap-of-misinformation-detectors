@@ -1,0 +1,77 @@
+\documentclass[review,3p,authoryear]{elsarticle}
+% Target: Information Processing & Management (Elsevier). Switch to [final,5p,twocolumn] for a preview.
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{subcaption}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lineno}
+\usepackage{amsthm}
+\theoremstyle{definition}
+\newtheorem*{protocol}{Reporting protocol}
+\graphicspath{{figures/}{../figures/}}
+\setlength{\emergencystretch}{2em}
+\input{numbers}
+\journal{Information Processing \& Management}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{Mostly ranking, partly threshold: decomposing and repairing the cross-corpus generalisation gap of misinformation detectors}
+
+\author[mu]{Dewan Nafay Chowdhury\corref{cor}\fnref{eq}}
+\ead{dewan.nafay.chow@gmail.com}
+\author[mu]{Md.\ Rejaul Korim Sadi\fnref{eq}}
+\cortext[cor]{Corresponding author.}
+\fntext[eq]{These authors contributed equally to this work and share first authorship.}
+\affiliation[mu]{organization={Department of Computer Science and Engineering, Metropolitan University},
+            city={Sylhet},
+            country={Bangladesh}}
+
+\input{sections/abstract}
+
+\begin{highlights}
+\input{sections/highlights}
+\end{highlights}
+
+\begin{keyword}
+misinformation detection \sep fake news \sep cross-corpus generalisation \sep dataset audit \sep label shift \sep shortcut learning \sep Bengali
+\end{keyword}
+\end{frontmatter}
+
+\linenumbers
+\input{sections/intro}
+\input{sections/related}
+\input{sections/data}
+\input{sections/method}
+\input{sections/results}
+\input{sections/discussion}
+\input{sections/conclusion}
+
+% AUTHORS: confirm the CRediT roles and the funding statement below before submission.
+\section*{CRediT authorship contribution statement}
+\textbf{Dewan Nafay Chowdhury:} Conceptualization, Methodology, Software, Formal analysis, Investigation, Data curation, Writing -- original draft, Visualization. \textbf{Md.\ Rejaul Korim Sadi:} Conceptualization, Methodology, Validation, Investigation, Data curation, Writing -- review \& editing, Project administration.
+
+\section*{Declaration of competing interest}
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+
+\section*{Data and code availability}
+All corpora are publicly available from their original releases (Section~\ref{sec:data} and the repository's \texttt{DATA.md}); none is redistributed. Code, fixed seeds, per-cell results, saved predictions, logs and a one-command reproduction script are released under the MIT licence at \url{https://github.com/<account>/fn-transfer-audit} (archived release DOI to be added on acceptance).
+
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+During the preparation of this work the authors used Claude (Anthropic) to assist with code development, literature search and drafting of the text. After using this tool, the authors reviewed and edited the content as needed and take full responsibility for the content of the published article.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{refs}
+
+\appendix
+\input{sections/appendix}
+\end{document}

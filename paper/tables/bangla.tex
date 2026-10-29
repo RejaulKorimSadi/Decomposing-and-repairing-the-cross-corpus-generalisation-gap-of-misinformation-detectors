@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\caption{BanglaBait, official split. Clickbait-class F1, precision and recall and accuracy (\%), as reported by \citet{mahtab2023banglabait}, plus ROC-AUC. Reference values from that paper (as released): LR char 3--5-grams F1 66.28, BanglaBERT 71.72, SS-GAN BanglaBERT 75.13.}\label{tab:bangla}
+\small
+\begin{tabular}{@{}lllrrrrr@{}}
+\toprule
+Test set & Input & Model & F1 & P & R & Acc. & AUC \\
+\midrule
+as released & title & LR, char 3--5 & 64.37 & 73.63 & 57.17 & 77.72 & 0.834 \\
+as released & title & SVM, char 3--5 & 63.79 & 73.37 & 56.42 & 77.46 & 0.836 \\
+as released & title & LR, word 1--2 & 48.51 & 65.59 & 38.49 & 71.25 & 0.737 \\
+as released & title+content & LR, char 3--5 & 61.29 & 71.92 & 53.40 & 76.26 & 0.792 \\
+as released & title+content & SVM, char 3--5 & 60.68 & 71.78 & 52.55 & 76.03 & 0.791 \\
+as released & title+content & LR, word 1--2 & 57.48 & 70.36 & 48.58 & 74.70 & 0.775 \\
+\addlinespace
+deduplicated & title & LR, char 3--5 & 59.15 & 70.72 & 50.84 & 76.57 & 0.823 \\
+deduplicated & title & SVM, char 3--5 & 60.01 & 71.23 & 51.85 & 76.94 & 0.824 \\
+deduplicated & title & LR, word 1--2 & 40.77 & 64.56 & 29.79 & 71.11 & 0.722 \\
+deduplicated & title+content & LR, char 3--5 & 52.34 & 67.98 & 42.55 & 74.14 & 0.772 \\
+deduplicated & title+content & SVM, char 3--5 & 53.28 & 69.42 & 43.23 & 74.70 & 0.772 \\
+deduplicated & title+content & LR, word 1--2 & 48.61 & 66.86 & 38.19 & 73.06 & 0.752 \\
+\bottomrule
+\end{tabular}
+\end{table}

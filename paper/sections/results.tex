@@ -1,0 +1,45 @@
+\section{Results}\label{sec:results}
+
+\subsection{The size of the gap}\label{sec:gap}
+Table~\ref{tab:headline} and Figure~\ref{fig:heatmap} summarise the seven-corpus veracity matrix. With \textsc{tfidf-lr}, mean in-domain ROC-AUC is \InAUC{}; mean off-diagonal AUC is \OffAUC{}, and on the eight same-task cells \PairAUC{}. The sanity controls behave as they should: with permuted labels, transfer AUC is \PermAUC{} ($\pm$\PermAUCsd{} across cells and seeds) and in-domain AUC \PermInAUC{}, and with every source trained on 250 items the gap remains (in-domain \MatchedInAUC{}, off-diagonal \MatchedOffAUC{}), so it is not produced by the very different corpus sizes. The gap is therefore real, but it is not a collapse to chance: on the cleanest pair, ISOT$\to$WELFake, AUC is \pairISOTWELFakeAUC{} \pairISOTWELFakeCI{}, and in the reverse direction \pairWELFakeISOTAUC{} \pairWELFakeISOTCI{} (Table~\ref{tab:pairs}). Two pairs carry almost no transferable ranking: PolitiFact$\to$LIAR (\pairPFLIARAUC{} \pairPFLIARCI{}) and LIAR$\to$PolitiFact (\pairLIARPFAUC{} \pairLIARPFCI{}), even though both are labelled by the same fact-checker, because one rates claims and the other news stories. \NcellsBelowHalf{} of the 42 off-diagonal cells (\CellsBelowHalf) have a mean AUC below 0.5: the cue a source teaches is systematically \emph{reversed} on that target.
+
+\input{tables/headline}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.62\linewidth]{fig_heatmap_auc}
+\caption{Transfer ROC-AUC of \textsc{tfidf-lr} (mean of five seeds). Rows are training corpora, columns test corpora; the diagonal is in-domain. Blue is above chance, red below; the midpoint is 0.5.}\label{fig:heatmap}
+\end{figure}
+
+\input{tables/pairs}
+
+Threshold-dependent metrics tell a harsher story than AUC. Off-diagonal macro-F1 at the default threshold averages \OffFone{}, barely above the one-class level of 0.33, against \InFone{} in-domain. The reason is visible in the predicted-positive rates (PPR, Table~\ref{tab:pairs}): an ISOT model flags \pairISOTWELFakePPR{} of WELFake as fake although the fake rate is \pairISOTWELFakePrior{}, and a GossipCop model flags only \pairGCPFPPR{} of PolitiFact although its fake rate is \pairGCPFPrior{}. Scores that were well calibrated in-domain are badly calibrated on the target, which brings us to the decomposition.
+
+\subsection{Where the gap goes}\label{sec:where}
+Applying Eq.~\eqref{eq:decomp} cell by cell (Table~\ref{tab:decomp}, Figure~\ref{fig:decomp}) splits the loss into a part that no threshold can recover and a part that the right threshold would. For \textsc{tfidf-lr} on the same-task pairs, the mean transfer gap is \GapPair{} macro-F1 points, of which \RankPair{} (\RankSharePair) is a ranking deficit and the rest an operating-point loss. On the remaining cells the gap is \GapOther{}, with \RankShareOther{} attributable to ranking. Across all cells, \RankShareAll{} of the loss is ranking and \OpShareAll{} operating point. The gap is therefore \emph{mostly ranking, partly threshold}. Both parts matter: the operating-point share is large enough to change which of two detectors looks better, and it is the cheaper one to fix.
+
+\input{tables/decomp}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_gap_decomposition}
+\caption{Transfer gap decomposition for \textsc{tfidf-lr} (macro-F1 points relative to the source's in-domain score, mean of five seeds). Grey: target harder or easier than source; blue: ranking deficit; green and orange: operating-point losses. Diamonds mark the total; red ticks show what EM prior adaptation recovers (negative values make things worse).}\label{fig:decomp}
+\end{figure}
+
+\subsection{Repairing the operating point without labels}\label{sec:op}
+Table~\ref{tab:oppoints} and Figure~\ref{fig:op} compare operating points. The textbook remedy, EM prior adaptation, \emph{lowers} off-diagonal macro-F1 from \OPDef{} to \OPEM{}, i.e.\ it recovers \RecEM{} of the operating-point loss. Rank transfer, which keeps the source's base rate and simply flags the same fraction of target items, raises macro-F1 to \OPRank{} and recovers \RecRank{} of the loss, close to the \RecPrior{} achieved when the true target base rate is known (\OPPrior{}); the oracle threshold reaches \OPOracle{}. A 2-component mixture recovers \RecGMM{}, and flagging half of the items \RecHalf{}.
+
+The reason EM fails is diagnostic. EM is optimal under label shift, where only $p(y)$ changes and calibrated posteriors stay meaningful. Here calibration does not survive the move: expected calibration error is \ECEin{} in-domain but \ECEout{} on the target, so EM's prior estimates drift towards 0 or 1 (mean absolute error \EMpriorErr) while the source prior is a far better guess of the target prior (error \SrcPriorErr). The shift is in $p(x\mid y)$ (style, topic and source), not in $p(y)$, and the right label-free response is to transfer the ranking-based decision rule rather than the score scale.
+
+\input{tables/oppoints}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_operating_points}
+\caption{Off-diagonal macro-F1 of \textsc{tfidf-lr} for each of the 42 cells (mean of five seeds), sorted by the oracle bound. Rank transfer closes most of the distance from the default threshold to the oracle without any target label; EM prior adaptation often falls below the default.}\label{fig:op}
+\end{figure}
+
+\input{sections/results_models}
+\input{sections/results_mechanism}
+\input{sections/results_repair}
+\input{sections/results_bangla}

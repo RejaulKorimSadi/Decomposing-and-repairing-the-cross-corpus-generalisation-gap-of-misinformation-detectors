@@ -1,0 +1,11 @@
+source,variant,in,out
+ISOT,all,0.996,0.606
+ISOT,ents,0.996,0.609
+ISOT,none,0.998,0.614
+ISOT,source,0.997,0.614
+ISOT,time,0.998,0.614
+WELFake,all,0.964,0.611
+WELFake,ents,0.965,0.62
+WELFake,none,0.98,0.626
+WELFake,source,0.979,0.629
+WELFake,time,0.977,0.619

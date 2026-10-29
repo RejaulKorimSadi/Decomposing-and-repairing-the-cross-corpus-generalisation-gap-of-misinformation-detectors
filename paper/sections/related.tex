@@ -1,0 +1,41 @@
+\section{Related work}\label{sec:related}
+
+\paragraph{Cross-domain failure of fake-news detectors}
+That content-based detectors degrade across domains has been reported since the first multi-domain corpora: models trained on one news domain lose much of their accuracy on another \citep{perezrosas2018automatic,janicka2019crossdomain}, cross-domain training needs domain-aware architectures \citep{silva2021crossdomain}, and fine-tuning on one COVID-19 corpus often hurts performance on related ones \citep{suprem2022generalizability}. \citet{bozarth2020evaluation} showed that conclusions about which model is best depend on the dataset, the evaluation type and the metric. Most recently, \citet{delloglio2026comparison} benchmarked twelve approaches on ten English corpora and found cross-dataset median F1 close to 0.5 for classical and fine-tuned models, with zero-shot large language models more stable, and \citet{hoy2025features} found stylistic and ``social-monetisation'' features to transfer better than token representations. These studies establish \emph{that} detectors fail to transfer, almost always through a single threshold-dependent score (accuracy or F1). They do not separate a loss of discrimination from a mis-set decision threshold, which is the distinction this paper is built on.
+
+\paragraph{Shortcuts and dataset artefacts}
+Shortcut learning, where a model exploits a spurious cue that predicts the label in the training distribution only, is a general failure mode of deep and shallow models alike \citep{geirhos2020shortcut,gururangan2018artifacts,mccoy2019right}. For misinformation, \citet{horne2017thisjustin} and \citet{schuster2020stylometry} showed how much of the signal is style rather than veracity, and \citet{asr2019bigdata} documented topical imbalance across fake-news corpora. \citet{verma2026audit} audited the ISOT corpus in depth: subject metadata alone separates the classes perfectly, a newswire tag marks 99.2\% of real articles, duplicates contaminate 19.4\% of a naive test split, deleting the 1{,}000 highest-weight unigrams leaves F1 at 0.926, and ISOT-trained models reach only near-chance ranking on LIAR. \citet{thibault2025guide} surveyed 75 misinformation datasets and found keyword--label correlations and temporal leakage in several of them, including Twitter15/16, ISOT and BanFakeNews. We build directly on these audits but differ in scope and in aim: we audit ten corpora jointly, including cross-corpus duplication and label direction, and we use the audit to explain and repair the transfer gap rather than only to document it.
+
+\paragraph{Rumour benchmarks}
+Rumour-detection benchmarks share the problem. On Twitter15/16 and PHEME, event-level spurious correlations inflate scores \citep{wu2022spurious}, chronological splits lower them \citep{mu2023time}, and simple text baselines rival propagation-based models \citep{pelrine2021simple}. We therefore treat the source posts of these corpora as one more text unit in our matrix and do not re-evaluate propagation models, which these works already cover.
+
+\paragraph{Label shift and invariant representations}
+Two families of methods from the domain-adaptation literature map onto the two parts of our decomposition. Label-shift adaptation re-estimates the target class prior from unlabelled predictions and adjusts the posteriors \citep{saerens2002adjusting,lipton2018bbse}; with calibrated scores, this simple expectation--maximisation procedure is hard to beat \citep{alexandari2020labelshift}. Representation methods instead try to remove domain information: correlation alignment matches feature covariances \citep{sun2016coral}, adversarial training removes domain-predictive directions \citep{ganin2016dann}, and iterative nullspace projection deletes linearly decodable attributes \citep{ravfogel2020inlp}. Domain-adaptation theory bounds target error by source error plus a domain divergence that can be estimated with a domain classifier \citep{bendavid2010theory}. In misinformation, label shift has been addressed mainly with pseudo-label correction inside neural adaptation pipelines; we are not aware of work that measures how much of the cross-corpus gap is a prior/threshold effect and how much a representation effect, and repairs each with the matching tool.
+
+\paragraph{Large language models}
+Zero-shot and few-shot large language models are less exposed to dataset-specific shortcuts because they are not trained on the benchmark \citep{pelrine2023gpt4,thibault2025guide,delloglio2026comparison}, and they can serve as advisers to smaller detectors \citep{hu2024badactor}. Supervised detectors nonetheless remain the cheapest and most widely deployed option, and the decomposition we propose applies to any detector that outputs a score, including a prompted language model.
+
+\paragraph{Position of this work}
+Table~\ref{tab:positioning} contrasts our study with the closest prior audits. The combination we contribute is a two-way, multi-corpus, multi-unit and bilingual matrix; a decomposition that attributes the gap to ranking or to the operating point; label-free repairs targeted at each part; and audit findings (label inversion, cross-corpus duplication) that change measured transfer.
+
+\begin{table}[t]
+\centering
+\caption{Position relative to the closest prior audits: S\&P = \citet{suprem2022generalizability}; T = \citet{thibault2025guide}; V = \citet{verma2026audit}; D = \citet{delloglio2026comparison} ({\checkmark} present, -- absent; units: a = article, h = headline, c = claim, t = tweet).}\label{tab:positioning}
+\footnotesize
+\begin{tabular}{@{}p{5.2cm}ccccc@{}}
+\toprule
+ & S\&P & T & V & D & \textbf{This work} \\
+\midrule
+Corpora (languages) & 9 (en) & 75 (survey) & 2 (en) & 10 (en) & 10 (en, bn) \\
+Text units & mixed & mixed & a, c & mixed & a, h, c, t \\
+Full train$\times$test transfer matrix & {\checkmark} & -- & -- & {\checkmark} & {\checkmark} \\
+Within- and cross-corpus near-duplicate control & -- & partial & {\checkmark} & -- & {\checkmark} \\
+Label-direction verification & -- & -- & -- & -- & {\checkmark} \\
+Threshold-free metrics (AUC, AP) & -- & -- & {\checkmark} & -- & {\checkmark} \\
+Ranking vs.\ operating-point decomposition & -- & -- & partial & -- & {\checkmark} \\
+Seeds, bootstrap CIs, permutation control & -- & -- & {\checkmark} & tests only & {\checkmark} \\
+Label-free repair evaluated & reject opt. & -- & -- & MERMAID & EM, rank, INLP, CORAL \\
+Low-resource language & -- & -- & -- & -- & Bengali \\
+\bottomrule
+\end{tabular}
+\end{table}

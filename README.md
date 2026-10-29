@@ -1,0 +1,143 @@
+<p align="center">
+  <img src="assets/banner.svg" alt="fn-transfer-audit: a seven-by-seven transfer matrix beside the project title" width="100%">
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-2a78d6"></a>
+  <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-1baf7a">
+  <img alt="CPU only" src="https://img.shields.io/badge/hardware-CPU%20only-eda100">
+  <img alt="5 seeds" src="https://img.shields.io/badge/seeds-5-6250d6">
+  <img alt="Corpora" src="https://img.shields.io/badge/corpora-10%20(en%2C%20bn)-eb6834">
+</p>
+
+<h3 align="center">Mostly ranking, partly threshold</h3>
+<p align="center"><em>Decomposing and repairing the cross-corpus generalisation gap of misinformation detectors</em></p>
+<p align="center">
+  <b>Dewan Nafay Chowdhury</b><sup>*</sup> · <b>Md. Rejaul Korim Sadi</b><sup>*</sup><br>
+  Department of Computer Science and Engineering, Metropolitan University, Sylhet, Bangladesh<br>
+  <sub><sup>*</sup>Equal contribution, joint first authors.</sub>
+</p>
+
+---
+
+## In one paragraph
+
+Fake-news detectors score above 95% on the corpus they were trained on and much worse on other corpora. We ask **why**, in a way that tells you what to fix. Across ten public corpora (two languages; articles, headlines, claims and tweets), six detectors and five seeds, we split the macro-F1 a detector loses on a new corpus into a **ranking deficit**, which no decision threshold can recover, and an **operating-point loss**, which the right threshold would. About **70%** of the gap is ranking and **30%** is the operating point. The textbook label-shift fix (EM prior adaptation) makes the operating point *worse* (−64% of the loss recovered), while a one-line, label-free rule, **rank transfer**, recovers **81%**.
+
+## Key results
+
+| | |
+|---|---|
+| In-domain ROC-AUC (TF-IDF + LR, mean of 7 corpora) | **0.914** |
+| Transfer ROC-AUC, all 42 off-diagonal cells | **0.567** |
+| Transfer ROC-AUC, 8 same-task cells | **0.624** |
+| Permutation control, transfer AUC | 0.502 ± 0.067 |
+| Off-diagonal cells with AUC < 0.5 (cue reversed) | 8 of 42 |
+| Share of the F1 gap that is **ranking** | **70%** |
+| Operating-point loss recovered by EM prior adaptation | −64% |
+| … by **rank transfer** (label-free) | **81%** |
+| … by knowing the true target base rate | 86% |
+| Calibration error in-domain → on a new corpus (ECE) | 0.046 → 0.328 |
+| Frozen RoBERTa vs TF-IDF transfer AUC (same subsets) | 0.544 vs 0.549 |
+| Held-out AUC, pooled training on 6 corpora vs one corpus | 0.660 vs 0.567 |
+| … with corpus identity projected out (INLP) | 0.605 |
+| Bengali clickbait: leave-one-publisher-out AUC | 0.791 |
+| English → Bengali clickbait (translate-test) AUC | 0.707 |
+
+<p align="center">
+  <img src="figures/fig_heatmap_auc.png" width="46%" alt="Transfer ROC-AUC heatmap">
+  &nbsp;
+  <img src="figures/fig_gap_decomposition.png" width="51%" alt="Gap decomposition bars">
+</p>
+<p align="center">
+  <img src="figures/fig_operating_points.png" width="80%" alt="Operating points per cell">
+</p>
+
+## The decomposition
+
+For a model trained on corpus *A* and deployed on corpus *B*, with macro-F1 *F* at threshold τ:
+
+```
+F_BB(0.5) − F_AB(0.5)  =  [F_BB(0.5) − F_AB(τ*)]      ranking deficit      (no threshold can fix)
+                        + [F_AB(τ*)  − F_AB(τ_π)]     threshold residual
+                        + [F_AB(τ_π) − F_AB(0.5)]     prior / calibration  (a threshold can fix)
+```
+
+τ\* is the oracle threshold on *B*, τ_π the threshold whose predicted-positive rate equals *B*'s true base rate.
+
+**Rank transfer**, the label-free repair:
+
+```python
+t = np.quantile(scores_on_new_corpus, 1 - source_base_rate)   # flag the source's base rate of items
+pred = scores_on_new_corpus >= t
+```
+
+## What is in here
+
+```
+fn-transfer-audit/
+├── src/
+│   ├── prep.py            harmonise labels, MinHash dedup, cross-corpus overlap
+│   ├── label_probe.py     verify label direction with outlet signatures
+│   ├── transfer.py        train-on-one / test-on-all, 5 models × 3 regimes × 5 seeds
+│   ├── roberta.py         RoBERTa-base representations (+ paired TF-IDF baseline)
+│   ├── mechanism.py       style/group/learning-curve/top-K/masking/topic/PAD probes
+│   ├── fix.py             leave-one-corpus-out representation repairs
+│   ├── bangla.py          BanglaBait replication, leave-one-publisher-out, translate-test
+│   ├── analysis*.py       CIs, decomposition, operating points, tests
+│   ├── figures.py         every figure in the paper
+│   └── paper_numbers.py   every number in the paper (LaTeX macros) — nothing typed by hand
+├── results/               per-cell CSVs, summaries, key_numbers.json
+├── figures/               PDF + 300-dpi PNG
+├── logs/                  run logs
+├── DATA.md                sources, licences, label conventions, privacy
+└── run_all.sh             one command, ~10–12 h on a 2-core CPU
+```
+
+## Reproduce
+
+```bash
+pip install -r requirements.txt
+pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
+pip install https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.8.0/en_core_web_trf-3.8.0-py3-none-any.whl
+export DATA_DIR=/path/to/data      # layout in DATA.md
+bash run_all.sh
+```
+
+Every random choice is seeded (0–4). Saved per-item scores (`artifacts/preds/`, produced by the run) let you recompute any metric or threshold rule without retraining.
+
+<details>
+<summary><b>Reporting protocol we recommend</b></summary>
+
+1. **Verify label direction** with signature probes; a same-task AUC below 0.5 is a data error until shown otherwise.
+2. **Deduplicate** within and across corpora (near-duplicates), dropping label-conflicting groups.
+3. Report at least one **same-task cross-corpus** result, with **AUC/AP** next to F1.
+4. Report the **decomposition**: F1 at the default, prior-matched and oracle thresholds.
+5. Run three cheap **shortcut probes**: surface-statistics style model, group-identity baseline, 64-example learning-curve point.
+6. Add a **permutation control**, ≥ 5 seeds and bootstrap intervals.
+7. **Deploy with a rank-based operating point** unless target labels exist.
+
+</details>
+
+<details>
+<summary><b>A note on label conventions</b></summary>
+
+ISOT codes `1 = fake`; WELFake codes `1 = real` (Zenodo record). `src/label_probe.py` checks this on the raw files: all 6,223 WELFake titles ending in "- The New York Times" carry label 1. Treating WELFake label 1 as fake makes ISOT↔WELFake transfer look below chance.
+
+</details>
+
+## Citation
+
+```bibtex
+@misc{chowdhury_sadi_2026_ranking_threshold,
+  title  = {Mostly ranking, partly threshold: decomposing and repairing the cross-corpus
+            generalisation gap of misinformation detectors},
+  author = {Chowdhury, Dewan Nafay and Sadi, Md. Rejaul Korim},
+  year   = {2026},
+  note   = {Equal contribution. Code: https://github.com/<account>/fn-transfer-audit}
+}
+```
+
+## Licence
+
+Code: MIT. Datasets keep their own licences (see [DATA.md](DATA.md)); no dataset text is redistributed.

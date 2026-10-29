@@ -1,0 +1,35 @@
+\begin{table}[t]
+\centering
+\caption{In-domain versus transfer performance on the seven veracity corpora (mean $\pm$ s.d.\ over five seeds of the per-seed mean over cells). ``Pairs'' averages the eight directed same-task cells. Off-diagonal macro-F1 is given at the default threshold and at the oracle threshold. \textsc{roberta-lr} is evaluated on the 1{,}500-item subsets (Section~\ref{sec:models}).}\label{tab:headline}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llcccccc@{}}
+\toprule
+ & & \multicolumn{3}{c}{ROC-AUC} & \multicolumn{3}{c}{macro-F1} \\
+\cmidrule(lr){3-5}\cmidrule(lr){6-8}
+Model & Regime & In-domain & Off-diag. & Pairs & In-domain & Off-diag. & Off-diag.\ oracle \\
+\midrule
+\textsc{tfidf-lr} & full & 0.914\,{\scriptsize$\pm$0.006} & 0.567\,{\scriptsize$\pm$0.006} & 0.624\,{\scriptsize$\pm$0.004} & 0.854\,{\scriptsize$\pm$0.005} & 0.439\,{\scriptsize$\pm$0.011} & 0.565\,{\scriptsize$\pm$0.004} \\
+\textsc{tfidf-lr} & matched & 0.861\,{\scriptsize$\pm$0.010} & 0.556\,{\scriptsize$\pm$0.004} & 0.590\,{\scriptsize$\pm$0.009} & 0.786\,{\scriptsize$\pm$0.012} & 0.446\,{\scriptsize$\pm$0.014} & 0.558\,{\scriptsize$\pm$0.002} \\
+\textsc{tfidf-lr} & permuted & 0.519\,{\scriptsize$\pm$0.026} & 0.499\,{\scriptsize$\pm$0.012} & 0.514\,{\scriptsize$\pm$0.019} & 0.397\,{\scriptsize$\pm$0.014} & 0.377\,{\scriptsize$\pm$0.015} & 0.518\,{\scriptsize$\pm$0.007} \\
+\addlinespace
+\textsc{tfidf-svm} & full & 0.914\,{\scriptsize$\pm$0.005} & 0.564\,{\scriptsize$\pm$0.005} & 0.625\,{\scriptsize$\pm$0.005} & 0.855\,{\scriptsize$\pm$0.005} & 0.437\,{\scriptsize$\pm$0.009} & 0.564\,{\scriptsize$\pm$0.004} \\
+\textsc{tfidf-svm} & matched & 0.862\,{\scriptsize$\pm$0.010} & 0.554\,{\scriptsize$\pm$0.005} & 0.592\,{\scriptsize$\pm$0.010} & 0.787\,{\scriptsize$\pm$0.011} & 0.447\,{\scriptsize$\pm$0.017} & 0.556\,{\scriptsize$\pm$0.003} \\
+\textsc{tfidf-svm} & permuted & 0.519\,{\scriptsize$\pm$0.024} & 0.498\,{\scriptsize$\pm$0.015} & 0.511\,{\scriptsize$\pm$0.020} & 0.398\,{\scriptsize$\pm$0.009} & 0.377\,{\scriptsize$\pm$0.012} & 0.516\,{\scriptsize$\pm$0.008} \\
+\addlinespace
+\textsc{nb-svm} & full & 0.912\,{\scriptsize$\pm$0.004} & 0.547\,{\scriptsize$\pm$0.006} & 0.590\,{\scriptsize$\pm$0.011} & 0.853\,{\scriptsize$\pm$0.008} & 0.410\,{\scriptsize$\pm$0.008} & 0.555\,{\scriptsize$\pm$0.003} \\
+\textsc{nb-svm} & matched & 0.862\,{\scriptsize$\pm$0.011} & 0.540\,{\scriptsize$\pm$0.006} & 0.559\,{\scriptsize$\pm$0.004} & 0.786\,{\scriptsize$\pm$0.012} & 0.398\,{\scriptsize$\pm$0.013} & 0.549\,{\scriptsize$\pm$0.004} \\
+\textsc{nb-svm} & permuted & 0.510\,{\scriptsize$\pm$0.023} & 0.494\,{\scriptsize$\pm$0.009} & 0.502\,{\scriptsize$\pm$0.009} & 0.400\,{\scriptsize$\pm$0.003} & 0.383\,{\scriptsize$\pm$0.012} & 0.520\,{\scriptsize$\pm$0.006} \\
+\addlinespace
+\textsc{glove-lr} & full & 0.864\,{\scriptsize$\pm$0.005} & 0.564\,{\scriptsize$\pm$0.005} & 0.610\,{\scriptsize$\pm$0.005} & 0.782\,{\scriptsize$\pm$0.007} & 0.465\,{\scriptsize$\pm$0.004} & 0.564\,{\scriptsize$\pm$0.004} \\
+\textsc{glove-lr} & matched & 0.830\,{\scriptsize$\pm$0.006} & 0.563\,{\scriptsize$\pm$0.010} & 0.592\,{\scriptsize$\pm$0.017} & 0.740\,{\scriptsize$\pm$0.011} & 0.466\,{\scriptsize$\pm$0.010} & 0.564\,{\scriptsize$\pm$0.007} \\
+\textsc{glove-lr} & permuted & 0.520\,{\scriptsize$\pm$0.022} & 0.504\,{\scriptsize$\pm$0.026} & 0.494\,{\scriptsize$\pm$0.021} & 0.404\,{\scriptsize$\pm$0.020} & 0.391\,{\scriptsize$\pm$0.012} & 0.525\,{\scriptsize$\pm$0.019} \\
+\addlinespace
+\textsc{style-gb} & full & 0.745\,{\scriptsize$\pm$0.009} & 0.535\,{\scriptsize$\pm$0.004} & 0.595\,{\scriptsize$\pm$0.008} & 0.679\,{\scriptsize$\pm$0.005} & 0.427\,{\scriptsize$\pm$0.007} & 0.548\,{\scriptsize$\pm$0.003} \\
+\textsc{style-gb} & matched & 0.702\,{\scriptsize$\pm$0.008} & 0.526\,{\scriptsize$\pm$0.009} & 0.561\,{\scriptsize$\pm$0.032} & 0.632\,{\scriptsize$\pm$0.008} & 0.413\,{\scriptsize$\pm$0.017} & 0.542\,{\scriptsize$\pm$0.007} \\
+\textsc{style-gb} & permuted & 0.503\,{\scriptsize$\pm$0.018} & 0.502\,{\scriptsize$\pm$0.016} & 0.493\,{\scriptsize$\pm$0.028} & 0.410\,{\scriptsize$\pm$0.008} & 0.390\,{\scriptsize$\pm$0.007} & 0.523\,{\scriptsize$\pm$0.011} \\
+\addlinespace
+\textsc{roberta-lr} & full & 0.861\,{\scriptsize$\pm$0.012} & 0.544\,{\scriptsize$\pm$0.008} & 0.630\,{\scriptsize$\pm$0.011} & 0.777\,{\scriptsize$\pm$0.013} & 0.452\,{\scriptsize$\pm$0.013} & 0.549\,{\scriptsize$\pm$0.010} \\
+\bottomrule
+\end{tabular}
+\end{table}

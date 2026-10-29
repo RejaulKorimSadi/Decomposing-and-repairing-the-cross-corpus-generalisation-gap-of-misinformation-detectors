@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,longtable,graphicx,xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{natbib}
+\graphicspath{{figures/}{../figures/}}
+\setlength{\emergencystretch}{2em}
+\input{numbers}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thesection}{S\arabic{section}}
+
+\title{Supplementary Material\\[4pt]\large Mostly ranking, partly threshold: decomposing and repairing the cross-corpus generalisation gap of misinformation detectors}
+\author{Dewan Nafay Chowdhury\thanks{Equal contribution, joint first authors.} \and Md.\ Rejaul Korim Sadi\footnotemark[1]\\[2pt]
+\small Department of Computer Science and Engineering, Metropolitan University, Sylhet, Bangladesh}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent This supplement documents how the data were prepared and how every number in the paper was produced. All tables here are written by \texttt{src/paper\_numbers.py} from the result files released with the code; the repository's \texttt{run\_all.sh} regenerates them end to end.
+
+\section{Data preparation}
+\subsection{Label harmonisation and verification}
+Every corpus is mapped to $1=$ fake, false, rumour or clickbait. WELFake ships $0=$ fake, $1=$ real and is inverted; LIAR keeps \{pants-fire, false\} versus \{mostly-true, true\}; Twitter15/16 keep false versus true. Label direction was verified on the raw files with outlet signatures (\texttt{src/label\_probe.py}): Table~\ref{tab:probe}.
+\input{tables/probe}
+
+\subsection{Deduplication}
+Within each corpus, rows are normalised (NFKC, lower case, URLs and punctuation removed), exact duplicates are removed, and near-duplicates are clustered with MinHash-LSH (128 permutations, Jaccard $\geq 0.8$; word 3-grams over the first 400 words for articles, character 5-grams otherwise). Any exact or near-duplicate group whose members disagree on the label is removed entirely; otherwise one member is kept. Across corpora, each item is flagged with the corpora in which it has a near-duplicate, and transfer tests drop flagged target items.
+\input{tables/supp_dedup}
+
+\section{Evaluation details}
+Splits are stratified 70/10/20 per seed (0--4), with caps of 8{,}000/1{,}500/3{,}000 items. Hyperparameters are chosen on the source validation split by ROC-AUC, and scores are Platt-calibrated on the same split. Metrics are computed on the target test split after near-duplicate exclusion. Pooled seed-bootstrap intervals use 200 resamples per seed, pooled across seeds. Operating points: default $t=0.5$; EM prior adaptation \citep{saerens2002adjusting} with 200 iterations and tolerance $10^{-6}$; rank transfer (threshold at the $(1-\pi_A)$ quantile of the target scores); 0.5-rate (median threshold); a 2-component Gaussian mixture on target logits; the true-prior quantile; and the oracle maximum over 199 quantile thresholds.
+
+\section{Full results}
+\subsection{Transfer matrices for every model}
+\input{tables/appendix_matrices}
+\clearpage
+\subsection{Per-cell decomposition}
+\input{tables/supp_decomp_cells}
+\subsection{Per-cell operating points}
+\input{tables/supp_oppoints_cells}
+\clearpage
+\subsection{Learning curves}
+\input{tables/supp_lc}
+\subsection{Vocabulary ablation}
+\input{tables/vocab}
+\subsection{Bengali: per-publisher results}
+\input{tables/supp_loso}
+
+\section{Additional figures}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.48\linewidth]{fig_heatmap_f1}\hfill
+\includegraphics[width=0.48\linewidth]{fig_heatmap_auc_roberta}
+\caption{Left: macro-F1 at $t=0.5$ for \textsc{tfidf-lr}. Right: ROC-AUC for frozen RoBERTa representations on the 1{,}500-item subsets.}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_roc}
+\caption{ROC curves (seed 0) for models trained on ISOT and WELFake, in-domain and on four other corpora.}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.48\linewidth]{fig_learning_curve}\hfill
+\includegraphics[width=0.48\linewidth]{fig_pad}
+\caption{Left: in-domain learning curves. Right: proxy $\mathcal{A}$-distance between corpora against transfer AUC (Spearman $\rho=\PADrho$).}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_topk}
+\caption{Top-$K$ feature deletion: in-domain and transfer AUC as the $K$ highest-weight features are removed.}
+\end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\linewidth]{fig_fix}
+\caption{Leave-one-corpus-out repairs: mean over held-out corpora and seeds.}
+\end{figure}
+
+\section{Code map}
+\small
+\begin{tabular}{@{}p{5.6cm}p{10cm}@{}}
+\toprule
+\texttt{src/prep.py} & corpora, label harmonisation, deduplication, cross-corpus flags \\
+\texttt{src/label\_probe.py} & label-direction probes \\
+\texttt{src/transfer.py} & transfer matrices (5 models $\times$ 3 regimes $\times$ 5 seeds) \\
+\texttt{src/roberta.py} & RoBERTa representations and paired TF-IDF baseline \\
+\texttt{src/mechanism.py} & style, group, learning-curve, top-$K$, masking, topic, PAD, weights, vocabulary \\
+\texttt{src/fix.py} & leave-one-corpus-out repairs \\
+\texttt{src/bangla.py} & BanglaBait replication, leave-one-publisher-out, translate-test \\
+\texttt{src/analysis.py}, \texttt{analysis\_extra.py} & aggregation, intervals, decomposition, tests \\
+\texttt{src/figures.py}, \texttt{paper\_numbers.py} & every figure, number and table \\
+\bottomrule
+\end{tabular}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}
