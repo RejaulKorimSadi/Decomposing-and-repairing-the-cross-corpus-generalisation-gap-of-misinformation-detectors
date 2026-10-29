@@ -13,7 +13,7 @@
 <h3 align="center">Mostly ranking, partly threshold</h3>
 <p align="center"><em>Decomposing and repairing the cross-corpus generalisation gap of misinformation detectors</em></p>
 <p align="center">
-  <b>Dewan Nafay Chowdhury</b><sup>*</sup> · <b>Md. Rejaul Korim Sadi</b><sup>*</sup><br>
+  <b>Dewan Fahad Chowdhury</b><sup>*</sup> · <b>Md. Rejaul Korim Sadi</b><sup>*</sup><br>
   Department of Computer Science and Engineering, Metropolitan University, Sylhet, Bangladesh<br>
   <sub><sup>*</sup>Equal contribution, joint first authors.</sub>
 </p>
@@ -132,7 +132,7 @@ ISOT codes `1 = fake`; WELFake codes `1 = real` (Zenodo record). `src/label_prob
 @misc{chowdhury_sadi_2026_ranking_threshold,
   title  = {Mostly ranking, partly threshold: decomposing and repairing the cross-corpus
             generalisation gap of misinformation detectors},
-  author = {Chowdhury, Dewan Nafay and Sadi, Md. Rejaul Korim},
+  author = {Chowdhury, Dewan Fahad and Sadi, Md. Rejaul Korim},
   year   = {2026},
   note   = {Equal contribution. Code: https://github.com/<account>/fn-transfer-audit}
 }

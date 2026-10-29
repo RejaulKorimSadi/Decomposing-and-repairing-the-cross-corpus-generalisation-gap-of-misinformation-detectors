@@ -3,9 +3,9 @@ message: "If you use this code or the audit results, please cite the paper."
 title: "fn-transfer-audit: ranking vs. operating-point decomposition of cross-corpus misinformation-detector transfer"
 authors:
   - family-names: Chowdhury
-    given-names: Dewan Nafay
+    given-names: Dewan Fahad
     affiliation: "Department of Computer Science and Engineering, Metropolitan University, Sylhet, Bangladesh"
-    email: dewan.nafay.chow@gmail.com
+    email: dewanfahadc@gmail.com
   - family-names: Sadi
     given-names: Md. Rejaul Korim
     affiliation: "Department of Computer Science and Engineering, Metropolitan University, Sylhet, Bangladesh"
