@@ -5,24 +5,24 @@ lc seed 3
 lc seed 4
 wrote lc 340
 Traceback (most recent call last):
-  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 304, in <module>
+  File "./src/mechanism.py", line 304, in <module>
     df = TESTS[t](D)
-  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 76, in t_topk
+  File "./src/mechanism.py", line 76, in t_topk
     m = base if K == 0 else TfidfLinear("lr", vocab_drop=names[order[:K]]).fit(
                             ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/models.py", line 40, in __init__
+  File "./src/models.py", line 40, in __init__
     self.vocab_drop = set(vocab_drop or [])
                           ^^^^^^^^^^^^^^^^
 ValueError: The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
 Traceback (most recent call last):
-  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 304, in <module>
+  File "./src/mechanism.py", line 304, in <module>
     df = TESTS[t](D)
-  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/mechanism.py", line 76, in t_topk
+  File "./src/mechanism.py", line 76, in t_topk
     m = base if K == 0 else TfidfLinear("lr", vocab_drop=names[order[:K]]).fit(
                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
         tr.text.tolist(), tr.label.values, va.text.tolist(), va.label.values)
         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/tmp/claude-0/-home-claude/327c30c2-7eff-551a-a9fc-9b6d5d044dc1/scratchpad/repo/fn-transfer-audit/src/models.py", line 66, in fit
+  File "./src/models.py", line 66, in fit
     fits.append(m.fit(X, y, sample_weight=sample_weight))
                 ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/usr/local/lib/python3.13/site-packages/sklearn/base.py", line 1403, in wrapper

@@ -1,0 +1,32 @@
+/usr/local/lib/python3.13/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+cached ISOT: 3761 items in 510s
+cached WELFake: 3688 items in 530s
+cached PolitiFact: 976 items in 77s
+cached GossipCop: 3627 items in 140s
+cached LIAR: 3330 items in 102s
+cached Twitter15: 673 items in 21s
+cached Twitter16: 358 items in 11s
+/usr/local/lib/python3.13/site-packages/torch/jit/_script.py:1491: FutureWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Traceback (most recent call last):
+  File "./src/finetune.py", line 235, in <module>
+    {"cache": cache, "train": train, "tfidf": tfidf}[sys.argv[1]]()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "./src/finetune.py", line 143, in train
+    caches = {c: load_cache(c) for c in VER}
+                 ~~~~~~~~~~^^^
+  File "./src/finetune.py", line 117, in load_cache
+    idx = {k: i for i, k in enumerate(np.load(f"{CACHE}/{c}_ids.npy"))}
+                                      ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/numpy/lib/_npyio_impl.py", line 483, in load
+    return format.read_array(fid, allow_pickle=allow_pickle,
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                             pickle_kwargs=pickle_kwargs,
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                             max_header_size=max_header_size)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/site-packages/numpy/lib/_format_impl.py", line 833, in read_array
+    raise ValueError("Object arrays cannot be loaded when "
+                     "allow_pickle=False")
+ValueError: Object arrays cannot be loaded when allow_pickle=False

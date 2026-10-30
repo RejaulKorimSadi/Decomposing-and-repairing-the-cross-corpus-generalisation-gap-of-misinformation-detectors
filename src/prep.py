@@ -53,13 +53,21 @@ def minhashes(texts, long_text):
 
 # ----------------------------------------------------------------------------- loaders
 def load_isot():
-    d = pd.read_csv(C.ISOT)
+    raw = os.environ.get("ISOT_RAW")           # folder with the original Fake.csv / True.csv
+    if raw:
+        d = pd.concat([pd.read_csv(os.path.join(raw, "Fake.csv")).assign(label=1),
+                       pd.read_csv(os.path.join(raw, "True.csv")).assign(label=0)], ignore_index=True)
+    else:
+        d = pd.read_csv(C.ISOT)
     return pd.DataFrame(dict(title=d.title.fillna(""), body=d.text.fillna(""),
                              label=d.label.astype(int), group=""))
 
 
 def load_welfake():
-    d = pd.read_csv(C.WELFAKE)
+    # WELFAKE_RAW: path to the original WELFake_Dataset.csv (72,134 rows). With the original file,
+    # articles that are near-duplicates of ISOT are dropped after the cross-corpus check below,
+    # which reproduces the cleaned copy used in the paper up to MinHash randomness.
+    d = pd.read_csv(os.environ.get("WELFAKE_RAW") or C.WELFAKE)
     # The released WELFake file uses 1 = real, 0 = fake (verified empirically: all 6,223
     # "- The New York Times" titles carry label 1; all "Featured image via" texts label 0).
     return pd.DataFrame(dict(title=d.title.fillna(""), body=d.text.fillna(""),
@@ -250,6 +258,10 @@ def main():
                     overlap_rows.append(dict(space=space, corpus_a=a, corpus_b=b,
                                              items_in_a_dup_in_b=n_a, items_in_b_dup_in_a=n_b))
     full["dup_in"] = [";".join(sorted(flags[i])) for i in full.index]
+    if os.environ.get("WELFAKE_RAW"):          # mimic the cleaned copy: no WELFake article shared with ISOT
+        shared = (full.corpus == "WELFake") & full.dup_in.str.contains(r"(?:^|;)ISOT(?:;|$)")
+        print(f"WELFake: dropping {int(shared.sum())} articles shared with ISOT", flush=True)
+        full = full[~shared]
     pd.DataFrame(overlap_rows).to_csv(os.path.join(C.RESULTS, "cross_corpus_overlap.csv"), index=False)
     keep_cols = ["id", "corpus", "unit", "construct", "lang", "text", "title", "body", "label",
                  "group", "dup_in", "label4", "title_en", "split", "category", "tid"]

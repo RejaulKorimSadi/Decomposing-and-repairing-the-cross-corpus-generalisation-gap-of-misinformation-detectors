@@ -1,7 +1,7 @@
 """Second-stage aggregation (uses saved predictions and the mechanism / repair / Bengali outputs).
 
   operating points  label-free thresholds computed from saved target scores:
-                      default t=0.5 | EM prior adaptation | PPR = source prior (rank transfer)
+                      default t=0.5 | EM prior adaptation | PPR = source prior (rate transfer)
                       PPR = 0.5 | 2-component GMM on target logits
                     and with one number known: PPR = true target prior; plus the oracle bound
   pad               proxy A-distance vs. transfer AUC (Spearman, corpus-pair bootstrap CI)

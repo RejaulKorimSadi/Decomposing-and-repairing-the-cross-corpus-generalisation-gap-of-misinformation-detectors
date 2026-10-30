@@ -1,12 +1,12 @@
 \begin{table}[t]
 \centering
-\caption{Off-diagonal macro-F1 under different operating points (mean over the 42 cells and five seeds). Label-free: default $t=0.5$, EM prior adaptation, rank transfer (predicted-positive rate set to the source prior), predicted-positive rate 0.5, and a 2-component GMM on target logits. With one number known: rate set to the true target prior. Upper bound: oracle threshold. For \textsc{tfidf-lr}, Holm-corrected Wilcoxon $p$ versus default: EM 1.6e-32, rank transfer 6.6e-31, rate 0.5 1.4e-29, GMM 1.7e-18.}\label{tab:oppoints}
+\caption{Off-diagonal macro-F1 under different operating points (mean over the 42 cells and five seeds). Label-free: default $t=0.5$, EM prior adaptation, rate transfer (predicted-positive rate set to the source base rate), predicted-positive rate 0.5, and a 2-component GMM on target logits. With one number known: rate set to the true target prior. Upper bound: oracle threshold. For \textsc{tfidf-lr}, Holm-corrected Wilcoxon $p$ versus default: EM 1.6e-32, rate transfer 6.6e-31, rate 0.5 1.4e-29, GMM 1.7e-18.}\label{tab:oppoints}
 \small
 \begin{tabular}{@{}lccccccc@{}}
 \toprule
  & \multicolumn{5}{c}{label-free} & prior known & bound \\
 \cmidrule(lr){2-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}
-Model & $t=0.5$ & EM & rank transfer & rate 0.5 & GMM & rate $=\pi_B$ & oracle \\
+Model & $t=0.5$ & EM & rate transfer & rate 0.5 & GMM & rate $=\pi_B$ & oracle \\
 \midrule
 \textsc{tfidf-lr} & 0.439 & 0.358 & 0.541 & 0.539 & 0.510 & 0.547 & 0.565 \\
 \textsc{tfidf-svm} & 0.437 & 0.363 & 0.539 & 0.537 & 0.503 & 0.546 & 0.564 \\
@@ -14,6 +14,7 @@ Model & $t=0.5$ & EM & rank transfer & rate 0.5 & GMM & rate $=\pi_B$ & oracle \
 \textsc{glove-lr} & 0.465 & 0.381 & 0.540 & 0.542 & 0.494 & 0.547 & 0.564 \\
 \textsc{style-gb} & 0.427 & 0.347 & 0.521 & 0.521 & 0.477 & 0.529 & 0.548 \\
 \textsc{roberta-lr} & 0.452 & 0.368 & 0.516 & 0.516 & 0.477 & 0.525 & 0.549 \\
+\textsc{roberta-ft} & 0.418 & 0.340 & 0.535 & 0.534 & 0.479 & 0.544 & 0.571 \\
 \bottomrule
 \end{tabular}
 \end{table}

@@ -1,0 +1,18 @@
+\begin{table}[h]
+\centering
+\caption{Share of the operating-point loss (oracle minus default macro-F1, off-diagonal cells) recovered by each threshold rule, per detector. Rate rules flag the top share of target items given by the source base rate $\pi_A$, the source in-domain flag rate $q_A$, one half, the adjusted classify-and-count estimate (ACC), or the true target base rate. The last two columns give the mean absolute error of the ACC and EM estimates of the target base rate; the source base rate itself is off by 0.09 on average.}\label{tab:supp-rates}
+\footnotesize
+\begin{tabular}{@{}lrrrrrrrrrrr@{}}
+\toprule
+Model & F1$_{0.5}$ & F1$^\star$ & EM & $\pi_A$ & $q_A$ & 0.5 & ACC & GMM & $\pi_B$ & err.\ ACC & err.\ EM \\
+\midrule
+\textsc{tfidf-lr} & 0.439 & 0.565 & $-$64\% & 81\% & 76\% & 80\% & $-$27\% & 57\% & 86\% & 0.41 & 0.46 \\
+\textsc{tfidf-svm} & 0.437 & 0.564 & $-$59\% & 81\% & 77\% & 79\% & $-$29\% & 52\% & 86\% & 0.42 & 0.45 \\
+\textsc{nb-svm} & 0.410 & 0.555 & $-$41\% & 79\% & 76\% & 80\% & $-$16\% & 24\% & 85\% & 0.44 & 0.48 \\
+\textsc{glove-lr} & 0.465 & 0.564 & $-$84\% & 76\% & 65\% & 78\% & $-$56\% & 29\% & 83\% & 0.41 & 0.43 \\
+\textsc{style-gb} & 0.427 & 0.548 & $-$67\% & 77\% & 64\% & 77\% & $-$36\% & 41\% & 84\% & 0.43 & 0.46 \\
+\textsc{roberta-lr} & 0.452 & 0.549 & $-$87\% & 66\% & 52\% & 66\% & $-$49\% & 25\% & 75\% & 0.39 & 0.43 \\
+\textsc{roberta-ft} & 0.418 & 0.571 & $-$51\% & 77\% & 67\% & 76\% & $-$23\% & 40\% & 82\% & 0.42 & 0.48 \\
+\bottomrule
+\end{tabular}
+\end{table}

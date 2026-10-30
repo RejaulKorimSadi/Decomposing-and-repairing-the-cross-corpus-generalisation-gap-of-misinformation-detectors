@@ -16,6 +16,9 @@ python src/transfer.py --models tfidf_svm,glove_lr         | tee logs/transfer_B
 step "3/9 RoBERTa-base representations"
 python src/roberta.py embed                                | tee logs/roberta_embed.log
 python src/roberta.py matrix                               | tee logs/roberta_matrix.log
+python src/finetune.py cache                                | tee logs/finetune_cache.log
+python src/finetune.py train                                | tee logs/finetune_train.log
+python src/finetune.py tfidf                                | tee logs/finetune_tfidf.log
 step "4/9 mechanism tests"
 python src/mechanism.py --tests group,weights,lc,topk,pad,topic,mask,vocab | tee logs/mechanism.log
 step "5/9 label-free repairs (leave-one-corpus-out)"
@@ -25,6 +28,8 @@ python src/bangla.py                                       | tee logs/bangla.log
 step "7/9 aggregation, CIs, decomposition, tests"
 python src/analysis.py                                     | tee logs/analysis.log
 python src/analysis_extra.py                               | tee logs/analysis_extra.log
+python src/analysis_robust.py                              | tee logs/analysis_robust.log
+python src/analysis_robust.py variants                     | tee logs/analysis_variants.log
 step "8/9 figures"
 python src/figures.py                                      | tee logs/figures.log
 step "9/9 paper numbers, README, claim verification"

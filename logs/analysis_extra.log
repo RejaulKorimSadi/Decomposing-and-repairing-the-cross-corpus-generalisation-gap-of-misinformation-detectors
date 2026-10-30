@@ -1,16 +1,14 @@
-/usr/local/lib/python3.13/site-packages/sklearn/mixture/_base.py:293: ConvergenceWarning: Best performing initialization did not converge. Try different init parameters, or increase max_iter, tol, or check for degenerate data.
-  warnings.warn(
-/usr/local/lib/python3.13/site-packages/sklearn/mixture/_base.py:293: ConvergenceWarning: Best performing initialization did not converge. Try different init parameters, or increase max_iter, tol, or check for degenerate data.
-  warnings.warn(
-           default            em        src_rate        half_rate           gmm        true_rate        oracle       
-              mean    std   mean    std     mean    std      mean    std   mean    std      mean    std   mean    std
-model                                                                                                                
-glove_lr     0.465  0.004  0.381  0.005    0.540  0.005     0.542  0.004  0.494  0.002     0.547  0.003  0.564  0.004
-nbsvm        0.410  0.008  0.349  0.006    0.525  0.006     0.526  0.005  0.444  0.004     0.534  0.005  0.555  0.003
-roberta_lr   0.452  0.013  0.368  0.007    0.516  0.008     0.516  0.008  0.477  0.017     0.525  0.009  0.549  0.010
-style_gb     0.427  0.007  0.347  0.006    0.521  0.003     0.521  0.003  0.477  0.008     0.529  0.004  0.548  0.003
-tfidf_lr     0.439  0.011  0.358  0.013    0.541  0.005     0.539  0.006  0.510  0.007     0.547  0.005  0.565  0.004
-tfidf_svm    0.437  0.009  0.363  0.012    0.539  0.006     0.537  0.005  0.503  0.010     0.546  0.006  0.564  0.004
+               default            em        src_rate        half_rate           gmm        true_rate        oracle       
+                  mean    std   mean    std     mean    std      mean    std   mean    std      mean    std   mean    std
+model                                                                                                                    
+glove_lr         0.465  0.004  0.381  0.005    0.540  0.005     0.542  0.004  0.494  0.002     0.547  0.003  0.564  0.004
+nbsvm            0.410  0.008  0.349  0.006    0.525  0.006     0.526  0.005  0.444  0.004     0.534  0.005  0.555  0.003
+roberta_ft       0.418  0.009  0.340  0.004    0.535  0.006     0.534  0.010  0.479  0.005     0.544  0.007  0.571  0.008
+roberta_lr       0.452  0.013  0.368  0.007    0.516  0.008     0.516  0.008  0.477  0.017     0.525  0.009  0.549  0.010
+style_gb         0.427  0.007  0.347  0.006    0.521  0.003     0.521  0.003  0.477  0.008     0.529  0.004  0.548  0.003
+tfidf_lr         0.439  0.011  0.358  0.013    0.541  0.005     0.539  0.006  0.510  0.007     0.547  0.005  0.565  0.004
+tfidf_lr_ftsub   0.462  0.001  0.363  0.010    0.532  0.007     0.532  0.009  0.515  0.011     0.541  0.007  0.566  0.006
+tfidf_svm        0.437  0.009  0.363  0.012    0.539  0.006     0.537  0.005  0.503  0.010     0.546  0.006  0.564  0.004
 {
  "em": -0.6438783789045498,
  "src_rate": 0.810145482697995,

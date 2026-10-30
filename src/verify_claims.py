@@ -55,8 +55,8 @@ O = pd.read_csv(f"{R}/summary_operating_points_cells.csv")
 g = O[(O.model == "tfidf_lr") & ~O.in_domain]
 check(g.em.mean() < g.default.mean(), "EM prior adaptation lowers off-diagonal macro-F1")
 rec = (g.src_rate - g.default).mean() / (g.oracle - g.default).mean()
-close(100 * rec, num("RecRank"), 0.51, "rank transfer recovery (%)")
-check(rec > 0.5, "rank transfer recovers most of the operating-point loss")
+close(100 * rec, num("RecRank"), 0.51, "rate transfer recovery (%)")
+check(rec > 0.5, "rate transfer recovers most of the operating-point loss")
 check(num("ECEout") > 3 * num("ECEin"), "calibration degrades on target (ECE)")
 check(num("SrcPriorErr") < num("EMpriorErr"), "source prior is a better guess than EM prior")
 
@@ -120,6 +120,48 @@ S = pd.read_csv(f"{R}/bangla_seeds.csv")
 check(S[S.model == "char_lr"].auc.mean() - L.auc.mean() < 0.05, "LOSO close to random-split AUC")
 Xl = pd.read_csv(f"{R}/bangla_xling.csv").groupby(["source", "target"]).auc.mean()
 check(Xl[("ClickbaitEN", "BanglaBait-EN")] > 0.65, "English->Bengali translate-test well above chance")
+
+# robustness of the decomposition and of rate transfer (independent recomputation where cheap)
+RB = json.load(open(f"{R}/summary_robust.json"))
+cb = RB["corpus_bootstrap"]
+check(cb["rank_share"]["lo"] > 0.5, f"ranking is the majority even at the lower corpus-bootstrap bound ({cb['rank_share']['lo']:.2f})")
+check(cb["rec_em"]["hi"] < 0, "EM recovery interval stays below zero")
+check(cb["rec_rank"]["lo"] > 0.5, "rate-transfer recovery interval stays above one half")
+d1 = RB["rank_share_drop_one_corpus"].values()
+check(min(d1) > 0.6, "ranking share > 60% whichever corpus is dropped")
+check(RB["indomain_slack"]["f1_mean"] < 0.02, "in-domain threshold slack is small")
+check(RB["ba_decomp"]["rank_share"] > 0.7, "ranking dominates under balanced accuracy too")
+V = pd.read_csv(f"{R}/robust_rate_variants.csv")
+v = V[V.model == "tfidf_lr"]
+check(v.oracle_cf.mean() < v.oracle.mean(), "cross-fitted oracle is below the in-sample oracle")
+check(v["rank"].mean() >= v.oracle_cf.mean() - 0.005, "rate transfer is at least as good as the cross-fitted oracle")
+check(abs(v.pi_s - v.pi_t).mean() < abs(v.pi_acc - v.pi_t).mean(), "source prior beats adjusted classify-and-count")
+PM = pd.read_csv(f"{R}/robust_per_model.csv").set_index("model")
+check((PM.rec_em < 0).all(), "EM makes the operating point worse for every detector")
+check((PM.rec_src_rate > 0.5).all(), "rate transfer recovers most of the loss for every detector")
+check(abs(PM.loc["tfidf_lr", "rec_src_rate"] - PM.loc["tfidf_lr", "rec_half_rate"]) < 0.05,
+      "rate 0.5 recovers almost as much as rate transfer (stated in the text)")
+PS = pd.read_csv(f"{R}/robust_prior_shift.csv").groupby("delta")[["default", "em", "rank", "acc", "true_rate"]].mean()
+check((PS["rank"] > PS.default).all(), "rate transfer beats the default threshold at every prior shift")
+check((PS.em < PS.default).all() and (PS.acc < PS.default).all(), "EM and ACC stay below default at every shift")
+check(PS["rank"].idxmax() in (-0.1, 0.0, 0.1), "rate transfer peaks near zero shift")
+check(PS.loc[0.3, "true_rate"] - PS.loc[0.3, "rank"] > 0.03, "rate transfer falls behind the true rate at +0.3")
+dt = pd.read_csv(f"{R}/data_table.csv").set_index("corpus").loc[VER].positive_rate
+check(abs(dt.min() - 0.23) < 0.006 and abs(dt.max() - 0.51) < 0.006, "veracity base rates span 0.23-0.51 (text)")
+check(abs(num("RankShareAll") - 70) < 0.6, "highlight '70%' matches the ranking share")
+if os.path.exists(f"{R}/transfer_roberta_ft.csv"):
+    FT = pd.read_csv(f"{R}/transfer_roberta_ft.csv")
+    FS = pd.read_csv(f"{R}/transfer_tfidf_lr_ftsub.csv")
+    fo = FT[FT.source != FT.target].auc.mean()
+    lo = FS[(FS.source != FS.target) & FS.seed.isin(FT.seed.unique())].auc.mean()
+    check(fo <= lo + 0.02, f"fine-tuned RoBERTa does not transfer clearly better than paired TF-IDF ({fo:.3f} vs {lo:.3f})")
+    if "roberta_ft" in PM.index:
+        check(PM.loc["roberta_ft", "rec_em"] < 0, "EM worse for the fine-tuned model too")
+        check(PM.loc["roberta_ft", "rec_src_rate"] > 0.5, "rate transfer recovers most for the fine-tuned model")
+    Dc = pd.read_csv(f"{R}/summary_decomposition_cells.csv")
+    x = Dc[Dc.model == "roberta_ft"]
+    if len(x):
+        check(x.ranking.sum() / (x.ranking + x.threshold + x.prior).sum() > 0.5, "fine-tuned gap mostly ranking")
 
 # data audit
 P = pd.read_csv(f"{R}/label_probe.csv").set_index(["corpus", "probe"])

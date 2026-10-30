@@ -17,6 +17,27 @@ $DATA_DIR/
 └── models/glove-wiki-gigaword-100.gz
 ```
 
+### The two article files
+
+The ISOT and WELFake files above are cleaned working copies made earlier in this project, not
+the raw releases:
+
+* `ISOT_FINAL_CLEANED.csv`: 38,833 of the 44,898 released articles (exact duplicates and empty
+  texts removed).
+* `WELFake_ULTIMATE_LEAKAGE_CONTROLLED.csv`: 24,530 of the 72,134 released articles (duplicates
+  and articles shared with ISOT removed, since WELFake merges a Reuters-based collection like
+  ISOT's real class). Only 18 near-duplicates of ISOT remain, and transfer tests drop them.
+
+To start from the original releases instead, point the loaders at them:
+
+```bash
+export ISOT_RAW=/path/to/isot          # folder with Fake.csv and True.csv
+export WELFAKE_RAW=/path/to/WELFake_Dataset.csv
+python src/prep.py                     # deduplicates, then drops WELFake articles shared with ISOT
+```
+
+This reproduces the construction of the working copies; exact counts can differ slightly.
+
 | Corpus | Unit | Construct | Source | Licence / terms |
 |---|---|---|---|---|
 | ISOT Fake News (Ahmed et al., 2017, 2018) | article | fake vs real | University of Victoria ISOT lab | free for research use, cite the papers |

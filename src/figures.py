@@ -96,7 +96,7 @@ def operating_points(M, name="fig_operating_points"):
     ax.vlines(x, np.minimum(g["default"], g["em"]), g["oracle"], color=GRID, lw=2)
     for k, lab, col, mk in [("default", "default threshold 0.5", ORANGE, "o"),
                             ("em", "EM prior adaptation (label-free)", RED, "x"),
-                            ("src_rate", "rank transfer (label-free)", BLUE, "s"),
+                            ("src_rate", "rate transfer (label-free)", BLUE, "s"),
                             ("oracle", "oracle threshold (upper bound)", INK, "_")]:
         ax.scatter(x, g[k], s=16 if mk not in "_x" else 40 if mk == "_" else 18, marker=mk, color=col,
                    label=lab, zorder=3, linewidths=1.6 if mk in "_x" else 0)
@@ -214,6 +214,25 @@ def fix_bars(F, name="fig_fix"):
     save(fig, name)
 
 
+def prior_shift(R, name="fig_prior_shift"):
+    """Macro-F1 when each target is re-sampled to the source prior + delta (tfidf-lr, 42 cells x 5 seeds)."""
+    g = R.groupby("delta")[["default", "em", "rank", "acc", "true_rate", "oracle"]].mean()
+    fig, ax = plt.subplots(figsize=(4.6, 3.0))
+    for k, lab, col, mk, ls in [("oracle", "oracle threshold (bound)", INK, "_", ":"),
+                                ("true_rate", "true target base rate known", AQUA, "D", "-"),
+                                ("rank", "rate transfer (source base rate)", BLUE, "s", "-"),
+                                ("default", "default threshold 0.5", ORANGE, "o", "-"),
+                                ("acc", "adjusted classify-and-count rate", YELLOW, "^", "-"),
+                                ("em", "EM prior adaptation", RED, "x", "-")]:
+        ax.plot(g.index, g[k], color=col, marker=mk, ms=4 if mk != "_" else 9, ls=ls, lw=1.8, label=lab)
+    ax.axvline(0, color=MUTED, lw=0.8, ls="--")
+    ax.set_xlabel("target base rate minus source base rate")
+    ax.set_ylabel("macro-F1 (off-diagonal mean)")
+    ax.set_xticks(g.index, [f"{d:+.1f}" if d else "0" for d in g.index])
+    ax.legend(fontsize=6.4, loc="lower center", ncol=2, bbox_to_anchor=(0.5, 1.0))
+    save(fig, name)
+
+
 if __name__ == "__main__":
     R = C.RESULTS
     M = pd.read_csv(f"{R}/summary_matrix.csv")
@@ -225,7 +244,8 @@ if __name__ == "__main__":
     operating_points(M)
     roc_panel()
     for f, fn in [("mech_lc.csv", learning_curve), ("mech_topk.csv", topk), ("mech_weights.csv", weights),
-                  ("fix_loco.csv", fix_bars), ("summary_pad_cells.csv", pad_scatter)]:
+                  ("fix_loco.csv", fix_bars), ("summary_pad_cells.csv", pad_scatter),
+                  ("robust_prior_shift.csv", prior_shift)]:
         if os.path.exists(f"{R}/{f}"):
             fn(pd.read_csv(f"{R}/{f}"))
     print("figures written to", C.FIGURES)

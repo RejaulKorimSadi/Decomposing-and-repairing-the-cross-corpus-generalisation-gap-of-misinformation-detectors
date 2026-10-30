@@ -1,0 +1,67 @@
+PASS in-domain AUC: recomputed 0.9136 vs reported 0.9140
+PASS off-diagonal AUC: recomputed 0.5673 vs reported 0.5670
+PASS cells with AUC<0.5: recomputed 8.0000 vs reported 8.0000
+PASS permutation control near 0.5 (0.502)
+PASS ranking share of gap (%): recomputed 69.7462 vs reported 70.0000
+PASS EM prior adaptation lowers off-diagonal macro-F1
+PASS rate transfer recovery (%): recomputed 81.0145 vs reported 81.0000
+PASS rate transfer recovers most of the operating-point loss
+PASS calibration degrades on target (ECE)
+PASS source prior is a better guess than EM prior
+PASS RoBERTa does not transfer better than TF-IDF (0.544 vs 0.549)
+PASS style transfer a few points below lexical models
+PASS LOCO pooled AUC: recomputed 0.6596 vs reported 0.6600
+PASS pooling beats the average single source
+PASS balancing and masking leave average AUC unchanged
+PASS inlp lowers AUC vs pooled
+PASS coral lowers AUC vs pooled
+PASS corpus_feat_drop lowers AUC vs pooled
+PASS inlp decrease significant (Holm)
+PASS coral decrease significant (Holm)
+PASS corpus_feat_drop decrease significant (Holm)
+PASS masking helps clearly only on ISOT
+PASS topic balancing leaves ISOT in-domain AUC unchanged
+PASS topic balancing leaves WELFake in-domain AUC unchanged
+PASS topic balancing leaves LIAR in-domain AUC unchanged
+PASS GossipCop loses in-domain AUC under topic balancing
+PASS top-K barely moves ISOT in-domain AUC (0.999->0.985)
+PASS top-K lowers ISOT->WELFake transfer (0.673->0.580)
+PASS top-K barely moves WELFake in-domain AUC (0.984->0.949)
+PASS top-K lowers WELFake->ISOT transfer (0.827->0.718)
+PASS no association between PAD and transfer
+PASS masking everything leaves ISOT in-domain AUC high (0.996)
+PASS masking everything leaves WELFake in-domain AUC high (0.964)
+PASS vocabulary ablation moves ISOT in-domain AUC only slightly
+PASS vocabulary ablation moves WELFake in-domain AUC only slightly
+PASS char-LR within two points of the published 66.28
+PASS deduplication lowers Bengali F1
+PASS LOSO close to random-split AUC
+PASS English->Bengali translate-test well above chance
+PASS ranking is the majority even at the lower corpus-bootstrap bound (0.63)
+PASS EM recovery interval stays below zero
+PASS rate-transfer recovery interval stays above one half
+PASS ranking share > 60% whichever corpus is dropped
+PASS in-domain threshold slack is small
+PASS ranking dominates under balanced accuracy too
+PASS cross-fitted oracle is below the in-sample oracle
+PASS rate transfer is at least as good as the cross-fitted oracle
+PASS source prior beats adjusted classify-and-count
+PASS EM makes the operating point worse for every detector
+PASS rate transfer recovers most of the loss for every detector
+PASS rate 0.5 recovers almost as much as rate transfer (stated in the text)
+PASS rate transfer beats the default threshold at every prior shift
+PASS EM and ACC stay below default at every shift
+PASS rate transfer peaks near zero shift
+PASS rate transfer falls behind the true rate at +0.3
+PASS veracity base rates span 0.23-0.51 (text)
+PASS highlight '70%' matches the ranking share
+PASS fine-tuned RoBERTa does not transfer clearly better than paired TF-IDF (0.559 vs 0.558)
+PASS EM worse for the fine-tuned model too
+PASS rate transfer recovers most for the fine-tuned model
+PASS fine-tuned gap mostly ranking
+PASS WELFake reliable signature sits entirely under raw label 1
+PASS no pending placeholders file
+PASS no '??' or 'pending' in manuscript sources
+PASS all number macros defined (missing: [])
+
+65/65 checks passed

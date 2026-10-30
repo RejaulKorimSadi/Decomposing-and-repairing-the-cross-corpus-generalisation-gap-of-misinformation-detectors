@@ -127,7 +127,9 @@ Signature & Expected class & ISOT (0 / 1) & WELFake (0 / 1) \\
 
 
 MODEL_NAME = {"tfidf_lr": r"\textsc{tfidf-lr}", "tfidf_svm": r"\textsc{tfidf-svm}", "nbsvm": r"\textsc{nb-svm}",
-              "glove_lr": r"\textsc{glove-lr}", "style_gb": r"\textsc{style-gb}", "roberta_lr": r"\textsc{roberta-lr}"}
+              "glove_lr": r"\textsc{glove-lr}", "style_gb": r"\textsc{style-gb}", "roberta_lr": r"\textsc{roberta-lr}",
+              "roberta_ft": r"\textsc{roberta-ft}"}
+MODELS_ALL = ["tfidf_lr", "tfidf_svm", "nbsvm", "glove_lr", "style_gb", "roberta_lr", "roberta_ft"]
 PAIRS = [("ISOT", "WELFake"), ("WELFake", "ISOT"), ("PolitiFact", "GossipCop"), ("GossipCop", "PolitiFact"),
          ("Twitter15", "Twitter16"), ("Twitter16", "Twitter15"), ("LIAR", "PolitiFact"), ("PolitiFact", "LIAR")]
 
@@ -141,7 +143,7 @@ def pm_str(s):
 def transfer_part():
     H = pd.read_csv(f"{R}/summary_headline.csv")
     rows = []
-    for m in ["tfidf_lr", "tfidf_svm", "nbsvm", "glove_lr", "style_gb", "roberta_lr"]:
+    for m in MODELS_ALL:
         for rg in ["full", "matched", "permuted"]:
             h = H[(H.model == m) & (H.regime == rg)]
             if not len(h):
@@ -152,7 +154,7 @@ def transfer_part():
         rows.append("\\addlinespace")
     write_table("headline", r"""\begin{table}[t]
 \centering
-\caption{In-domain versus transfer performance on the seven veracity corpora (mean $\pm$ s.d.\ over five seeds of the per-seed mean over cells). ``Pairs'' averages the eight directed same-task cells. Off-diagonal macro-F1 is given at the default threshold and at the oracle threshold. \textsc{roberta-lr} is evaluated on the 1{,}500-item subsets (Section~\ref{sec:models}).}\label{tab:headline}
+\caption{In-domain versus transfer performance on the seven veracity corpora (mean $\pm$ s.d.\ over seeds of the per-seed mean over cells). ``Pairs'' averages the eight directed same-task cells. Off-diagonal macro-F1 is given at the default threshold and at the oracle threshold. \textsc{roberta-lr} is evaluated on the 1{,}500-item subsets and \textsc{roberta-ft} on 800 training and 300 test items per corpus with three seeds (Section~\ref{sec:models}); compare each with its paired \textsc{tfidf-lr} in Section~\ref{sec:models-res}, not with the rows above.}\label{tab:headline}
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}llcccccc@{}}
@@ -219,7 +221,7 @@ Pair & In & AUC [95\% CI] & Prior & PPR & F1$_{0.5}$ & F1$_{\pi}$ & F1$^\star$ &
     mac("RankShareAll", pct(c.ranking.sum() / tot.sum()))
     mac("OpShareAll", pct((c.threshold.sum() + c.prior.sum()) / tot.sum()))
     rows = []
-    for m in ["tfidf_lr", "tfidf_svm", "nbsvm", "glove_lr", "style_gb", "roberta_lr"]:
+    for m in MODELS_ALL:
         for flag in [True, False]:
             x = Dg[(Dg.model == m) & (Dg.regime == "full") & (Dg.same_task == flag)]
             if not len(x):
@@ -258,7 +260,7 @@ def operating_part():
                  ("true_rate", "Prior"), ("oracle", "Oracle")]:
         mac(f"OP{n}", f3(lr[(k, "mean")]))
     rows = []
-    for m in [x for x in ["tfidf_lr", "tfidf_svm", "nbsvm", "glove_lr", "style_gb", "roberta_lr"] if x in O.index]:
+    for m in [x for x in MODELS_ALL if x in O.index]:
         r = O.loc[m]
         cells = " & ".join(f"{r[(k, 'mean')]:.3f}" for k in
                            ["default", "em", "src_rate", "half_rate", "gmm", "true_rate", "oracle"])
@@ -266,13 +268,13 @@ def operating_part():
     pw = ex["op_wilcoxon_holm_tfidf_lr"]
     write_table("oppoints", r"""\begin{table}[t]
 \centering
-\caption{Off-diagonal macro-F1 under different operating points (mean over the 42 cells and five seeds). Label-free: default $t=0.5$, EM prior adaptation, rank transfer (predicted-positive rate set to the source prior), predicted-positive rate 0.5, and a 2-component GMM on target logits. With one number known: rate set to the true target prior. Upper bound: oracle threshold. For \textsc{tfidf-lr}, Holm-corrected Wilcoxon $p$ versus default: EM """ + f"{pw['em']:.1e}" + r""", rank transfer """ + f"{pw['src_rate']:.1e}" + r""", rate 0.5 """ + f"{pw['half_rate']:.1e}" + r""", GMM """ + f"{pw['gmm']:.1e}" + r""".}\label{tab:oppoints}
+\caption{Off-diagonal macro-F1 under different operating points (mean over the 42 cells and five seeds). Label-free: default $t=0.5$, EM prior adaptation, rate transfer (predicted-positive rate set to the source base rate), predicted-positive rate 0.5, and a 2-component GMM on target logits. With one number known: rate set to the true target prior. Upper bound: oracle threshold. For \textsc{tfidf-lr}, Holm-corrected Wilcoxon $p$ versus default: EM """ + f"{pw['em']:.1e}" + r""", rate transfer """ + f"{pw['src_rate']:.1e}" + r""", rate 0.5 """ + f"{pw['half_rate']:.1e}" + r""", GMM """ + f"{pw['gmm']:.1e}" + r""".}\label{tab:oppoints}
 \small
 \begin{tabular}{@{}lccccccc@{}}
 \toprule
  & \multicolumn{5}{c}{label-free} & prior known & bound \\
 \cmidrule(lr){2-6}\cmidrule(lr){7-7}\cmidrule(lr){8-8}
-Model & $t=0.5$ & EM & rank transfer & rate 0.5 & GMM & rate $=\pi_B$ & oracle \\
+Model & $t=0.5$ & EM & rate transfer & rate 0.5 & GMM & rate $=\pi_B$ & oracle \\
 \midrule
 """ + "\n".join(rows) + r"""
 \bottomrule
@@ -284,7 +286,7 @@ Model & $t=0.5$ & EM & rank transfer & rate 0.5 & GMM & rate $=\pi_B$ & oracle \
 def appendix_matrices():
     M = pd.read_csv(f"{R}/summary_matrix.csv")
     out = []
-    for m in [x for x in ["tfidf_lr", "tfidf_svm", "nbsvm", "glove_lr", "style_gb", "roberta_lr"] if x in set(M.model)]:
+    for m in [x for x in MODELS_ALL if x in set(M.model)]:
         for key, lab in [("auc", "ROC-AUC"), ("def_macro_f1", "macro-F1 at $t=0.5$")]:
             g = M[M.model == m].pivot(index="source", columns="target", values=f"{key}_mean").reindex(index=VER, columns=VER)
             s = M[M.model == m].pivot(index="source", columns="target", values=f"{key}_sd").reindex(index=VER, columns=VER)
@@ -369,10 +371,11 @@ def models_part():
     num = lambda s: float(s.split("±")[0])
     offs = {m: num(H.loc[m, "off_auc"]) for m in H.index}
     ins = {m: num(H.loc[m, "in_auc"]) for m in H.index}
-    nonrob = {m: v for m, v in offs.items() if m not in ("roberta_lr", "style_gb")}
+    CONTENT = ["tfidf_lr", "tfidf_svm", "nbsvm", "glove_lr"]
+    nonrob = {m: v for m, v in offs.items() if m in CONTENT}
     mac("OffAUCmin", f3(min(nonrob.values()))); mac("OffAUCmax", f3(max(nonrob.values())))
-    mac("InAUCmin", f3(min(v for m, v in ins.items() if m not in ("roberta_lr", "style_gb"))))
-    mac("InAUCmax", f3(max(v for m, v in ins.items() if m not in ("roberta_lr", "style_gb"))))
+    mac("InAUCmin", f3(min(v for m, v in ins.items() if m in CONTENT)))
+    mac("InAUCmax", f3(max(v for m, v in ins.items() if m in CONTENT)))
     if "style_gb" in H.index:
         mac("StyleInAUC", f3(ins["style_gb"])); mac("StyleOffAUC", f3(offs["style_gb"]))
     if "glove_lr" in H.index:
@@ -393,7 +396,7 @@ def models_part():
     d = (a - b).dropna()
     off = d[[s != t for s, t, _ in d.index]]
     from scipy.stats import wilcoxon
-    mac("RobMinusLRoff", f3(off.mean())); mac("RobMinusLRp", f"{wilcoxon(off).pvalue:.2f}")
+    mac("RobMinusLRoff", ("$-$" if off.mean() < 0 else "+") + f"{abs(off.mean()):.3f}"); mac("RobMinusLRp", f"{wilcoxon(off).pvalue:.2f}")
     mac("RobBetterCells", str(int((off.groupby(level=[0, 1]).mean() > 0).sum())))
     js = json.load(open(f"{R}/summary.json"))
     if "mcnemar" in js:
@@ -576,7 +579,7 @@ Training & AUC & AP & F1$_{0.5}$ & F1$^\star$ & $\Delta$AUC ($p$) \\
             mac(f"Loco{k}", f3(g.loc[m, "auc"]))
             t = tests[m]
             mac(f"Loco{k}Delta", f"{t['delta']:+.3f}")
-            mac(f"Loco{k}P", "<0.001" if t["p_holm"] < 0.001 else f"{t['p_holm']:.3f}")
+            mac(f"Loco{k}P", "<0.001" if t["p_holm"] < 0.001 else "=" + f"{t['p_holm']:.3f}")
     if "inlp" in F.method.unique():
         x = F[F.method == "inlp"]
         mac("INLPaccBefore", f2(x.corpus_id_acc_before.mean())); mac("INLPaccAfter", f2(x.corpus_id_acc_after.mean()))
@@ -707,8 +710,110 @@ Corpus & raw & empty & exact conflict & exact dup. & near conflict & near dup. &
 """)
 
 
+def robust_part():
+    js = json.load(open(f"{R}/summary_robust.json"))
+    cb = js["corpus_bootstrap"]
+    ci = lambda k: f"[{pct(cb[k]['lo'])}, {pct(cb[k]['hi'])}]"
+    mac("RankShareCI", ci("rank_share")); mac("RecRankCI", ci("rec_rank"))
+    mac("RecEMCI", ci("rec_em")); mac("RecPriorCI", ci("rec_prior"))
+    d1 = js["rank_share_drop_one_corpus"]
+    mac("RankShareDropMin", pct(min(d1.values()))); mac("RankShareDropMax", pct(max(d1.values())))
+    ba = js["ba_decomp"]
+    mac("BARankShare", pct(ba["rank_share"])); mac("BARecRank", pct(ba["rec_rank"])); mac("BAGap", f2(ba["gap"]))
+    sl = js["indomain_slack"]
+    mac("SlackFone", f3(sl["f1_mean"])); mac("SlackFoneMax", f3(sl["f1_max"]))
+    ps = js["prior_shift"]
+    mac("PSrecZero", pct(ps["+0.0"]["rec_rank"])); mac("PSrecPlus", pct(ps["+0.3"]["rec_rank"]))
+    mac("PSrecMinus", pct(ps["-0.3"]["rec_rank"]))
+    gains = [v["rank_minus_default"] for v in ps.values()]
+    mac("PSgainMin", f2(min(gains))); mac("PSgainMax", f2(max(gains)))
+    mac("PSrankPlus", f3(ps["+0.3"]["rank"])); mac("PSrankMinus", f3(ps["-0.3"]["rank"]))
+    mac("PStruePlus", f3(ps["+0.3"]["true_rate"])); mac("PStrueMinus", f3(ps["-0.3"]["true_rate"]))
+    mac("PSrankZero", f3(ps["+0.0"]["rank"]))
+    mac("PSaccRecZero", pct(ps["+0.0"]["rec_acc"]))
+    mac("PSemRecMax", pct(max(v["rec_em"] for v in ps.values())))
+    rv = js.get("rate_variants", {})
+    if "tfidf_lr" in rv:
+        r = rv["tfidf_lr"]
+        mac("RecSrcPPR", pct(r["src_ppr"])); mac("RecACC", pct(r["acc"]))
+        mac("ErrACC", f2(r["err_acc"])); mac("ErrSrcPPR", f2(r["err_src_ppr"])); mac("ErrEMvar", f2(r["err_em"]))
+        oc = js["oracle_cf_tfidf_lr"]
+        mac("OracleCF", f3(oc["oracle_cf"])); mac("OracleCFbias", f3(oc["oracle"] - oc["oracle_cf"]))
+        mac("OracleCFbiasSmall", f3(oc["small_targets"]))
+        # recovery and ranking share recomputed with the cross-fitted oracle
+        V = pd.read_csv(f"{R}/robust_rate_variants.csv")
+        V = V[V.model == "tfidf_lr"]
+        mac("RecRankCF", pct((V["rank"] - V.default).mean() / (V.oracle_cf - V.default).mean()))
+        D = pd.read_csv(f"{R}/summary_decomposition_cells.csv")
+        D = D[(D.model == "tfidf_lr") & (D.regime == "full")].merge(V[["source", "target", "seed", "oracle", "oracle_cf"]],
+                                                                     on=["source", "target", "seed"])
+        shift = D.oracle - D.oracle_cf
+        rank_cf = D.ranking + shift
+        tot = D.ranking + D.threshold + D.prior
+        mac("RankShareCF", pct(rank_cf.sum() / tot.sum()))
+    M = pd.read_csv(f"{R}/robust_per_model.csv").set_index("model")
+    M = M.loc[[m for m in MODELS_ALL if m in M.index]]
+    rows = []
+    for m in M.index:
+        r = M.loc[m]
+        v = rv.get(m, {})
+        cells = [pct(r.rec_em), pct(r.rec_src_rate), pct(v["src_ppr"]) if "src_ppr" in v else "--",
+                 pct(r.rec_half_rate), pct(v["acc"]) if "acc" in v else "--", pct(r.rec_gmm), pct(r.rec_true_rate),
+                 f"{v['err_acc']:.2f}" if "err_acc" in v else "--", f"{v['err_em']:.2f}" if "err_em" in v else "--"]
+        rows.append(f"{MODEL_NAME[m]} & {r.default:.3f} & {r.oracle:.3f} & " + " & ".join(cells) + " \\\\")
+    write_table("supp_rates", r"""\begin{table}[h]
+\centering
+\caption{Share of the operating-point loss (oracle minus default macro-F1, off-diagonal cells) recovered by each threshold rule, per detector. Rate rules flag the top share of target items given by the source base rate $\pi_A$, the source in-domain flag rate $q_A$, one half, the adjusted classify-and-count estimate (ACC), or the true target base rate. The last two columns give the mean absolute error of the ACC and EM estimates of the target base rate; the source base rate itself is off by """ + f"{rv['tfidf_lr']['err_src_prior']:.2f}" + r""" on average.}\label{tab:supp-rates}
+\footnotesize
+\begin{tabular}{@{}lrrrrrrrrrrr@{}}
+\toprule
+Model & F1$_{0.5}$ & F1$^\star$ & EM & $\pi_A$ & $q_A$ & 0.5 & ACC & GMM & $\pi_B$ & err.\ ACC & err.\ EM \\
+\midrule
+""" + "\n".join(rows) + r"""
+\bottomrule
+\end{tabular}
+\end{table}
+""")
+    mac("RecRankMin", pct(M.rec_src_rate.min())); mac("RecRankMax", pct(M.rec_src_rate.max()))
+    mac("RecEMMin", pct(M.rec_em.min())); mac("RecEMMax", pct(M.rec_em.max()))
+    mac("RankWorseShare", pct(M.loc["tfidf_lr", "rank_worse_share"]))
+
+
+def ft_part():
+    T = pd.read_csv(f"{R}/transfer_roberta_ft.csv")
+    B = pd.read_csv(f"{R}/transfer_tfidf_lr_ftsub.csv")
+    seeds = sorted(set(T.seed) & set(B.seed))
+    mac("FTseeds", str(len(seeds)))
+    for g, tag in [(T, "FT"), (B, "FTsub")]:
+        g = g[g.seed.isin(seeds)]
+        i = g[g.source == g.target].groupby("seed").auc.mean()
+        o = g[g.source != g.target].groupby("seed").auc.mean()
+        mac(f"{tag}InAUC", f3(i.mean())); mac(f"{tag}OffAUC", f3(o.mean()))
+        pr = g[[(s, t) in PAIRS for s, t in zip(g.source, g.target)]]
+        mac(f"{tag}PairAUC", f3(pr.auc.mean()))
+        off = g[g.source != g.target]
+        mac(f"{tag}OffFdef", f3(off.def_macro_f1.mean())); mac(f"{tag}OffForc", f3(off.oracle_macro_f1.mean()))
+    a = T[T.seed.isin(seeds)].set_index(["source", "target", "seed"]).auc
+    b = B[B.seed.isin(seeds)].set_index(["source", "target", "seed"]).auc
+    d = (a - b).dropna()
+    off = d[[s != t for s, t, _ in d.index]]
+    ind = d[[s == t for s, t, _ in d.index]]
+    from scipy.stats import wilcoxon
+    sg = lambda v: ("$-$" if v < 0 else "+") + f"{abs(v):.3f}"
+    mac("FTminusLRoff", sg(off.mean())); mac("FTminusLRp", f"{wilcoxon(off).pvalue:.2f}")
+    mac("FTminusLRin", sg(ind.mean()))
+    mac("FTbetterCells", str(int((off.groupby(level=[0, 1]).mean() > 0).sum())))
+    Dg = pd.read_csv(f"{R}/summary_decomposition_cells.csv")
+    x = Dg[(Dg.model == "roberta_ft") & (Dg.regime == "full")]
+    if len(x):
+        mac("FTRankShare", pct(x.ranking.sum() / (x.ranking + x.threshold + x.prior).sum()))
+    O = pd.read_csv(f"{R}/robust_per_model.csv").set_index("model")
+    if "roberta_ft" in O.index:
+        mac("FTRecRank", pct(O.loc["roberta_ft", "rec_src_rate"])); mac("FTRecEM", pct(O.loc["roberta_ft", "rec_em"]))
+
+
 PARTS = [data_part, transfer_part, operating_part, appendix_matrices, bangla_part, models_part, mechanism_part,
-         repair_part, supplement_part, topk_part, mask_part, vocab_part]
+         repair_part, supplement_part, topk_part, mask_part, vocab_part, robust_part, ft_part]
 
 
 def main():

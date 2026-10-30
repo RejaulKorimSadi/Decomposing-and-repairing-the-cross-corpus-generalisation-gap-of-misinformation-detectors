@@ -10,3 +10,4 @@ artifacts/preds/
 __pycache__/
 *.pyc
 .DS_Store
+artifacts/ft_cache/

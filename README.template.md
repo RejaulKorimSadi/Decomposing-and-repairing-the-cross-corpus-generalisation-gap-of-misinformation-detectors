@@ -6,7 +6,7 @@
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-2a78d6"></a>
   <img alt="Python 3.11+" src="https://img.shields.io/badge/python-3.11%2B-1baf7a">
   <img alt="CPU only" src="https://img.shields.io/badge/hardware-CPU%20only-eda100">
-  <img alt="5 seeds" src="https://img.shields.io/badge/seeds-5-6250d6">
+  <img alt="Detectors" src="https://img.shields.io/badge/detectors-7-6250d6">
   <img alt="Corpora" src="https://img.shields.io/badge/corpora-10%20(en%2C%20bn)-eb6834">
 </p>
 
@@ -22,7 +22,7 @@
 
 ## In one paragraph
 
-Fake-news detectors score above 95% on the corpus they were trained on and much worse on other corpora. We ask **why**, in a way that tells you what to fix. Across ten public corpora (two languages; articles, headlines, claims and tweets), six detectors and five seeds, we split the macro-F1 a detector loses on a new corpus into a **ranking deficit**, which no decision threshold can recover, and an **operating-point loss**, which the right threshold would. About **{{RankShareAll}}** of the gap is ranking and **{{OpShareAll}}** is the operating point. The textbook label-shift fix (EM prior adaptation) makes the operating point *worse* ({{RecEM}} of the loss recovered), while a one-line, label-free rule, **rank transfer**, recovers **{{RecRank}}**.
+Fake-news detectors score above 95% on the corpus they were trained on and much worse on other corpora. We ask **why**, in a way that tells you what to fix. Across ten public corpora (two languages; articles, headlines, claims and tweets) and seven detectors, from TF-IDF to a fine-tuned RoBERTa, we split the macro-F1 a detector loses on a new corpus into a **ranking deficit**, which no decision threshold can recover, and an **operating-point loss**, which the right threshold would. About **{{RankShareAll}}** of the gap is ranking (95% corpus-bootstrap interval {{RankShareCI}}) and **{{OpShareAll}}** is the operating point. The textbook label-shift fix (EM prior adaptation) makes the operating point *worse* ({{RecEM}} of the loss recovered). Flagging new items at the source base rate, **rate transfer**, recovers **{{RecRank}}** without a single target label. The paper shows when that rule is exact and how it degrades once the base rate itself moves.
 
 ## Key results
 
@@ -33,12 +33,15 @@ Fake-news detectors score above 95% on the corpus they were trained on and much 
 | Transfer ROC-AUC, 8 same-task cells | **{{PairAUC}}** |
 | Permutation control, transfer AUC | {{PermAUC}} ± {{PermAUCsd}} |
 | Off-diagonal cells with AUC < 0.5 (cue reversed) | {{NcellsBelowHalf}} of 42 |
-| Share of the F1 gap that is **ranking** | **{{RankShareAll}}** |
+| Share of the F1 gap that is **ranking** (corpus bootstrap) | **{{RankShareAll}}** {{RankShareCI}} |
+| … with balanced accuracy instead of macro-F1 | {{BARankShare}} |
 | Operating-point loss recovered by EM prior adaptation | {{RecEM}} |
-| … by **rank transfer** (label-free) | **{{RecRank}}** |
+| … by **rate transfer** (label-free) | **{{RecRank}}** {{RecRankCI}} |
+| … by flagging exactly half of the items | {{RecHalf}} |
 | … by knowing the true target base rate | {{RecPrior}} |
 | Calibration error in-domain → on a new corpus (ECE) | {{ECEin}} → {{ECEout}} |
 | Frozen RoBERTa vs TF-IDF transfer AUC (same subsets) | {{RobOffAUC}} vs {{SubLROffAUC}} |
+| Fine-tuned RoBERTa vs TF-IDF transfer AUC (same subsets) | {{FTOffAUC}} vs {{FTsubOffAUC}} |
 | Held-out AUC, pooled training on 6 corpora vs one corpus | {{LocoPooled}} vs {{LocoMeanSingle}} |
 | … with corpus identity projected out (INLP) | {{LocoINLP}} |
 | Bengali clickbait: leave-one-publisher-out AUC | {{BBlosoAUC}} |
@@ -50,7 +53,9 @@ Fake-news detectors score above 95% on the corpus they were trained on and much 
   <img src="figures/fig_gap_decomposition.png" width="51%" alt="Gap decomposition bars">
 </p>
 <p align="center">
-  <img src="figures/fig_operating_points.png" width="80%" alt="Operating points per cell">
+  <img src="figures/fig_operating_points.png" width="62%" alt="Operating points per cell">
+  &nbsp;
+  <img src="figures/fig_prior_shift.png" width="35%" alt="Operating points under prior shift">
 </p>
 
 ## The decomposition
@@ -65,12 +70,14 @@ F_BB(0.5) − F_AB(0.5)  =  [F_BB(0.5) − F_AB(τ*)]      ranking deficit      
 
 τ\* is the oracle threshold on *B*, τ_π the threshold whose predicted-positive rate equals *B*'s true base rate.
 
-**Rank transfer**, the label-free repair:
+**Rate transfer**, the label-free repair:
 
 ```python
 t = np.quantile(scores_on_new_corpus, 1 - source_base_rate)   # flag the source's base rate of items
 pred = scores_on_new_corpus >= t
 ```
+
+It is exact when target scores are an order-preserving distortion of source scores and the base rate is unchanged (Proposition 1 in the paper). If you expect the base rate of your feed to differ, estimate it from a small labelled sample: neither EM nor adjusted classify-and-count could do it label-free on these corpora.
 
 ## What is in here
 
@@ -80,18 +87,20 @@ fn-transfer-audit/
 │   ├── prep.py            harmonise labels, MinHash dedup, cross-corpus overlap
 │   ├── label_probe.py     verify label direction with outlet signatures
 │   ├── transfer.py        train-on-one / test-on-all, 5 models × 3 regimes × 5 seeds
-│   ├── roberta.py         RoBERTa-base representations (+ paired TF-IDF baseline)
+│   ├── roberta.py         frozen RoBERTa-base representations (+ paired TF-IDF baseline)
+│   ├── finetune.py        RoBERTa-base with the top 4 layers fine-tuned (+ paired TF-IDF)
 │   ├── mechanism.py       style/group/learning-curve/top-K/masking/topic/PAD probes
 │   ├── fix.py             leave-one-corpus-out representation repairs
 │   ├── bangla.py          BanglaBait replication, leave-one-publisher-out, translate-test
-│   ├── analysis*.py       CIs, decomposition, operating points, tests
+│   ├── analysis*.py       CIs, decomposition, operating points, robustness, tests
+│   ├── verify_claims.py   re-derives the paper's claims from raw results and checks them
 │   ├── figures.py         every figure in the paper
 │   └── paper_numbers.py   every number in the paper (LaTeX macros) — nothing typed by hand
 ├── results/               per-cell CSVs, summaries, key_numbers.json
 ├── figures/               PDF + 300-dpi PNG
 ├── logs/                  run logs
 ├── DATA.md                sources, licences, label conventions, privacy
-└── run_all.sh             one command, ~10–12 h on a 2-core CPU
+└── run_all.sh             one command, ~14–16 h on a 2-core CPU
 ```
 
 ## Reproduce
@@ -104,7 +113,7 @@ export DATA_DIR=/path/to/data      # layout in DATA.md
 bash run_all.sh
 ```
 
-Every random choice is seeded (0–4). Saved per-item scores (`artifacts/preds/`, produced by the run) let you recompute any metric or threshold rule without retraining.
+Every random choice is seeded (0–4; 0–2 for fine-tuning). Saved per-item scores (`artifacts/preds/`, produced by the run) let you recompute any metric or threshold rule without retraining.
 
 <details>
 <summary><b>Reporting protocol we recommend</b></summary>
@@ -112,17 +121,17 @@ Every random choice is seeded (0–4). Saved per-item scores (`artifacts/preds/`
 1. **Verify label direction** with signature probes; a same-task AUC below 0.5 is a data error until shown otherwise.
 2. **Deduplicate** within and across corpora (near-duplicates), dropping label-conflicting groups.
 3. Report at least one **same-task cross-corpus** result, with **AUC/AP** next to F1.
-4. Report the **decomposition**: F1 at the default, prior-matched and oracle thresholds.
+4. Report the **decomposition**: F1 at the default, prior-matched and (cross-fitted) oracle thresholds.
 5. Run three cheap **shortcut probes**: surface-statistics style model, group-identity baseline, 64-example learning-curve point.
-6. Add a **permutation control**, ≥ 5 seeds and bootstrap intervals.
-7. **Deploy with a rank-based operating point** unless target labels exist.
+6. Add a **permutation control**, several seeds, and intervals that resample corpora when you average over a matrix.
+7. **Deploy with a rate-based operating point** unless target labels exist; estimate the base rate from a labelled sample if it may have changed.
 
 </details>
 
 <details>
 <summary><b>A note on label conventions</b></summary>
 
-ISOT codes `1 = fake`; WELFake codes `1 = real` (Zenodo record). `src/label_probe.py` checks this on the raw files: all {{WELnyt}} WELFake titles ending in "- The New York Times" carry label 1. Treating WELFake label 1 as fake makes ISOT↔WELFake transfer look below chance.
+ISOT codes `1 = fake`; WELFake codes `1 = real` (Zenodo record), and our working copy of WELFake even carried a class-name column that got it wrong. `src/label_probe.py` checks this on the raw files: all {{WELnyt}} WELFake titles ending in "- The New York Times" carry label 1. Treating WELFake label 1 as fake makes ISOT↔WELFake transfer look below chance.
 
 </details>
 
