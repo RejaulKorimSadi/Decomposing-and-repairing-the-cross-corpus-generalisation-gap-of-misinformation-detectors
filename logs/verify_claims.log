@@ -67,8 +67,15 @@ PASS LLM loss is mostly operating point
 PASS no published DG method beats pooled LR
 PASS EM lowers macro-F1 for the DG models too
 PASS WELFake reliable signature sits entirely under raw label 1
+PASS WELFake release codes 1 = fake (reliable signature under 0, fake-site template under 1)
+PASS ISOT working copy: every article and label taken verbatim from the release
+PASS ISOT working copy = release - exact duplicates - further removed
+PASS WELFake working copy: every article from the release, every label inverted
+PASS WELFake working copy reproduced by dedup + ISOT-overlap removal (up to a handful)
+PASS WELFake release: label 1 count equals the documented number of fake articles
+PASS about three in five deduplicated WELFake articles are ISOT text
 PASS no pending placeholders file
 PASS no '??' or 'pending' in manuscript sources
 PASS all number macros defined (missing: [])
 
-72/72 checks passed
+79/79 checks passed

@@ -1,58 +1,40 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-labelledby="t d">
-  <title id="t">fn-transfer-audit</title>
-  <desc id="d">A seven by seven transfer matrix: strong cells on the diagonal, faded cells elsewhere, beside the project title.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0d1b2e"/>
-      <stop offset="1" stop-color="#16243a"/>
-    </linearGradient>
-    <linearGradient id="rule" x1="0" x2="1">
-      <stop offset="0" stop-color="#3987e5"/>
-      <stop offset="1" stop-color="#eb6834"/>
-    </linearGradient>
-  </defs>
-  <rect width="1200" height="300" rx="18" fill="url(#bg)"/>
-  <!-- 7x7 matrix: diagonal = in-domain (bright), off-diagonal = transfer (faded); opacity ~ AUC -->
-  <g transform="translate(64,46)">
-    <g fill="#3987e5">
-      <rect x="0" y="0" width="26" height="26" rx="5" opacity="1"/>
-      <rect x="30" y="30" width="26" height="26" rx="5" opacity="1"/>
-      <rect x="60" y="60" width="26" height="26" rx="5" opacity=".85"/>
-      <rect x="90" y="90" width="26" height="26" rx="5" opacity=".8"/>
-      <rect x="120" y="120" width="26" height="26" rx="5" opacity=".45"/>
-      <rect x="150" y="150" width="26" height="26" rx="5" opacity=".95"/>
-      <rect x="180" y="180" width="26" height="26" rx="5" opacity=".92"/>
-    </g>
-    <g fill="#86b6ef">
-      <rect x="30" y="0" width="26" height="26" rx="5" opacity=".42"/><rect x="60" y="0" width="26" height="26" rx="5" opacity=".4"/>
-      <rect x="90" y="0" width="26" height="26" rx="5" opacity=".08"/><rect x="120" y="0" width="26" height="26" rx="5" opacity=".14"/>
-      <rect x="150" y="0" width="26" height="26" rx="5" opacity=".06"/><rect x="180" y="0" width="26" height="26" rx="5" opacity=".38"/>
-      <rect x="0" y="30" width="26" height="26" rx="5" opacity=".66"/><rect x="60" y="30" width="26" height="26" rx="5" opacity=".28"/>
-      <rect x="90" y="30" width="26" height="26" rx="5" opacity=".1"/><rect x="120" y="30" width="26" height="26" rx="5" opacity=".1"/>
-      <rect x="150" y="30" width="26" height="26" rx="5" opacity=".2"/><rect x="180" y="30" width="26" height="26" rx="5" opacity=".18"/>
-      <rect x="0" y="60" width="26" height="26" rx="5" opacity=".56"/><rect x="30" y="60" width="26" height="26" rx="5" opacity=".06"/>
-      <rect x="90" y="60" width="26" height="26" rx="5" opacity=".1"/><rect x="120" y="60" width="26" height="26" rx="5" opacity=".05"/>
-      <rect x="150" y="60" width="26" height="26" rx="5" opacity=".06"/><rect x="180" y="60" width="26" height="26" rx="5" opacity=".04"/>
-      <rect x="0" y="90" width="26" height="26" rx="5" opacity=".04"/><rect x="30" y="90" width="26" height="26" rx="5" opacity=".06"/>
-      <rect x="60" y="90" width="26" height="26" rx="5" opacity=".18"/><rect x="120" y="90" width="26" height="26" rx="5" opacity=".16"/>
-      <rect x="150" y="90" width="26" height="26" rx="5" opacity=".28"/><rect x="180" y="90" width="26" height="26" rx="5" opacity=".04"/>
-      <rect x="0" y="120" width="26" height="26" rx="5" opacity=".14"/><rect x="30" y="120" width="26" height="26" rx="5" opacity=".36"/>
-      <rect x="60" y="120" width="26" height="26" rx="5" opacity=".08"/><rect x="90" y="120" width="26" height="26" rx="5" opacity=".1"/>
-      <rect x="150" y="120" width="26" height="26" rx="5" opacity=".04"/><rect x="180" y="120" width="26" height="26" rx="5" opacity=".04"/>
-      <rect x="0" y="150" width="26" height="26" rx="5" opacity=".28"/><rect x="30" y="150" width="26" height="26" rx="5" opacity=".04"/>
-      <rect x="60" y="150" width="26" height="26" rx="5" opacity=".06"/><rect x="90" y="150" width="26" height="26" rx="5" opacity=".06"/>
-      <rect x="120" y="150" width="26" height="26" rx="5" opacity=".05"/><rect x="180" y="150" width="26" height="26" rx="5" opacity=".3"/>
-      <rect x="0" y="180" width="26" height="26" rx="5" opacity=".36"/><rect x="30" y="180" width="26" height="26" rx="5" opacity=".04"/>
-      <rect x="60" y="180" width="26" height="26" rx="5" opacity=".08"/><rect x="90" y="180" width="26" height="26" rx="5" opacity=".04"/>
-      <rect x="120" y="180" width="26" height="26" rx="5" opacity=".04"/><rect x="150" y="180" width="26" height="26" rx="5" opacity=".28"/>
-    </g>
-    <text x="103" y="236" fill="#8fa3bd" font-family="Helvetica, Arial, sans-serif" font-size="13" text-anchor="middle">train → test, ROC-AUC</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 330" width="1200" height="330" role="img" aria-labelledby="t d">
+<title id="t">Rank or threshold? Why fake-news detectors fail on new corpora</title>
+<desc id="d">Animated banner: the seven-by-seven transfer matrix of ROC-AUC (diagonal in-domain, off-diagonal across corpora) beside the paper title and its main findings.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0d1b2e"/><stop offset="1" stop-color="#172840"/>
+  </linearGradient>
+  <linearGradient id="rule" x1="0" x2="1">
+    <stop offset="0" stop-color="#3987e5"/><stop offset="0.55" stop-color="#1baf7a"/><stop offset="1" stop-color="#eb6834"/>
+  </linearGradient>
+</defs>
+<style>
+  text { font-family: -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; }
+  .lab text { font-size: 11px; fill: #8fa3bd; font-weight: 600; letter-spacing: .3px; }
+  .c { animation: pop .55s cubic-bezier(.2,.8,.2,1) both; transform-box: fill-box; transform-origin: center; }
+  @keyframes pop { from { opacity: 0; transform: scale(.4); } to { opacity: var(--o); transform: scale(1); } }
+  .t1 { animation: rise .8s ease-out .2s both; }
+  .t2 { animation: rise .8s ease-out .5s both; }
+  .chips { animation: rise .8s ease-out 1.1s both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .rule { animation: sweep 1.4s cubic-bezier(.6,0,.2,1) .7s both; transform-box: fill-box; transform-origin: left; }
+  @keyframes sweep { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .fact { font-size: 19px; fill: #f0efec; }
+  @keyframes f0{0%{opacity:0}0.00%{opacity:0;transform:translateY(8px)}3.75%{opacity:1;transform:translateY(0)}21.25%{opacity:1;transform:translateY(0)}25.00%{opacity:0;transform:translateY(-6px)}100%{opacity:0}}@keyframes f1{0%{opacity:0}25.00%{opacity:0;transform:translateY(8px)}28.75%{opacity:1;transform:translateY(0)}46.25%{opacity:1;transform:translateY(0)}50.00%{opacity:0;transform:translateY(-6px)}100%{opacity:0}}@keyframes f2{0%{opacity:0}50.00%{opacity:0;transform:translateY(8px)}53.75%{opacity:1;transform:translateY(0)}71.25%{opacity:1;transform:translateY(0)}75.00%{opacity:0;transform:translateY(-6px)}100%{opacity:0}}@keyframes f3{0%{opacity:0}75.00%{opacity:0;transform:translateY(8px)}78.75%{opacity:1;transform:translateY(0)}96.25%{opacity:1;transform:translateY(0)}100.00%{opacity:0;transform:translateY(-6px)}100%{opacity:0}}
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+<rect width="1200" height="330" rx="20" fill="url(#bg)"/>
+<g><rect class="c" style="animation-delay:0.15s;--o:1.00" x="92" y="62" width="30" height="30" rx="6" fill="#3987e5" opacity="1.00"><title>ISOT → ISOT: AUC 1.00</title></rect><rect class="c" style="animation-delay:0.20s;--o:0.98" x="126" y="96" width="30" height="30" rx="6" fill="#3987e5" opacity="0.98"><title>WELFake → WELFake: AUC 0.99</title></rect><rect class="c" style="animation-delay:0.24s;--o:0.79" x="160" y="130" width="30" height="30" rx="6" fill="#3987e5" opacity="0.79"><title>PolitiFact → PolitiFact: AUC 0.89</title></rect><rect class="c" style="animation-delay:0.29s;--o:0.74" x="194" y="164" width="30" height="30" rx="6" fill="#3987e5" opacity="0.74"><title>GossipCop → GossipCop: AUC 0.87</title></rect><rect class="c" style="animation-delay:0.33s;--o:0.40" x="228" y="198" width="30" height="30" rx="6" fill="#3987e5" opacity="0.40"><title>LIAR → LIAR: AUC 0.70</title></rect><rect class="c" style="animation-delay:0.38s;--o:0.96" x="262" y="232" width="30" height="30" rx="6" fill="#3987e5" opacity="0.96"><title>Twitter15 → Twitter15: AUC 0.98</title></rect><rect class="c" style="animation-delay:0.42s;--o:0.93" x="296" y="266" width="30" height="30" rx="6" fill="#3987e5" opacity="0.93"><title>Twitter16 → Twitter16: AUC 0.97</title></rect><rect class="c" style="animation-delay:0.46s;--o:0.38" x="126" y="62" width="30" height="30" rx="6" fill="#3987e5" opacity="0.38"><title>ISOT → WELFake: AUC 0.69</title></rect><rect class="c" style="animation-delay:0.51s;--o:0.69" x="92" y="96" width="30" height="30" rx="6" fill="#3987e5" opacity="0.69"><title>WELFake → ISOT: AUC 0.85</title></rect><rect class="c" style="animation-delay:0.55s;--o:0.31" x="160" y="96" width="30" height="30" rx="6" fill="#3987e5" opacity="0.31"><title>WELFake → PolitiFact: AUC 0.66</title></rect><rect class="c" style="animation-delay:0.60s;--o:0.09" x="126" y="130" width="30" height="30" rx="6" fill="#eb6834" opacity="0.09"><title>PolitiFact → WELFake: AUC 0.46</title></rect><rect class="c" style="animation-delay:0.65s;--o:0.07" x="194" y="130" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>PolitiFact → GossipCop: AUC 0.53</title></rect><rect class="c" style="animation-delay:0.69s;--o:0.18" x="160" y="164" width="30" height="30" rx="6" fill="#3987e5" opacity="0.18"><title>GossipCop → PolitiFact: AUC 0.59</title></rect><rect class="c" style="animation-delay:0.73s;--o:0.09" x="228" y="164" width="30" height="30" rx="6" fill="#3987e5" opacity="0.09"><title>GossipCop → LIAR: AUC 0.54</title></rect><rect class="c" style="animation-delay:0.78s;--o:0.09" x="194" y="198" width="30" height="30" rx="6" fill="#3987e5" opacity="0.09"><title>LIAR → GossipCop: AUC 0.54</title></rect><rect class="c" style="animation-delay:0.82s;--o:0.07" x="262" y="198" width="30" height="30" rx="6" fill="#eb6834" opacity="0.07"><title>LIAR → Twitter15: AUC 0.48</title></rect><rect class="c" style="animation-delay:0.87s;--o:0.08" x="228" y="232" width="30" height="30" rx="6" fill="#3987e5" opacity="0.08"><title>Twitter15 → LIAR: AUC 0.54</title></rect><rect class="c" style="animation-delay:0.92s;--o:0.34" x="296" y="232" width="30" height="30" rx="6" fill="#3987e5" opacity="0.34"><title>Twitter15 → Twitter16: AUC 0.67</title></rect><rect class="c" style="animation-delay:0.96s;--o:0.31" x="262" y="266" width="30" height="30" rx="6" fill="#3987e5" opacity="0.31"><title>Twitter16 → Twitter15: AUC 0.66</title></rect><rect class="c" style="animation-delay:1.00s;--o:0.46" x="160" y="62" width="30" height="30" rx="6" fill="#3987e5" opacity="0.46"><title>ISOT → PolitiFact: AUC 0.73</title></rect><rect class="c" style="animation-delay:1.05s;--o:0.07" x="194" y="96" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>WELFake → GossipCop: AUC 0.53</title></rect><rect class="c" style="animation-delay:1.09s;--o:0.61" x="92" y="130" width="30" height="30" rx="6" fill="#3987e5" opacity="0.61"><title>PolitiFact → ISOT: AUC 0.80</title></rect><rect class="c" style="animation-delay:1.14s;--o:0.07" x="228" y="130" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>PolitiFact → LIAR: AUC 0.50</title></rect><rect class="c" style="animation-delay:1.18s;--o:0.07" x="126" y="164" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>GossipCop → WELFake: AUC 0.50</title></rect><rect class="c" style="animation-delay:1.23s;--o:0.26" x="262" y="164" width="30" height="30" rx="6" fill="#3987e5" opacity="0.26"><title>GossipCop → Twitter15: AUC 0.63</title></rect><rect class="c" style="animation-delay:1.27s;--o:0.07" x="160" y="198" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>LIAR → PolitiFact: AUC 0.51</title></rect><rect class="c" style="animation-delay:1.32s;--o:0.07" x="296" y="198" width="30" height="30" rx="6" fill="#eb6834" opacity="0.07"><title>LIAR → Twitter16: AUC 0.47</title></rect><rect class="c" style="animation-delay:1.36s;--o:0.08" x="194" y="232" width="30" height="30" rx="6" fill="#3987e5" opacity="0.08"><title>Twitter15 → GossipCop: AUC 0.54</title></rect><rect class="c" style="animation-delay:1.41s;--o:0.07" x="228" y="266" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>Twitter16 → LIAR: AUC 0.51</title></rect><rect class="c" style="animation-delay:1.45s;--o:0.07" x="194" y="62" width="30" height="30" rx="6" fill="#eb6834" opacity="0.07"><title>ISOT → GossipCop: AUC 0.49</title></rect><rect class="c" style="animation-delay:1.50s;--o:0.07" x="228" y="96" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>WELFake → LIAR: AUC 0.53</title></rect><rect class="c" style="animation-delay:1.54s;--o:0.07" x="262" y="130" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>PolitiFact → Twitter15: AUC 0.51</title></rect><rect class="c" style="animation-delay:1.59s;--o:0.07" x="92" y="164" width="30" height="30" rx="6" fill="#eb6834" opacity="0.07"><title>GossipCop → ISOT: AUC 0.48</title></rect><rect class="c" style="animation-delay:1.63s;--o:0.07" x="296" y="164" width="30" height="30" rx="6" fill="#eb6834" opacity="0.07"><title>GossipCop → Twitter16: AUC 0.48</title></rect><rect class="c" style="animation-delay:1.68s;--o:0.26" x="126" y="198" width="30" height="30" rx="6" fill="#3987e5" opacity="0.26"><title>LIAR → WELFake: AUC 0.63</title></rect><rect class="c" style="animation-delay:1.72s;--o:0.07" x="160" y="232" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>Twitter15 → PolitiFact: AUC 0.54</title></rect><rect class="c" style="animation-delay:1.77s;--o:0.07" x="194" y="266" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>Twitter16 → GossipCop: AUC 0.51</title></rect><rect class="c" style="animation-delay:1.81s;--o:0.10" x="228" y="62" width="30" height="30" rx="6" fill="#3987e5" opacity="0.10"><title>ISOT → LIAR: AUC 0.55</title></rect><rect class="c" style="animation-delay:1.86s;--o:0.15" x="262" y="96" width="30" height="30" rx="6" fill="#3987e5" opacity="0.15"><title>WELFake → Twitter15: AUC 0.58</title></rect><rect class="c" style="animation-delay:1.90s;--o:0.22" x="296" y="130" width="30" height="30" rx="6" fill="#eb6834" opacity="0.22"><title>PolitiFact → Twitter16: AUC 0.39</title></rect><rect class="c" style="animation-delay:1.95s;--o:0.17" x="92" y="198" width="30" height="30" rx="6" fill="#3987e5" opacity="0.17"><title>LIAR → ISOT: AUC 0.59</title></rect><rect class="c" style="animation-delay:1.99s;--o:0.07" x="126" y="232" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>Twitter15 → WELFake: AUC 0.51</title></rect><rect class="c" style="animation-delay:2.04s;--o:0.07" x="160" y="266" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>Twitter16 → PolitiFact: AUC 0.53</title></rect><rect class="c" style="animation-delay:2.08s;--o:0.07" x="262" y="62" width="30" height="30" rx="6" fill="#3987e5" opacity="0.07"><title>ISOT → Twitter15: AUC 0.52</title></rect><rect class="c" style="animation-delay:2.13s;--o:0.23" x="296" y="96" width="30" height="30" rx="6" fill="#3987e5" opacity="0.23"><title>WELFake → Twitter16: AUC 0.62</title></rect><rect class="c" style="animation-delay:2.17s;--o:0.25" x="92" y="232" width="30" height="30" rx="6" fill="#3987e5" opacity="0.25"><title>Twitter15 → ISOT: AUC 0.63</title></rect><rect class="c" style="animation-delay:2.22s;--o:0.09" x="126" y="266" width="30" height="30" rx="6" fill="#eb6834" opacity="0.09"><title>Twitter16 → WELFake: AUC 0.46</title></rect><rect class="c" style="animation-delay:2.26s;--o:0.36" x="296" y="62" width="30" height="30" rx="6" fill="#3987e5" opacity="0.36"><title>ISOT → Twitter16: AUC 0.68</title></rect><rect class="c" style="animation-delay:2.31s;--o:0.35" x="92" y="266" width="30" height="30" rx="6" fill="#3987e5" opacity="0.35"><title>Twitter16 → ISOT: AUC 0.68</title></rect></g>
+<g class="lab"><text x="107.0" y="52" text-anchor="middle">ISOT</text><text x="83" y="81.0" text-anchor="end">ISOT</text><text x="141.0" y="52" text-anchor="middle">WEL</text><text x="83" y="115.0" text-anchor="end">WEL</text><text x="175.0" y="52" text-anchor="middle">PF</text><text x="83" y="149.0" text-anchor="end">PF</text><text x="209.0" y="52" text-anchor="middle">GC</text><text x="83" y="183.0" text-anchor="end">GC</text><text x="243.0" y="52" text-anchor="middle">LIAR</text><text x="83" y="217.0" text-anchor="end">LIAR</text><text x="277.0" y="52" text-anchor="middle">T15</text><text x="83" y="251.0" text-anchor="end">T15</text><text x="311.0" y="52" text-anchor="middle">T16</text><text x="83" y="285.0" text-anchor="end">T16</text></g>
+<text x="209.0" y="322" text-anchor="middle" font-size="12.5" fill="#8fa3bd">train (rows) → test (columns), ROC-AUC</text>
+<g>
+  <text class="t1" x="430" y="122" font-size="56" font-weight="800" fill="#f0efec" letter-spacing="-1">Rank or threshold?</text>
+  <text class="t2" x="432" y="166" font-size="25" fill="#c3c2b7">Why fake-news detectors fail on new corpora</text>
+  <rect class="rule" x="432" y="188" width="560" height="5" rx="2.5" fill="url(#rule)"/>
+  <text class="fact" style="animation:f0 16s linear 2.6s infinite both" x="430" y="242" opacity="1">70% of the lost F1 is ranking; 30% is the threshold</text><text class="fact" style="animation:f1 16s linear 2.6s infinite both" x="430" y="242" opacity="0">EM label-shift correction makes the threshold worse (−64% recovered)</text><text class="fact" style="animation:f2 16s linear 2.6s infinite both" x="430" y="242" opacity="0">Flagging at the source base rate recovers 81%, with no target labels</text><text class="fact" style="animation:f3 16s linear 2.6s infinite both" x="430" y="242" opacity="0">In-domain AUC 0.914, on a new corpus 0.567</text>
+  <g class="chips" font-size="13.5" fill="#8fa3bd">
+    <text x="432" y="292">10 corpora  ·  English and Bengali  ·  7 detectors + a zero-shot LLM  ·  5 seeds  ·  label-free repairs</text>
   </g>
-  <g font-family="Helvetica, Arial, sans-serif">
-    <text x="340" y="112" fill="#f0efec" font-size="46" font-weight="700" letter-spacing="-0.5">fn-transfer-audit</text>
-    <rect x="342" y="128" width="420" height="4" rx="2" fill="url(#rule)"/>
-    <text x="340" y="170" fill="#c3c2b7" font-size="21">Mostly ranking, partly threshold:</text>
-    <text x="340" y="198" fill="#c3c2b7" font-size="21">decomposing and repairing the cross-corpus gap of misinformation detectors</text>
-    <text x="340" y="246" fill="#8fa3bd" font-size="15">10 corpora · 2 languages · 4 text units · 6 models · 5 seeds · label-free repairs</text>
-  </g>
+</g>
 </svg>

@@ -42,6 +42,7 @@ python src/figures.py                                      | tee logs/figures.lo
 python src/figures_paper.py                                | tee logs/figures_paper.log
 step "9/9 paper numbers, README, claim verification"
 python src/paper_numbers.py                                | tee logs/paper_numbers.log
-python src/make_readme.py
 python src/verify_claims.py                                | tee logs/verify_claims.log
+python src/readme_assets.py
+python src/make_readme.py
 echo "done"

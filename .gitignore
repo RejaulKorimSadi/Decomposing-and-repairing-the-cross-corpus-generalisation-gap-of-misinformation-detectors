@@ -5,7 +5,7 @@ artifacts/roberta_subset.parquet
 artifacts/roberta_emb.npy
 artifacts/pheme_graphs.pkl
 artifacts/*.lock
-# saved per-item scores are published as a release asset (fn-transfer-audit-scores.tar.gz)
+# saved per-item scores are published as a release asset (per_item_scores.tar.gz)
 artifacts/preds/
 __pycache__/
 *.pyc

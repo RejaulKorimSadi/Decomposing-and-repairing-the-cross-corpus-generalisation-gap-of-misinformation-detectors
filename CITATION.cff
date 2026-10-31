@@ -1,6 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this code or the audit results, please cite the paper."
-title: "fn-transfer-audit: ranking vs. operating-point decomposition of cross-corpus misinformation-detector transfer"
+title: "Rank or threshold? Why fake-news detectors fail on new corpora"
+abstract: "Code, results and figures for a cross-corpus study of fake-news detectors that splits the macro-F1 lost on a new corpus into a ranking deficit and an operating-point loss, audits ten public corpora, and evaluates label-free repairs such as rate transfer."
 authors:
   - family-names: Chowdhury
     given-names: Dewan Fahad
@@ -9,14 +10,26 @@ authors:
   - family-names: Sadi
     given-names: Md. Rejaul Korim
     affiliation: "Department of Computer Science and Engineering, Metropolitan University, Sylhet, Bangladesh"
+repository-code: "https://github.com/RejaulKorimSadi/Decomposing-and-repairing-the-cross-corpus-generalisation-gap-of-misinformation-detectors"
 license: MIT
-version: 1.0.0
-date-released: 2026-10-30
+version: 1.1.0
+date-released: 2026-11-01
 keywords:
   - misinformation detection
   - fake news
-  - generalization
+  - cross-corpus generalisation
   - dataset audit
   - label shift
+  - threshold selection
   - shortcut learning
   - Bengali
+preferred-citation:
+  type: unpublished
+  title: "Rank or threshold? Why fake-news detectors fail on new corpora"
+  authors:
+    - family-names: Chowdhury
+      given-names: Dewan Fahad
+    - family-names: Sadi
+      given-names: Md. Rejaul Korim
+  year: 2026
+  notes: "Preprint. Equal contribution."
