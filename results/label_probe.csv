@@ -13,3 +13,17 @@ WELFake,text contains 'Featured image via' (fake-site template),fake,125,125,0
 WELFake,title contains 'BREAKING' (fake-site style),fake,218,199,19
 WELFake,text contains '21st Century Wire' (fake site),fake,5,5,0
 WELFake,text contains 'Activist Post' (fake site),fake,21,21,0
+WELFake release,title ends '- The New York Times' (reliable),real,6223,6223,0
+WELFake release,title ends '- Breitbart' (Kaggle-reliable split),real,2340,2338,2
+WELFake release,text contains '(Reuters)' (reliable),real,21289,21270,19
+WELFake release,text contains 'Featured image via' (fake-site template),fake,6261,0,6261
+WELFake release,title contains 'BREAKING' (fake-site style),fake,1182,28,1154
+WELFake release,text contains '21st Century Wire' (fake site),fake,1272,0,1272
+WELFake release,text contains 'Activist Post' (fake site),fake,33,0,33
+ISOT release,title ends '- The New York Times' (reliable),real,0,0,0
+ISOT release,title ends '- Breitbart' (Kaggle-reliable split),real,0,0,0
+ISOT release,text contains '(Reuters)' (reliable),real,21256,21247,9
+ISOT release,text contains 'Featured image via' (fake-site template),fake,6098,0,6098
+ISOT release,title contains 'BREAKING' (fake-site style),fake,918,9,909
+ISOT release,text contains '21st Century Wire' (fake site),fake,1254,0,1254
+ISOT release,text contains 'Activist Post' (fake site),fake,9,0,9

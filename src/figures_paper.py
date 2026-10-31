@@ -188,31 +188,43 @@ def concept(name="fig_concept"):
 def audit(name="fig_audit"):
     P = pd.read_csv(f"{R}/label_probe.csv")
     rep = json.load(open(f"{R}/dedup_report.json"))
-    fig = plt.figure(figsize=(6.9, 2.6))
-    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.0], wspace=0.8, left=0.25, right=0.99, bottom=0.2, top=0.86)
+    fig = plt.figure(figsize=(6.9, 3.3))
+    gs = fig.add_gridspec(1, 2, width_ratios=[1.0, 1.0], wspace=0.62, left=0.17, right=0.99, bottom=0.17, top=0.89)
     a, b = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
     probes = [("text contains '(Reuters)' (reliable)", "'(Reuters)'", "real"),
               ("title ends '- The New York Times' (reliable)", "'- The New York Times'", "real"),
               ("text contains 'Featured image via' (fake-site template)", "'Featured image via'", "fake"),
               ("text contains '21st Century Wire' (fake site)", "'21st Century Wire'", "fake")]
-    rows = []
-    for key, lab, exp in probes:
-        for corp in ["ISOT", "WELFake"]:
+    groups = [("ISOT", "ISOT (one file per class)"), ("WELFake release", "WELFake release (Zenodo)"),
+              ("WELFake", "WELFake, our working copy")]
+    rows, heads = [], []
+    for corp, title in groups:
+        heads.append((len(rows), title))
+        rows.append(None)
+        for key, lab, exp in probes:
             r = P[(P.corpus == corp) & (P.probe == key)].iloc[0]
             if r.n >= 100:
-                rows.append((f"{corp}  {lab}", exp, r.raw_label_0 / r.n, int(r.n)))
+                rows.append((lab, exp, r.raw_label_0 / r.n, int(r.n)))
     y = np.arange(len(rows))[::-1]
-    for yi, (lab, exp, share0, n) in zip(y, rows):
-        a.barh(yi, share0, color=AQUA, height=0.6)
-        a.barh(yi, 1 - share0, left=share0, color=VIOLET, height=0.6)
+    for yi, row in zip(y, rows):
+        if row is None:
+            continue
+        lab, exp, share0, n = row
+        a.barh(yi, share0, color=AQUA, height=0.62)
+        a.barh(yi, 1 - share0, left=share0, color=VIOLET, height=0.62)
         a.text(1.03, yi, f"expects {exp}", va="center", fontsize=6.2, color=BLUE if exp == "real" else ORANGE)
-    a.set_yticks(y, [r[0] for r in rows], fontsize=6.4)
+    for i, title in heads:
+        a.annotate(title, (0.012, y[i] - 0.05), xycoords=("figure fraction", "data"), ha="left", va="center",
+                   fontsize=6.6, fontweight="bold", color=INK, annotation_clip=False)
+    tk = [(yi, r[0]) for yi, r in zip(y, rows) if r is not None]
+    a.set_yticks([t[0] for t in tk], [t[1] for t in tk], fontsize=6.4)
+    a.set_ylim(-0.6, len(rows) - 0.4)
     a.set_xlim(0, 1); a.set_xticks([0, 0.5, 1], ["0%", "50%", "100%"])
     a.set_xlabel("share of items carrying the signature")
     a.grid(axis="y", visible=False)
     panel(a, "a", "Which raw label do signatures carry?", x=-0.02)
     a.legend(handles=[Patch(color=AQUA, label="raw label 0"), Patch(color=VIOLET, label="raw label 1")],
-             loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=2, fontsize=6.2)
+             loc="upper center", bbox_to_anchor=(0.5, -0.13), ncol=2, fontsize=6.2)
     order = VER + ["PHEME", "ClickbaitEN", "BanglaBait"]
     yb = np.arange(len(order))[::-1]
     for yi, c in zip(yb, order):
@@ -229,7 +241,7 @@ def audit(name="fig_audit"):
     b.grid(axis="y", visible=False)
     panel(b, "b", "Duplicates removed", x=-0.02)
     b.legend(handles=[Patch(color=VIOLET, label="exact copy"), Patch(color=AQUA, label="near copy"),
-                      Patch(color=RED, label="label conflict")], loc="upper center", bbox_to_anchor=(0.45, -0.2), ncol=3,
+                      Patch(color=RED, label="label conflict")], loc="upper center", bbox_to_anchor=(0.45, -0.13), ncol=3,
              fontsize=6.2)
     save(fig, name)
 

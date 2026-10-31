@@ -186,6 +186,26 @@ if os.path.exists(f"{R}/dg_loco.csv"):
 P = pd.read_csv(f"{R}/label_probe.csv").set_index(["corpus", "probe"])
 nyt = P.loc[("WELFake", "title ends '- The New York Times' (reliable)")]
 check(nyt.raw_label_1 == nyt.n and nyt.n > 1000, "WELFake reliable signature sits entirely under raw label 1")
+if ("WELFake release", "title ends '- The New York Times' (reliable)") in P.index:
+    rel = lambda k: P.loc[("WELFake release", k)]
+    r1, r2 = rel("title ends '- The New York Times' (reliable)"), rel("text contains 'Featured image via' (fake-site template)")
+    check(r1.raw_label_0 == r1.n and r2.raw_label_1 == r2.n and r1.n > 1000 and r2.n > 1000,
+          "WELFake release codes 1 = fake (reliable signature under 0, fake-site template under 1)")
+if os.path.exists(f"{R}/provenance.json"):
+    pv = json.load(open(f"{R}/provenance.json"))
+    i, w = pv["isot"], pv["welfake"]
+    check(i["working_rows_in_release"] == 1 and i["working_label_matches_release"] == 1,
+          "ISOT working copy: every article and label taken verbatim from the release")
+    check(i["release_rows"] - i["exact_title_text_duplicates"] - i["further_removed"] == i["working_rows"],
+          "ISOT working copy = release - exact duplicates - further removed")
+    check(w["working_rows_in_release"] == 1 and w["working_label_is_inverted"] == 1,
+          "WELFake working copy: every article from the release, every label inverted")
+    check(w["working_rows_not_in_reconstruction"] == 0 and 0 <= w["unexplained_further_removed"] <= 20,
+          "WELFake working copy reproduced by dedup + ISOT-overlap removal (up to a handful)")
+    check(w["release_label1"] == 37106 and w["release_label0"] == 35028,
+          "WELFake release: label 1 count equals the documented number of fake articles")
+    check(0.55 < w["text_shared_with_isot"] / w["after_exact_dedup"] < 0.65,
+          "about three in five deduplicated WELFake articles are ISOT text")
 
 # manuscript hygiene
 paper = os.environ.get("PAPER_DIR", os.path.join(C.ROOT, "paper"))

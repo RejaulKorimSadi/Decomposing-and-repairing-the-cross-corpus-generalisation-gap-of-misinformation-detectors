@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reproduce every number, table and figure in the paper.
-# Usage:  DATA_DIR=/path/to/data bash run_all.sh
+# Usage:  DATA_DIR=/path/to/data [ISOT_RAW=/path/to/isot WELFAKE_RAW=/path/to/WELFake_Dataset.csv] bash run_all.sh
 # Runtime on a 2-core CPU, 8 GB RAM: roughly 10-12 hours end to end (no GPU needed).
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -8,8 +8,13 @@ mkdir -p logs
 step() { echo "== $1  $(date '+%H:%M:%S')"; }
 
 step "1/9 corpora, label harmonisation, deduplication"
-python src/prep.py                                         | tee logs/prep.log
+# the paper uses the working copies; ISOT_RAW/WELFAKE_RAW are only for the provenance and probe steps
+env -u ISOT_RAW -u WELFAKE_RAW python src/prep.py          | tee logs/prep.log
 python src/label_probe.py                                  | tee logs/label_probe.log
+# provenance of the two article working copies (needs the original releases)
+if [[ -n "${ISOT_RAW:-}" && -n "${WELFAKE_RAW:-}" ]]; then
+  python src/provenance.py                                 | tee logs/provenance.log
+fi
 step "2/9 transfer matrices (5 models x 3 regimes x 5 seeds)"
 python src/transfer.py --models tfidf_lr,nbsvm,style_gb    | tee logs/transfer_A.log
 python src/transfer.py --models tfidf_svm,glove_lr         | tee logs/transfer_B.log

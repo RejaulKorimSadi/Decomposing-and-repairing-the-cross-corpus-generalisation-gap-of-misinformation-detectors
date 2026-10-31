@@ -105,25 +105,47 @@ Corpus & Unit & Construct & Lang. & Raw & Exact & Near & Conflict & Final & Pos.
     mac("ISOTfiv", fmt_int(pr.loc[("ISOT", k_fiv), "n"]))
     mac("WELnyt", fmt_int(pr.loc[("WELFake", k_nyt), "n"]))
     mac("WELfiv", fmt_int(pr.loc[("WELFake", k_fiv), "n"]))
+    has_rel = "WELFake release" in set(probe.corpus)
     rows = []
     for p in probe.probe.unique():
         a = probe[(probe.corpus == "ISOT") & (probe.probe == p)].iloc[0]
         b = probe[(probe.corpus == "WELFake") & (probe.probe == p)].iloc[0]
-        rows.append(f"{p.split(' (')[0]} & {a.expected_class} & {fmt_int(a.raw_label_0)} / {fmt_int(a.raw_label_1)} & "
-                    f"{fmt_int(b.raw_label_0)} / {fmt_int(b.raw_label_1)} \\\\")
-    write_table("probe", r"""\begin{table}[t]
+        cells = [f"{fmt_int(a.raw_label_0)} / {fmt_int(a.raw_label_1)}"]
+        if has_rel:
+            r = probe[(probe.corpus == "WELFake release") & (probe.probe == p)].iloc[0]
+            cells.append(f"{fmt_int(r.raw_label_0)} / {fmt_int(r.raw_label_1)}")
+        cells.append(f"{fmt_int(b.raw_label_0)} / {fmt_int(b.raw_label_1)}")
+        rows.append(f"{p.split(' (')[0]} & {a.expected_class} & " + " & ".join(cells) + " \\\\")
+    hdr = "ISOT & WELFake release & WELFake copy" if has_rel else "ISOT & WELFake"
+    write_table("probe", r"""\begin{table}[h]
 \centering
-\caption{Label-direction probes on the raw files: number of items matching each source signature under raw label 0 / raw label 1. A reliable-outlet signature must sit under ``real'', a fake-site signature under ``fake''. ISOT codes $1=$ fake; the WELFake file codes $1=$ real.}\label{tab:probe}
-\small
-\begin{tabular}{@{}llrr@{}}
+\caption{Label-direction probes: number of items matching each source signature under raw label 0 / raw label 1 (``copy'' is our working copy of WELFake). A reliable-outlet signature should sit under ``real'' and a fake-site signature under ``fake''. ISOT and the WELFake release both code $1=$ fake (although the WELFake record's legend says $0=$ fake); the WELFake working copy, made by following that legend, has every label inverted.}\label{tab:probe}
+\footnotesize
+\begin{tabular}{@{}ll""" + "r" * (3 if has_rel else 2) + r"""@{}}
 \toprule
-Signature & Expected class & ISOT (0 / 1) & WELFake (0 / 1) \\
+Signature & Expected & """ + hdr + r""" \\
 \midrule
 """ + "\n".join(rows) + r"""
 \bottomrule
 \end{tabular}
 \end{table}
 """)
+    if has_rel:
+        mac("WELrelNyt", fmt_int(pr.loc[("WELFake release", k_nyt), "raw_label_0"]))
+        mac("WELrelFiv", fmt_int(pr.loc[("WELFake release", k_fiv), "raw_label_1"]))
+        mac("WELrelReu", fmt_int(pr.loc[("WELFake release", k_reu), "raw_label_0"]))
+        mac("WELrelReuN", fmt_int(pr.loc[("WELFake release", k_reu), "n"]))
+    if os.path.exists(f"{R}/provenance.json"):
+        pv = json.load(open(f"{R}/provenance.json"))
+        i, w = pv["isot"], pv["welfake"]
+        mac("PvIsotRel", fmt_int(i["release_rows"])); mac("PvIsotExact", fmt_int(i["exact_title_text_duplicates"]))
+        mac("PvIsotFurther", fmt_int(i["further_removed"])); mac("PvIsotFurtherTitle", fmt_int(i["further_removed_sharing_title_with_kept"]))
+        mac("PvIsotWork", fmt_int(i["working_rows"])); mac("PvIsotEmpty", fmt_int(i["working_empty_texts"]))
+        mac("PvWelRel", fmt_int(w["release_rows"])); mac("PvWelOne", fmt_int(w["release_label1"])); mac("PvWelZero", fmt_int(w["release_label0"]))
+        mac("PvWelExact", fmt_int(w["exact_title_text_duplicates"])); mac("PvWelIsotText", fmt_int(w["text_shared_with_isot"]))
+        mac("PvWelIsotTitle", fmt_int(w["title_shared_with_isot"])); mac("PvWelAfter", fmt_int(w["after_isot_removal"]))
+        mac("PvWelExtra", fmt_int(w["unexplained_further_removed"])); mac("PvWelWork", fmt_int(w["working_rows"]))
+        mac("PvWelMD", w["release_md5"])
 
 
 MODEL_NAME = {"tfidf_lr": r"\textsc{tfidf-lr}", "tfidf_svm": r"\textsc{tfidf-svm}", "nbsvm": r"\textsc{nb-svm}",
@@ -138,6 +160,9 @@ def pm_str(s):
     """'0.914 ± 0.006' -> '0.914\\,{\\scriptsize$\\pm$0.006}'"""
     a, b = [x.strip() for x in s.split("±")]
     return f"{a}\\,{{\\scriptsize$\\pm${b}}}"
+
+
+
 
 
 def transfer_part():

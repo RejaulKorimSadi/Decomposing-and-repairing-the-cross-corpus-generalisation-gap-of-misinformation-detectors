@@ -4,7 +4,7 @@ Label convention everywhere: 1 = fake / false / rumour / clickbait, 0 = real / t
 non-rumour / non-clickbait.
 
 Steps per corpus
-  1. load raw files, harmonise labels (WELFake ships 1 = real, so it is inverted here)
+  1. load raw files, harmonise labels (the WELFake working copy has inverted labels; see load_welfake)
   2. normalise text, drop empty rows
   3. exact-duplicate removal on normalised text
   4. near-duplicate removal with MinHash-LSH (Jaccard >= 0.8); a cluster whose members
@@ -64,14 +64,16 @@ def load_isot():
 
 
 def load_welfake():
-    # WELFAKE_RAW: path to the original WELFake_Dataset.csv (72,134 rows). With the original file,
-    # articles that are near-duplicates of ISOT are dropped after the cross-corpus check below,
-    # which reproduces the cleaned copy used in the paper up to MinHash randomness.
-    d = pd.read_csv(os.environ.get("WELFAKE_RAW") or C.WELFAKE)
-    # The released WELFake file uses 1 = real, 0 = fake (verified empirically: all 6,223
-    # "- The New York Times" titles carry label 1; all "Featured image via" texts label 0).
-    return pd.DataFrame(dict(title=d.title.fillna(""), body=d.text.fillna(""),
-                             label=(1 - d.label.astype(int)), group=""))
+    # The official release (Zenodo 10.5281/zenodo.4561253, WELFake_Dataset.csv, MD5
+    # 73c9675a4b3d09f86a6933d0b8d7d908) codes 1 = fake, as its outlet signatures and its stated class
+    # counts show, although the record's legend says "0 = fake and 1 = real". The working copy in
+    # $DATA_DIR was made by following the legend, so its labels are the release labels inverted
+    # (1 = real); it is inverted back here. With WELFAKE_RAW (the original file) no inversion is needed,
+    # and articles shared with ISOT are dropped after the cross-corpus check below.
+    raw = os.environ.get("WELFAKE_RAW")
+    d = pd.read_csv(raw or C.WELFAKE)
+    lab = d.label.astype(int) if raw else 1 - d.label.astype(int)
+    return pd.DataFrame(dict(title=d.title.fillna(""), body=d.text.fillna(""), label=lab, group=""))
 
 
 def load_fnn(site):

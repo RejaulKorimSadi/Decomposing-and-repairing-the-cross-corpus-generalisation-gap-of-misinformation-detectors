@@ -6,7 +6,7 @@ original release. `src/prep.py` expects the layout below under `$DATA_DIR`.
 ```
 $DATA_DIR/
 ├── isot/ISOT_FINAL_CLEANED.csv                    title, text, label (1 = fake)
-├── welfake/WELFake_ULTIMATE_LEAKAGE_CONTROLLED.csv  title, text, label (1 = REAL, see below)
+├── welfake/WELFake_ULTIMATE_LEAKAGE_CONTROLLED.csv  title, text, label (inverted: 1 = real, see below)
 ├── fakenewsnet/{politifact,gossipcop}_{fake,real}.csv
 ├── liar_plus/{train2,val2,test2}.tsv
 ├── twitter15/{label.txt,source_tweets.txt}
@@ -22,21 +22,31 @@ $DATA_DIR/
 The ISOT and WELFake files above are cleaned working copies made earlier in this project, not
 the raw releases:
 
-* `ISOT_FINAL_CLEANED.csv`: 38,833 of the 44,898 released articles (exact duplicates and empty
-  texts removed).
-* `WELFake_ULTIMATE_LEAKAGE_CONTROLLED.csv`: 24,530 of the 72,134 released articles (duplicates
-  and articles shared with ISOT removed, since WELFake merges a Reuters-based collection like
-  ISOT's real class). Only 18 near-duplicates of ISOT remain, and transfer tests drop them.
+* `ISOT_FINAL_CLEANED.csv`: 38,833 of the 44,898 released articles, all with their release
+  labels. Relative to the release it lacks 5,795 exact title+text duplicates and 270 further
+  articles, 267 of which repeat the title of a kept article. 447 articles have an empty body;
+  they keep their headline and are scored on it.
+* `WELFake_ULTIMATE_LEAKAGE_CONTROLLED.csv`: 24,530 of the 72,134 released articles
+  (`WELFake_Dataset.csv`, MD5 `73c9675a4b3d09f86a6933d0b8d7d908`). Dropping 8,458 exact
+  title+text duplicates, the 38,656 articles whose text also appears in the ISOT release and 480
+  more whose title does leaves 24,540; the copy is that set minus 10 articles, and none of its
+  articles lies outside it. WELFake merges a Reuters-based collection like ISOT's real class,
+  which is why the overlap step exists. Only 18 near-duplicates of ISOT remain, and transfer
+  tests drop them.
 
-To start from the original releases instead, point the loaders at them:
+`src/provenance.py` reconstructs both copies from the releases and writes the counts above to
+`results/provenance.json`:
 
 ```bash
 export ISOT_RAW=/path/to/isot          # folder with Fake.csv and True.csv
 export WELFAKE_RAW=/path/to/WELFake_Dataset.csv
-python src/prep.py                     # deduplicates, then drops WELFake articles shared with ISOT
+python src/provenance.py
 ```
 
-This reproduces the construction of the working copies; exact counts can differ slightly.
+To run the whole pipeline from the original releases instead, keep those two variables set and
+run `python src/prep.py`: it deduplicates with its own normalisation and MinHash and then drops
+WELFake articles shared with ISOT, so the counts are close to, but not identical with, the
+working copies.
 
 | Corpus | Unit | Construct | Source | Licence / terms |
 |---|---|---|---|---|
@@ -55,12 +65,16 @@ This reproduces the construction of the working copies; exact counts can differ 
 
 Every corpus is mapped to **1 = fake / false / rumour / clickbait**.
 
-* **WELFake ships `0 = fake, 1 = real`** (Zenodo record). The leakage-controlled file used here
-  also carried a `class` column naming label 1 "Fake", which is wrong. We verified the direction
-  with signature probes: all 6,223 articles whose title ends in "- The New York Times" have
-  label 1, and all texts containing the fake-site template "Featured image via" or titles with
-  "BREAKING" have label 0. `prep.py` therefore inverts WELFake. Treating WELFake label 1 as fake
-  produces below-chance transfer to ISOT, which is how the inversion first showed up.
+* **WELFake: the documentation and the file disagree.** The Zenodo record gives the legend
+  `0 = fake, 1 = real`, but the released file codes `1 = fake`: all 6,223 titles ending in
+  "- The New York Times" and 21,270 of the 21,289 "(Reuters)" datelines carry label 0, all 6,261
+  texts with the fake-site template "Featured image via" carry label 1, and label 1 holds 37,106
+  articles, the number of fake articles the same record states (35,028 real).
+  The working copy used here was made by following the legend: every label is the inverse of the
+  release label, and its `class` column calls the inverted label 1 "Fake". `prep.py` therefore
+  inverts the working copy back; with `WELFAKE_RAW` it reads the release as `1 = fake` and does
+  not invert. Reading WELFake through its legend makes ISOT↔WELFake transfer look below chance
+  while leaving in-domain scores unchanged, which is how the inversion first showed up here.
 * LIAR: `pants-fire`, `false` → 1; `mostly-true`, `true` → 0; `half-true` and `barely-true` are
   dropped. Claim-level labels (LIAR) are not the same construct as article-level labels.
 * Twitter15/16: `false` → 1, `true` → 0 for the binary view; `unverified` and `non-rumor` are

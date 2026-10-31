@@ -92,6 +92,7 @@ fn-transfer-audit/
 ├── src/
 │   ├── prep.py            harmonise labels, MinHash dedup, cross-corpus overlap
 │   ├── label_probe.py     verify label direction with outlet signatures
+│   ├── provenance.py      rebuild the ISOT/WELFake working copies from the releases
 │   ├── transfer.py        train-on-one / test-on-all, 5 models × 3 regimes × 5 seeds
 │   ├── roberta.py         frozen RoBERTa-base representations (+ paired TF-IDF baseline)
 │   ├── finetune.py        RoBERTa-base with the top 4 layers fine-tuned (+ paired TF-IDF)
@@ -139,7 +140,7 @@ Every random choice is seeded (0–4; 0–2 for fine-tuning). Saved per-item sco
 <details>
 <summary><b>A note on label conventions</b></summary>
 
-ISOT codes `1 = fake`; WELFake codes `1 = real` (Zenodo record), and our working copy of WELFake even carried a class-name column that got it wrong. `src/label_probe.py` checks this on the raw files: all {{WELnyt}} WELFake titles ending in "- The New York Times" carry label 1. Treating WELFake label 1 as fake makes ISOT↔WELFake transfer look below chance.
+ISOT and the WELFake release both code `1 = fake`, but the WELFake record documents the opposite legend (`0 = fake, 1 = real`). Our working copy of WELFake was built from that legend, so every one of its labels is inverted, and `prep.py` inverts it back. `src/label_probe.py` checks the direction on the files: in the release, all {{WELrelNyt}} titles ending in "- The New York Times" carry label 0 and all {{WELrelFiv}} texts with "Featured image via" carry label 1. Reading WELFake through its legend makes ISOT↔WELFake transfer look below chance. `src/provenance.py` documents how both working copies were derived from the releases (see `DATA.md`).
 
 </details>
 

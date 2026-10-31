@@ -1,18 +1,18 @@
-\begin{table}[t]
+\begin{table}[h]
 \centering
-\caption{Label-direction probes on the raw files: number of items matching each source signature under raw label 0 / raw label 1. A reliable-outlet signature must sit under ``real'', a fake-site signature under ``fake''. ISOT codes $1=$ fake; the WELFake file codes $1=$ real.}\label{tab:probe}
-\small
-\begin{tabular}{@{}llrr@{}}
+\caption{Label-direction probes: number of items matching each source signature under raw label 0 / raw label 1 (``copy'' is our working copy of WELFake). A reliable-outlet signature should sit under ``real'' and a fake-site signature under ``fake''. ISOT and the WELFake release both code $1=$ fake (although the WELFake record's legend says $0=$ fake); the WELFake working copy, made by following that legend, has every label inverted.}\label{tab:probe}
+\footnotesize
+\begin{tabular}{@{}llrrr@{}}
 \toprule
-Signature & Expected class & ISOT (0 / 1) & WELFake (0 / 1) \\
+Signature & Expected & ISOT & WELFake release & WELFake copy \\
 \midrule
-title ends '- The New York Times' & real & 0 / 0 & 0 / 6{,}223 \\
-title ends '- Breitbart' & real & 0 / 0 & 1 / 2{,}338 \\
-text contains '(Reuters)' & real & 20{,}761 / 7 & 8 / 23 \\
-text contains 'Featured image via' & fake & 0 / 6{,}098 & 125 / 0 \\
-title contains 'BREAKING' & fake & 8 / 614 & 199 / 19 \\
-text contains '21st Century Wire' & fake & 0 / 629 & 5 / 0 \\
-text contains 'Activist Post' & fake & 0 / 5 & 21 / 0 \\
+title ends '- The New York Times' & real & 0 / 0 & 6{,}223 / 0 & 0 / 6{,}223 \\
+title ends '- Breitbart' & real & 0 / 0 & 2{,}338 / 2 & 1 / 2{,}338 \\
+text contains '(Reuters)' & real & 20{,}761 / 7 & 21{,}270 / 19 & 8 / 23 \\
+text contains 'Featured image via' & fake & 0 / 6{,}098 & 0 / 6{,}261 & 125 / 0 \\
+title contains 'BREAKING' & fake & 8 / 614 & 28 / 1{,}154 & 199 / 19 \\
+text contains '21st Century Wire' & fake & 0 / 629 & 0 / 1{,}272 & 5 / 0 \\
+text contains 'Activist Post' & fake & 0 / 5 & 0 / 33 & 21 / 0 \\
 \bottomrule
 \end{tabular}
 \end{table}

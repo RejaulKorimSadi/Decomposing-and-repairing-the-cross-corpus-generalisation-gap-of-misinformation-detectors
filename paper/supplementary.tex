@@ -24,7 +24,7 @@
 
 \section{Data preparation}
 \subsection{Label harmonisation and verification}
-Every corpus is mapped to $1=$ fake, false, rumour or clickbait. WELFake ships $0=$ fake, $1=$ real and is inverted; LIAR keeps \{pants-fire, false\} versus \{mostly-true, true\}; Twitter15/16 keep false versus true. Label direction was verified on the raw files with outlet signatures (\texttt{src/label\_probe.py}): Table~\ref{tab:probe}.
+Every corpus is mapped to $1=$ fake, false, rumour or clickbait. The WELFake release codes $1=$ fake although its record documents $0=$ fake, $1=$ real; our working copy followed the documented legend and is inverted back; LIAR keeps \{pants-fire, false\} versus \{mostly-true, true\}; Twitter15/16 keep false versus true. Label direction was verified on the raw files with outlet signatures (\texttt{src/label\_probe.py}): Table~\ref{tab:probe}.
 \input{tables/probe}
 
 \subsection{Deduplication}

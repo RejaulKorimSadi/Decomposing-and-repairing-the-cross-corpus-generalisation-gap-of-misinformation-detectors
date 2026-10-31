@@ -1,0 +1,38 @@
+{
+ "isot": {
+  "release_rows": 44898,
+  "release_fake": 23481,
+  "release_real": 21417,
+  "working_rows": 38833,
+  "working_rows_in_release": 1.0,
+  "working_label_matches_release": 1.0,
+  "exact_title_text_duplicates": 5795,
+  "after_exact_dedup": 39103,
+  "further_removed": 270,
+  "further_removed_sharing_title_with_kept": 267,
+  "further_removed_real": 268,
+  "working_empty_texts": 447
+ },
+ "welfake": {
+  "release_md5": "73c9675a4b3d09f86a6933d0b8d7d908",
+  "release_rows": 72134,
+  "release_label1": 37106,
+  "release_label0": 35028,
+  "nyt_label0": 6223,
+  "nyt_n": 6223,
+  "featured_label1": 6081,
+  "featured_n": 6081,
+  "reuters_label0": 21266,
+  "reuters_n": 21282,
+  "working_rows": 24530,
+  "working_rows_in_release": 1.0,
+  "working_label_is_inverted": 1.0,
+  "exact_title_text_duplicates": 8458,
+  "after_exact_dedup": 63676,
+  "text_shared_with_isot": 38656,
+  "title_shared_with_isot": 480,
+  "after_isot_removal": 24540,
+  "unexplained_further_removed": 10,
+  "working_rows_not_in_reconstruction": 0
+ }
+}

@@ -3,9 +3,12 @@
 A reliable outlet's signature (e.g. a "- The New York Times" title suffix, a "(Reuters)"
 dateline) must sit under the 'real' label; a fake-site template ("Featured image via",
 "BREAKING" titles, "21st Century Wire") under the 'fake' label. Run on the raw files, before
-harmonisation. Writes results/label_probe.csv
+harmonisation. The working copies in $DATA_DIR are always probed; the original releases are
+probed too when ISOT_RAW (folder with Fake.csv and True.csv) and WELFAKE_RAW (WELFake_Dataset.csv)
+are set. Writes results/label_probe.csv
 Run: python src/label_probe.py
 """
+import os
 import pandas as pd
 import config as C
 
@@ -19,8 +22,18 @@ PROBES = {
     "text contains 'Activist Post' (fake site)": ("text", r"Activist Post", "fake"),
 }
 rows = []
-for name, path in [("ISOT", C.ISOT), ("WELFake", C.WELFAKE)]:
-    d = pd.read_csv(path)
+files = [("ISOT", C.ISOT), ("WELFake", C.WELFAKE)]
+if os.environ.get("WELFAKE_RAW"):
+    files.append(("WELFake release", os.environ["WELFAKE_RAW"]))
+if os.environ.get("ISOT_RAW"):
+    files.append(("ISOT release", None))
+for name, path in files:
+    if name == "ISOT release":            # the ISOT release has no label column: file name gives the class
+        r = os.environ["ISOT_RAW"]
+        d = pd.concat([pd.read_csv(os.path.join(r, "Fake.csv")).assign(label=1),
+                       pd.read_csv(os.path.join(r, "True.csv")).assign(label=0)], ignore_index=True)
+    else:
+        d = pd.read_csv(path)
     d["title"], d["text"] = d.title.fillna(""), d.text.fillna("")
     for probe, (col, pat, expect) in PROBES.items():
         m = d[col].str.contains(pat, case=False, regex=True)
