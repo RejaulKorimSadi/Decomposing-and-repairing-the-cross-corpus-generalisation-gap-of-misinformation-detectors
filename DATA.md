@@ -79,3 +79,10 @@ Counts are in `results/dedup_report.json` and `results/cross_corpus_overlap.csv`
 Only the released text of source posts is used. No user identifiers, follower graphs or
 metadata beyond the event name are processed, nothing is re-collected from the platform, and no
 tweet text is redistributed. Results are reported in aggregate.
+
+## Zero-shot language model
+
+`src/llm_zeroshot.py` uses Qwen3-0.6B in the 4-bit Q4_K_M GGUF quantisation published by Unsloth
+(`unsloth/Qwen3-0.6B-GGUF`, file `Qwen3-0.6B-Q4_K_M.gguf`, 396,705,472 bytes, SHA-256
+`ac2d97712095a558e31573f62f466a3f9d93990898b0ec79d7c974c1780d524a`; Apache-2.0). Put it at
+`models/Qwen3-0.6B-Q4_K_M.gguf` (not tracked by git). Check the hash before running.

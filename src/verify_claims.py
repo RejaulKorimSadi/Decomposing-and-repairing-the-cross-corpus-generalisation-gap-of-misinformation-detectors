@@ -163,6 +163,25 @@ if os.path.exists(f"{R}/transfer_roberta_ft.csv"):
     if len(x):
         check(x.ranking.sum() / (x.ranking + x.threshold + x.prior).sum() > 0.5, "fine-tuned gap mostly ranking")
 
+# zero-shot LLM and published generalisation methods
+if os.path.exists(f"{R}/llm_zeroshot_qwen3_0.6b.csv"):
+    L = pd.read_csv(f"{R}/llm_zeroshot_qwen3_0.6b.csv")
+    FS = pd.read_csv(f"{R}/transfer_tfidf_lr_ftsub.csv")
+    tg = L.groupby("target").auc.mean() - FS[FS.source != FS.target].groupby("target").auc.mean()
+    check((tg > 0).all(), "zero-shot LLM ranks every corpus better than the average transferred TF-IDF")
+    check(L.auc.mean() < FS[FS.source == FS.target].auc.mean() - 0.1, "zero-shot LLM far below in-domain detector")
+    check(L.def_ppr.mean() < 0.01, "LLM's own answer almost never says fake")
+    check(L.half_macro_f1.mean() - L.def_macro_f1.mean() > 0.2, "flagging half rescues the LLM operating point")
+    fbb = FS[FS.source == FS.target].set_index(["target", "seed"]).def_macro_f1
+    x = L.set_index(["target", "seed"])
+    rk = (fbb.loc[x.index] - x.oracle_macro_f1).sum(); op = (x.oracle_macro_f1 - x.def_macro_f1).sum()
+    check(rk / (rk + op) < 0.5, "LLM loss is mostly operating point")
+if os.path.exists(f"{R}/dg_loco.csv"):
+    D = pd.read_csv(f"{R}/dg_loco.csv")
+    m = D.groupby("model").auc.mean()
+    check(all(m[k] <= m["erm_lr"] for k in ["eann", "mdfend", "endef", "erm_mlp"]), "no published DG method beats pooled LR")
+    check(((D.em_macro_f1 - D.def_macro_f1).mean()) < 0, "EM lowers macro-F1 for the DG models too")
+
 # data audit
 P = pd.read_csv(f"{R}/label_probe.csv").set_index(["corpus", "probe"])
 nyt = P.loc[("WELFake", "title ends '- The New York Times' (reliable)")]

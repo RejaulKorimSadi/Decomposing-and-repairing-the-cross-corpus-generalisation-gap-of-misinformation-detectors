@@ -38,6 +38,26 @@ Splits are stratified 70/10/20 per seed (0--4), with caps of 8{,}000/1{,}500/3{,
 Weights: RoBERTa-base as packaged in spaCy \texttt{en\_core\_web\_trf} 3.8.0 (byte-level BPE, 12 layers). The embedding layer and layers 1--8 are frozen; their output for every text is computed once (16-bit floats) and cached. Layers 9--12 and a linear head on the mask-weighted mean of the final states are trained with AdamW (weight decay 0.01, learning rate $3\times10^{-5}$ for the layers and $10^{-3}$ for the head, linear decay, gradient clipping at 1.0), batch size 16, three epochs, binary cross-entropy with positive-class weight $(1-\pi_A)/\pi_A$, dropout 0.1. The epoch with the highest validation AUC is kept and its scores are Platt-calibrated on validation. Inputs are the first 1{,}500 characters, cut to 128 word pieces for articles and 64 for the other units. Each source uses 800 training and 200 validation items and each target 300 test items, stratified subsets of the seed's regular splits, for seeds 0--2. The paired \textsc{tfidf-lr} sees the first 600 characters of the same items.
 \input{tables/supp_rates}
 
+\section{Exact values behind the main-text figures}
+The main text shows these results as figures; the tables below give the exact values.
+\input{tables/headline}
+\input{tables/pairs}
+\input{tables/decomp}
+\input{tables/oppoints}
+\input{tables/shortcuts}
+\input{tables/mask}
+\input{tables/repair}
+\input{tables/repair_targets}
+\input{tables/dg}
+\input{tables/bangla}
+\clearpage
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{fig_operating_points}
+\caption{Off-diagonal macro-F1 of \textsc{tfidf-lr} for each of the 42 cells (mean of five seeds), sorted by the oracle bound. Rate transfer closes most of the distance from the default threshold to the oracle without any target label; EM prior adaptation often falls below the default.}\label{fig:op}
+\end{figure}
+\clearpage
+
 \section{Full results}
 \subsection{Transfer matrices for every model}
 \input{tables/appendix_matrices}

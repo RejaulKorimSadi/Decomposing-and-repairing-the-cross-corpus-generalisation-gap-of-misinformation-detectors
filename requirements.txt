@@ -8,6 +8,8 @@ datasketch>=1.6
 matplotlib>=3.9
 spacy==3.8.*
 torch>=2.4
+transformers>=4.48   # zero-shot LLM baseline (loads GGUF weights)
+gguf>=0.10
 # spaCy models (install from the GitHub release wheels):
 #   en_core_web_sm-3.8.0  (NER for masking)
 #   en_core_web_trf-3.8.0 (RoBERTa-base weights)

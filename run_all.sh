@@ -19,6 +19,8 @@ python src/roberta.py matrix                               | tee logs/roberta_ma
 python src/finetune.py cache                                | tee logs/finetune_cache.log
 python src/finetune.py train                                | tee logs/finetune_train.log
 python src/finetune.py tfidf                                | tee logs/finetune_tfidf.log
+LLM_GGUF=models/Qwen3-0.6B-Q4_K_M.gguf python src/llm_zeroshot.py | tee logs/llm_zeroshot_qwen3.log
+python src/dg.py ents && python src/dg.py run              | tee logs/dg.log
 step "4/9 mechanism tests"
 python src/mechanism.py --tests group,weights,lc,topk,pad,topic,mask,vocab | tee logs/mechanism.log
 step "5/9 label-free repairs (leave-one-corpus-out)"
@@ -32,6 +34,7 @@ python src/analysis_robust.py                              | tee logs/analysis_r
 python src/analysis_robust.py variants                     | tee logs/analysis_variants.log
 step "8/9 figures"
 python src/figures.py                                      | tee logs/figures.log
+python src/figures_paper.py                                | tee logs/figures_paper.log
 step "9/9 paper numbers, README, claim verification"
 python src/paper_numbers.py                                | tee logs/paper_numbers.log
 python src/make_readme.py

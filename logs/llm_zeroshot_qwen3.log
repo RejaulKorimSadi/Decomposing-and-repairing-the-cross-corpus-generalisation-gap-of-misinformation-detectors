@@ -1,0 +1,37 @@
+Converting and de-quantizing GGUF tensors...:   0%|          | 0/310 [00:00<?, ?it/s]Converting and de-quantizing GGUF tensors...:   1%|          | 2/310 [00:01<04:33,  1.13it/s]Converting and de-quantizing GGUF tensors...:   4%|▍         | 13/310 [00:01<00:32,  9.10it/s]Converting and de-quantizing GGUF tensors...:   8%|▊         | 24/310 [00:02<00:15, 18.57it/s]Converting and de-quantizing GGUF tensors...:  11%|█▏        | 35/310 [00:02<00:09, 29.18it/s]Converting and de-quantizing GGUF tensors...:  14%|█▍        | 44/310 [00:02<00:07, 37.88it/s]Converting and de-quantizing GGUF tensors...:  18%|█▊        | 55/310 [00:02<00:05, 48.60it/s]Converting and de-quantizing GGUF tensors...:  21%|██▏       | 66/310 [00:02<00:04, 58.38it/s]Converting and de-quantizing GGUF tensors...:  25%|██▍       | 77/310 [00:02<00:03, 65.95it/s]Converting and de-quantizing GGUF tensors...:  28%|██▊       | 87/310 [00:02<00:03, 71.02it/s]Converting and de-quantizing GGUF tensors...:  31%|███       | 96/310 [00:02<00:03, 71.14it/s]Converting and de-quantizing GGUF tensors...:  34%|███▍      | 105/310 [00:02<00:02, 75.00it/s]Converting and de-quantizing GGUF tensors...:  37%|███▋      | 114/310 [00:03<00:02, 74.50it/s]Converting and de-quantizing GGUF tensors...:  40%|███▉      | 123/310 [00:03<00:02, 73.37it/s]Converting and de-quantizing GGUF tensors...:  43%|████▎     | 132/310 [00:03<00:02, 73.25it/s]Converting and de-quantizing GGUF tensors...:  45%|████▌     | 140/310 [00:03<00:02, 74.15it/s]Converting and de-quantizing GGUF tensors...:  48%|████▊     | 149/310 [00:03<00:02, 75.58it/s]Converting and de-quantizing GGUF tensors...:  51%|█████     | 157/310 [00:03<00:02, 72.57it/s]Converting and de-quantizing GGUF tensors...:  54%|█████▍    | 167/310 [00:03<00:01, 74.95it/s]Converting and de-quantizing GGUF tensors...:  57%|█████▋    | 176/310 [00:03<00:01, 77.84it/s]Converting and de-quantizing GGUF tensors...:  60%|██████    | 187/310 [00:03<00:01, 80.47it/s]Converting and de-quantizing GGUF tensors...:  64%|██████▎   | 197/310 [00:04<00:01, 84.49it/s]Converting and de-quantizing GGUF tensors...:  66%|██████▋   | 206/310 [00:04<00:01, 84.22it/s]Converting and de-quantizing GGUF tensors...:  69%|██████▉   | 215/310 [00:04<00:01, 82.81it/s]Converting and de-quantizing GGUF tensors...:  72%|███████▏  | 224/310 [00:04<00:01, 76.39it/s]Converting and de-quantizing GGUF tensors...:  75%|███████▌  | 233/310 [00:04<00:01, 74.55it/s]Converting and de-quantizing GGUF tensors...:  78%|███████▊  | 242/310 [00:04<00:00, 76.72it/s]Converting and de-quantizing GGUF tensors...:  81%|████████▏ | 252/310 [00:04<00:00, 80.21it/s]Converting and de-quantizing GGUF tensors...:  84%|████████▍ | 261/310 [00:04<00:00, 78.07it/s]Converting and de-quantizing GGUF tensors...:  87%|████████▋ | 269/310 [00:05<00:00, 77.18it/s]Converting and de-quantizing GGUF tensors...:  89%|████████▉ | 277/310 [00:05<00:00, 71.33it/s]Converting and de-quantizing GGUF tensors...:  92%|█████████▏| 286/310 [00:05<00:00, 73.95it/s]Converting and de-quantizing GGUF tensors...:  95%|█████████▌| 296/310 [00:05<00:00, 80.24it/s]Converting and de-quantizing GGUF tensors...:  98%|█████████▊| 305/310 [00:05<00:00, 82.01it/s]Converting and de-quantizing GGUF tensors...: 100%|██████████| 310/310 [00:05<00:00, 55.61it/s]
+Loading weights:   0%|          | 0/310 [00:00<?, ?it/s]Loading weights: 100%|██████████| 310/310 [00:00<00:00, 29499.15it/s]
+200/4532 scored, 183s
+400/4532 scored, 365s
+600/4532 scored, 544s
+800/4532 scored, 720s
+1000/4532 scored, 895s
+1200/4532 scored, 1070s
+1400/4532 scored, 1244s
+1600/4532 scored, 1420s
+1800/4532 scored, 1589s
+2000/4532 scored, 1666s
+2200/4532 scored, 1747s
+2400/4532 scored, 1829s
+2600/4532 scored, 1912s
+2800/4532 scored, 1998s
+3000/4532 scored, 2079s
+3200/4532 scored, 2158s
+3400/4532 scored, 2239s
+3600/4532 scored, 2323s
+3800/4532 scored, 2406s
+4000/4532 scored, 2490s
+4200/4532 scored, 2574s
+4400/4532 scored, 2655s
+4532/4532 scored, 2709s
+AttributeError: 'float' object has no attribute 'exp'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "./src/llm_zeroshot.py", line 88, in <module>
+    main()
+    ~~~~^^
+  File "./src/llm_zeroshot.py", line 74, in main
+    p = 1 / (1 + np.exp(-z))                       # model's own answer <=> p >= 0.5
+                 ~~~~~~^^^^
+TypeError: loop of ufunc does not support argument 0 of type float which has no callable exp method

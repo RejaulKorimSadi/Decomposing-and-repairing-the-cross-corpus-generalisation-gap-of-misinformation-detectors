@@ -59,9 +59,16 @@ PASS fine-tuned RoBERTa does not transfer clearly better than paired TF-IDF (0.5
 PASS EM worse for the fine-tuned model too
 PASS rate transfer recovers most for the fine-tuned model
 PASS fine-tuned gap mostly ranking
+PASS zero-shot LLM ranks every corpus better than the average transferred TF-IDF
+PASS zero-shot LLM far below in-domain detector
+PASS LLM's own answer almost never says fake
+PASS flagging half rescues the LLM operating point
+PASS LLM loss is mostly operating point
+PASS no published DG method beats pooled LR
+PASS EM lowers macro-F1 for the DG models too
 PASS WELFake reliable signature sits entirely under raw label 1
 PASS no pending placeholders file
 PASS no '??' or 'pending' in manuscript sources
 PASS all number macros defined (missing: [])
 
-65/65 checks passed
+72/72 checks passed

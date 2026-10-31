@@ -154,7 +154,7 @@ def transfer_part():
         rows.append("\\addlinespace")
     write_table("headline", r"""\begin{table}[t]
 \centering
-\caption{In-domain versus transfer performance on the seven veracity corpora (mean $\pm$ s.d.\ over seeds of the per-seed mean over cells). ``Pairs'' averages the eight directed same-task cells. Off-diagonal macro-F1 is given at the default threshold and at the oracle threshold. \textsc{roberta-lr} is evaluated on the 1{,}500-item subsets and \textsc{roberta-ft} on 800 training and 300 test items per corpus with three seeds (Section~\ref{sec:models}); compare each with its paired \textsc{tfidf-lr} in Section~\ref{sec:models-res}, not with the rows above.}\label{tab:headline}
+\caption{In-domain versus transfer performance on the seven veracity corpora (mean $\pm$ s.d.\ over seeds of the per-seed mean over cells). ``Pairs'' averages the eight directed same-task cells. Off-diagonal macro-F1 is given at the default threshold and at the oracle threshold. \textsc{roberta-lr} is evaluated on the 1{,}500-item subsets and \textsc{roberta-ft} on 800 training and 300 test items per corpus with three seeds (see the paper's Methodology); compare each with its paired \textsc{tfidf-lr} in the paper, not with the rows above.}\label{tab:headline}
 \small
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{@{}llcccccc@{}}
@@ -231,7 +231,7 @@ Pair & In & AUC [95\% CI] & Prior & PPR & F1$_{0.5}$ & F1$_{\pi}$ & F1$^\star$ &
                         f"{x.threshold:.3f} & {x.prior:.3f} & {pct(x.ranking_share_of_target_gap)} \\\\")
     write_table("decomp", r"""\begin{table}[t]
 \centering
-\caption{Transfer gap decomposition (Eq.~\ref{eq:decomp}), macro-F1 points, mean over cells and seeds. The gap is relative to the target's own in-domain score.}\label{tab:decomp}
+\caption{Transfer gap decomposition (Eq.~1 of the paper), macro-F1 points, mean over cells and seeds. The gap is relative to the target's own in-domain score.}\label{tab:decomp}
 \small
 \begin{tabular}{@{}llrrrrr@{}}
 \toprule
@@ -812,8 +812,74 @@ def ft_part():
         mac("FTRecRank", pct(O.loc["roberta_ft", "rec_src_rate"])); mac("FTRecEM", pct(O.loc["roberta_ft", "rec_em"]))
 
 
+def llm_part():
+    L = pd.read_csv(f"{R}/llm_zeroshot_qwen3_0.6b.csv")
+    FS = pd.read_csv(f"{R}/transfer_tfidf_lr_ftsub.csv")
+    FT = pd.read_csv(f"{R}/transfer_roberta_ft.csv")
+    from scipy.stats import wilcoxon
+    mac("LLMauc", f3(L.auc.mean())); mac("LLMaucMin", f3(L.groupby("target").auc.mean().min()))
+    mac("LLMaucMax", f3(L.groupby("target").auc.mean().max()))
+    mac("LLMFdef", f3(L.def_macro_f1.mean())); mac("LLMFhalf", f3(L.half_macro_f1.mean()))
+    mac("LLMFpm", f3(L.pm_macro_f1.mean())); mac("LLMForc", f3(L.oracle_macro_f1.mean()))
+    mac("LLMppr", pct(L.def_ppr.mean()))
+    mac("LLMrecHalf", pct((L.half_macro_f1 - L.def_macro_f1).mean() / (L.oracle_macro_f1 - L.def_macro_f1).mean()))
+    ind = FS[FS.source == FS.target]
+    fbb = ind.set_index(["target", "seed"]).def_macro_f1
+    x = L.set_index(["target", "seed"])
+    rank = (fbb.loc[x.index] - x.oracle_macro_f1)
+    op = (x.oracle_macro_f1 - x.def_macro_f1)
+    mac("LLMrankShare", pct(rank.sum() / (rank + op).sum()))
+    off = FS[FS.source != FS.target].groupby(["target", "seed"]).auc.mean()
+    d = x.auc - off.loc[x.index]
+    mac("LLMminusLR", "+" + f3(d.mean())); mac("LLMminusLRp", f"{wilcoxon(d).pvalue:.1e}".replace("e-0", "e-"))
+    tg = L.groupby("target").auc.mean() - FS[FS.source != FS.target].groupby("target").auc.mean()
+    mac("LLMbetterTargets", str(int((tg > 0).sum())))
+    mac("LLMgainMin", f2(tg.min())); mac("LLMgainMax", f2(tg.max()))
+    mac("LLMitems", fmt_int(len(pd.read_csv(f"{C.ARTIFACTS}/llm_scores_qwen3_0.6b.csv"))))
+    mac("PairedInAUC", f3(ind.auc.mean()))
+
+
+def dg_part():
+    D = pd.read_csv(f"{R}/dg_loco.csv")
+    from scipy.stats import wilcoxon
+    from statsmodels.stats.multitest import multipletests
+    base = D[D.model == "erm_lr"].set_index(["target", "seed"]).auc
+    name = {"erm_lr": "ERMlr", "erm_mlp": "ERMmlp", "eann": "EANN", "mdfend": "MDFEND", "endef": "ENDEF"}
+    ps, keys = [], []
+    for m, tag in name.items():
+        g = D[D.model == m]
+        mac(f"DG{tag}", f3(g.auc.mean()))
+        if m != "erm_lr":
+            d = g.set_index(["target", "seed"]).auc - base
+            mac(f"DG{tag}Delta", ("$-$" if d.mean() < 0 else "+") + f"{abs(d.mean()):.3f}")
+            ps.append(wilcoxon(d).pvalue); keys.append(tag)
+    adj = multipletests(ps, method="holm")[1]
+    for k, a in zip(keys, adj):
+        mac(f"DG{k}P", "<0.001" if a < 0.001 else "=" + f"{a:.3f}")
+    rec = (D.em_macro_f1 - D.def_macro_f1).mean() / (D.oracle_macro_f1 - D.def_macro_f1).mean()
+    mac("DGrecEM", pct(rec))
+    rows = []
+    for m, lab in [("erm_lr", "pooled logistic regression"), ("erm_mlp", "pooled MLP"),
+                   ("eann", "EANN-style adversarial"), ("mdfend", "MDFEND-style experts"), ("endef", "ENDEF-style entity debiasing")]:
+        g = D[D.model == m].groupby("target").auc.mean()
+        rows.append(f"{lab} & " + " & ".join(f"{g[t]:.3f}" for t in VER) + f" & {D[D.model == m].auc.mean():.3f} \\\\")
+    write_table("dg", r"""\begin{table}[h]
+\centering
+\caption{Held-out-corpus ROC-AUC of published generalisation methods re-implemented on frozen RoBERTa vectors (leave-one-corpus-out, mean of three seeds).}\label{tab:dg}
+\footnotesize
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+Method & ISOT & WELFake & PolitiFact & GossipCop & LIAR & Tw15 & Tw16 & Mean \\
+\midrule
+""" + "\n".join(rows) + r"""
+\bottomrule
+\end{tabular}
+\end{table}
+""")
+
+
 PARTS = [data_part, transfer_part, operating_part, appendix_matrices, bangla_part, models_part, mechanism_part,
-         repair_part, supplement_part, topk_part, mask_part, vocab_part, robust_part, ft_part]
+         repair_part, supplement_part, topk_part, mask_part, vocab_part, robust_part, ft_part, llm_part, dg_part]
 
 
 def main():

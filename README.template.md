@@ -42,11 +42,17 @@ Fake-news detectors score above 95% on the corpus they were trained on and much 
 | Calibration error in-domain → on a new corpus (ECE) | {{ECEin}} → {{ECEout}} |
 | Frozen RoBERTa vs TF-IDF transfer AUC (same subsets) | {{RobOffAUC}} vs {{SubLROffAUC}} |
 | Fine-tuned RoBERTa vs TF-IDF transfer AUC (same subsets) | {{FTOffAUC}} vs {{FTsubOffAUC}} |
+| Zero-shot LLM (Qwen3-0.6B) AUC on the same items, no training | {{LLMauc}} |
+| … its macro-F1 with its own answer → flagging half the items | {{LLMFdef}} → {{LLMFhalf}} |
+| Held-out AUC: pooled LR vs EANN / MDFEND / ENDEF re-implementations | {{DGERMlr}} vs {{DGEANN}} / {{DGMDFEND}} / {{DGENDEF}} |
 | Held-out AUC, pooled training on 6 corpora vs one corpus | {{LocoPooled}} vs {{LocoMeanSingle}} |
 | … with corpus identity projected out (INLP) | {{LocoINLP}} |
 | Bengali clickbait: leave-one-publisher-out AUC | {{BBlosoAUC}} |
 | English → Bengali clickbait (translate-test) AUC | {{XlENtoBB}} |
 
+<p align="center">
+  <img src="figures/fig_overview.png" width="96%" alt="Study design and main results">
+</p>
 <p align="center">
   <img src="figures/fig_heatmap_auc.png" width="46%" alt="Transfer ROC-AUC heatmap">
   &nbsp;
@@ -89,12 +95,14 @@ fn-transfer-audit/
 │   ├── transfer.py        train-on-one / test-on-all, 5 models × 3 regimes × 5 seeds
 │   ├── roberta.py         frozen RoBERTa-base representations (+ paired TF-IDF baseline)
 │   ├── finetune.py        RoBERTa-base with the top 4 layers fine-tuned (+ paired TF-IDF)
+│   ├── llm_zeroshot.py    zero-shot Qwen3-0.6B baseline on the same test items
+│   ├── dg.py              EANN-, MDFEND- and ENDEF-style methods, leave-one-corpus-out
 │   ├── mechanism.py       style/group/learning-curve/top-K/masking/topic/PAD probes
 │   ├── fix.py             leave-one-corpus-out representation repairs
 │   ├── bangla.py          BanglaBait replication, leave-one-publisher-out, translate-test
 │   ├── analysis*.py       CIs, decomposition, operating points, robustness, tests
 │   ├── verify_claims.py   re-derives the paper's claims from raw results and checks them
-│   ├── figures.py         every figure in the paper
+│   ├── figures*.py        every figure in the paper (with an automatic text-overlap check)
 │   └── paper_numbers.py   every number in the paper (LaTeX macros) — nothing typed by hand
 ├── results/               per-cell CSVs, summaries, key_numbers.json
 ├── figures/               PDF + 300-dpi PNG
